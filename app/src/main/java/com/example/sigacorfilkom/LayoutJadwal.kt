@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.ui.theme.reservasi
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-data class ReservasiPageItem(
+data class JadwalPageItem(
     val textPilihTanggal: String,
     val textNovemberWeek: String,
     val textText: String,
@@ -70,9 +70,9 @@ data class ReservasiPageItem(
 )
 
 @Composable
-fun HalamanReservasi(modifier: Modifier = Modifier) {
+fun LayoutJadwal(modifier: Modifier = Modifier) {
     val gridData = listOf(
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -98,7 +98,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -124,7 +124,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -150,7 +150,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -176,7 +176,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -202,7 +202,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -228,7 +228,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -254,7 +254,7 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
             "11",
             "12"
         ),
-        ReservasiPageItem(
+        JadwalPageItem(
             "Pilih Tanggal",
             "November 2023 - Week 1",
             " ",
@@ -844,5 +844,5 @@ fun HalamanReservasi(modifier: Modifier = Modifier) {
 @Preview(widthDp = 1080, heightDp = 2400)
 @Composable
 private fun HalamanReservasiPreview() {
-    HalamanReservasi(Modifier)
+    LayoutJadwal(Modifier)
 }

@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.ui.theme.riwayatreservasi
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HalamanRiwayatReservasi(modifier: Modifier = Modifier) {
+fun LayoutRiwayatReservasi(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .requiredWidth(width = 1080.dp)
@@ -1000,5 +1000,5 @@ fun HalamanRiwayatReservasi(modifier: Modifier = Modifier) {
 @Preview(widthDp = 1080, heightDp = 2400)
 @Composable
 private fun HalamanRiwayatReservasiPreview() {
-    HalamanRiwayatReservasi(Modifier)
+    LayoutRiwayatReservasi(Modifier)
 }
