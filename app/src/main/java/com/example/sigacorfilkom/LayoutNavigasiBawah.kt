@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.ui.theme.navigasi
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,10 +27,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.sigacorfilkom.R
 
 @Composable
-fun NavigasiBawah(modifier: Modifier = Modifier) {
+fun LayoutNavigasiBawah(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .requiredWidth(width = 1080.dp)
@@ -138,5 +137,5 @@ fun NavigasiBawah(modifier: Modifier = Modifier) {
 @Preview(widthDp = 1080, heightDp = 257)
 @Composable
 private fun NavigasiBawahPreview() {
-    NavigasiBawah(Modifier)
+    LayoutNavigasiBawah(Modifier)
 }

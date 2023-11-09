@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.ui.theme.home
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,10 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.example.sigacorfilkom.R
 
 @Composable
-fun HalamanUtamaMahasiswa(modifier: Modifier = Modifier) {
+fun LayoutUtamaMahasiswa(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .requiredWidth(width = 1080.dp)
@@ -493,5 +492,5 @@ fun HalamanUtamaMahasiswa(modifier: Modifier = Modifier) {
 @Preview(widthDp = 1080, heightDp = 2400)
 @Composable
 private fun HalamanUtamaMahasiswaPreview() {
-    HalamanUtamaMahasiswa(Modifier)
+    LayoutUtamaMahasiswa(Modifier)
 }

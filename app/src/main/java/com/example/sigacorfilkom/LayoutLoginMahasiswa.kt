@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.ui.theme.auth
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -31,10 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.sigacorfilkom.R
 
 @Composable
-fun HalamanLoginMahasiswa(modifier: Modifier = Modifier) {
+fun LayoutLoginMahasiswa(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .requiredWidth(width = 1080.dp)
@@ -380,5 +379,5 @@ fun HalamanLoginMahasiswa(modifier: Modifier = Modifier) {
 @Preview(widthDp = 1080, heightDp = 2400)
 @Composable
 private fun LoginPagePreview() {
-    HalamanLoginMahasiswa(Modifier)
+    LayoutLoginMahasiswa(Modifier)
 }

@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.ui.theme.panduan
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HalamanPanduan(modifier: Modifier = Modifier) {
+fun LayoutPanduan(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .requiredWidth(width = 1080.dp)
@@ -148,5 +148,5 @@ fun HalamanPanduan(modifier: Modifier = Modifier) {
 @Preview(widthDp = 1080, heightDp = 2400)
 @Composable
 private fun HalamanPanduanPreview() {
-    HalamanPanduan(Modifier)
+    LayoutPanduan(Modifier)
 }
