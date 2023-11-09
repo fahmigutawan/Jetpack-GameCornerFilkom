@@ -48,14 +48,14 @@ fun LayoutPanduan(modifier: Modifier = Modifier) {
                 withStyle(style = SpanStyle(
                     color = Color.Black,
                     fontSize = 40.sp,
-                    fontWeight = FontWeight.Bold)) {append("Pilih Device ")}
+                    fontWeight = FontWeight.Bold)) {append("Pilih Device")}
                 withStyle(style = SpanStyle(
                     color = Color.Black,
                     fontSize = 40.sp)) {append("tersedia 6 device yang bisa kamu pilih :  2 PS5, 2 XBOX, 1 PC, 1 Pump it \n")}
                 withStyle(style = SpanStyle(
                     color = Color.Black,
                     fontSize = 40.sp,
-                    fontWeight = FontWeight.Bold)) {append("Pilih Sesi ")}
+                    fontWeight = FontWeight.Bold)) {append("Pilih Sesi")}
                 withStyle(style = SpanStyle(
                     color = Color.Black,
                     fontSize = 40.sp)) {append("pilih 1 dari 8 sesi yang ada dari pukul 08.00 - 17.45\n")}

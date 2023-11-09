@@ -1,7 +1,13 @@
 package com.example.sigacorfilkom
 
 
-class Mahasiswa(nim: String, password: String, nama: String, fakultas: String, prodi: String) :
+class Mahasiswa(
+    nim: String,
+    password: String,
+    nama: String,
+    fakultas: String,
+    prodi: String
+) :
     Akun() {
     private val nim: String
     private val password: String
