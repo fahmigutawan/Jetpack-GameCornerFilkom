@@ -68,6 +68,7 @@ fun LayoutJadwal() {
 
     LaunchedEffect(key1 = viewModel.getPickedPerangkat().value) {
         viewModel.getPickedPerangkat().value?.let {
+            viewModel.setPickedSesi(null)
             viewModel.loadSesi()
         }
     }
@@ -285,11 +286,18 @@ fun LayoutJadwal() {
                                                         },
                                                     contentAlignment = Alignment.Center
                                                 ) {
-                                                    Text(
-                                                        text = viewModel
-                                                            .getListSesi()[j + (i * 3)]
-                                                            .getSesiNumber().toString()
-                                                    )
+                                                    Column(modifier = Modifier.padding(8.dp)) {
+                                                        Text(
+                                                            text = "Sesi ${viewModel
+                                                                .getListSesi()[j + (i * 3)]
+                                                                .getSesiNumber()}",
+                                                            fontWeight = FontWeight.Bold
+                                                        )
+                                                        Text(
+                                                            text = viewModel
+                                                                .getListSesi()[j + (i * 3)].getWaktu()
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
