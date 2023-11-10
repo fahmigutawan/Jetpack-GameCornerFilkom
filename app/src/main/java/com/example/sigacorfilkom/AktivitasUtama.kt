@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
 
 
 class AktivitasUtama : ComponentActivity() {
@@ -20,9 +22,11 @@ class AktivitasUtama : ComponentActivity() {
                 NavHost(
                     modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
                     navController = navController,
-                    startDestination =
+                    startDestination = "onboard"
                 ){
-
+                    composable("onboard"){
+                        LayoutJadwal()
+                    }
                 }
             }
         }

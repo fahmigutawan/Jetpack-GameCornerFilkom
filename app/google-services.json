@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "531837210597",
+    "project_id": "sigacor-filkom",
+    "storage_bucket": "sigacor-filkom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531837210597:android:1686c73fd10315b530a90c",
+        "android_client_info": {
+          "package_name": "com.example.sigacorfilkom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhC57uwlAACjQhYq5wFWlGbWPEv2nllho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
