@@ -1,6 +1,7 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.jadwal
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,13 +39,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.example.sigacorfilkom.SnackbarHandler
 import kotlin.math.ceil
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutJadwal() {
+fun LayoutJadwal(navController: NavController) {
     val viewModel = viewModel<HalamanJadwal>()
     val monthMapper = mapOf(
         1 to "Januari",
@@ -59,6 +65,48 @@ fun LayoutJadwal() {
         12 to "Desember"
     )
     val width = LocalConfiguration.current.screenWidthDp - 32
+    val showBerhasilDialog = remember {
+        mutableStateOf(false)
+    }
+
+    if (showBerhasilDialog.value) {
+        AlertDialog(
+            onDismissRequest = { /*TODO*/ },
+            confirmButton = {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xffFF9E3A),
+                        contentColor = Color.White
+                    ),
+                    onClick = {
+                        navController.navigate("home_mahasiswa") {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                ) {
+                    Text(text = "OK")
+                }
+            },
+            title = {
+                Text(
+                    text = "Berhasil"
+                )
+            },
+            text = {
+                Text(text = "Anda telah melakukan reservasi! Mohon datang ke Game Corner dengan menunjukkan KTM pada waktu yang dipilih")
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false
+            )
+        )
+    }
 
     LaunchedEffect(key1 = viewModel.getPickedHari().value) {
         viewModel.getPickedHari().value?.let {
@@ -87,12 +135,22 @@ fun LayoutJadwal() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        viewModel.reservasi(
+                            onSuccess = {
+                                showBerhasilDialog.value = true
+                            },
+                            onFailed = {
+                                SnackbarHandler.showSnackbar(it)
+                            }
+                        )
+                    },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xffFF9E3A),
                         contentColor = Color.White
-                    )
+                    ),
+                    enabled = viewModel.getPickedHari().value != null && viewModel.getPickedPerangkat().value != null && viewModel.getPickedSesi().value != null
                 ) {
                     Text(text = "Booking")
                 }
@@ -153,7 +211,7 @@ fun LayoutJadwal() {
                             ) {
                                 Text(
                                     modifier = Modifier.padding(16.dp),
-                                    text = "${it.getCalendar().time.date} ${monthMapper[it.getBulan()] ?: "..."} ${it.getTahun()}"
+                                    text = "${it.getTanggal()} ${monthMapper[it.getBulan()] ?: "..."} ${it.getTahun()}"
                                 )
                             }
                         }
@@ -207,7 +265,8 @@ fun LayoutJadwal() {
                                         ) {
                                             Text(
                                                 text = viewModel.getListPerangkat()[j + (i * 3)]
-                                                    .getNama()
+                                                    .getNama(),
+                                                fontWeight = FontWeight.Bold
                                             )
                                         }
                                     }
@@ -237,13 +296,13 @@ fun LayoutJadwal() {
                         }
                     }
 
-                    viewModel.getPickedPerangkat().value == null -> {
+                    (viewModel.getPickedPerangkat().value == null || viewModel.getPickedHari().value == null) -> {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 16.dp), contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "Anda Belum Memilih Tanggal dan Perangkat.")
+                            Text(text = "Anda Belum Memilih Tanggal dan/atau Perangkat.")
                         }
                     }
 
@@ -279,7 +338,14 @@ fun LayoutJadwal() {
                                                             ),
                                                             shape = RoundedCornerShape(8.dp)
                                                         )
-                                                        .clickable {
+                                                        .background(
+                                                            if (viewModel.getListSesi()[j + (i * 3)].getBooked())
+                                                                Color(0xFFD8D5D5) else Color(0xffffffff),
+                                                            shape = RoundedCornerShape(8.dp)
+                                                        )
+                                                        .clickable(
+                                                            enabled = !viewModel.getListSesi()[j + (i * 3)].getBooked()
+                                                        ) {
                                                             viewModel.setPickedSesi(
                                                                 viewModel.getListSesi()[j + (i * 3)]
                                                             )
@@ -288,9 +354,11 @@ fun LayoutJadwal() {
                                                 ) {
                                                     Column(modifier = Modifier.padding(8.dp)) {
                                                         Text(
-                                                            text = "Sesi ${viewModel
-                                                                .getListSesi()[j + (i * 3)]
-                                                                .getSesiNumber()}",
+                                                            text = "Sesi ${
+                                                                viewModel
+                                                                    .getListSesi()[j + (i * 3)]
+                                                                    .getSesiNumber()
+                                                            }",
                                                             fontWeight = FontWeight.Bold
                                                         )
                                                         Text(

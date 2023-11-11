@@ -1,497 +1,203 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.R
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutUtamaMahasiswa(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .requiredWidth(width = 1080.dp)
-            .requiredHeight(height = 2400.dp)
-            .background(color = Color.White)
+fun LayoutUtamaMahasiswa(navController: NavController) {
+    val viewModel = viewModel<HalamanUtamaMahasiswa>()
+    val monthMapper = mapOf(
+        1 to "Januari",
+        2 to "Februari",
+        3 to "Maret",
+        4 to "April",
+        5 to "Mei",
+        6 to "Juni",
+        7 to "Juli",
+        8 to "Agustus",
+        9 to "September",
+        10 to "Oktober",
+        11 to "November",
+        12 to "Desember"
+    )
+    
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(text = "SiGACOR")
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            KontrolOtentikasi.logout()
+                            navController.navigate("login") {
+                                popUpTo(navController.graph.id) { inclusive = true }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            painter = rememberAsyncImagePainter(model = R.drawable.ic_logout),
+                            contentDescription = ""
+                        )
+                    }
+                }
+            )
+        }
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(56.dp, Alignment.Top),
+        LazyColumn(
             modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(
-                    x = 44.dp,
-                    y = 277.dp
-                )
+                .padding(top = it.calculateTopPadding())
+                .padding(horizontal = 16.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .requiredWidth(width = 992.dp)
-                    .requiredHeight(height = 601.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.Start),
-                    modifier = Modifier
-                        .align(alignment = Alignment.TopCenter)
-                        .offset(
-                            x = 0.dp,
-                            y = 577.dp
-                        )
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .requiredSize(size = 24.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color(0xffff8b13))
+            item {
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "Hi, ${viewModel.namaMahasiswa.value}",
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xffFF9E3A)
                     )
-                    Box(
-                        modifier = Modifier
-                            .requiredSize(size = 24.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color(0xffffecd8))
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        text = "${viewModel.tanggal.value} ${monthMapper[viewModel.bulan.value.toInt()] ?: viewModel.bulan.value} ${viewModel.tahun.value}",
+                        textAlign = TextAlign.End,
+                        overflow = TextOverflow.Ellipsis
                     )
-                    Box(
-                        modifier = Modifier
-                            .requiredSize(size = 24.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color(0xffffecd8))
-                    )
-                    Box(
-                        modifier = Modifier
-                            .requiredSize(size = 24.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color(0xffffecd8))
-                    )
-                    Box(
-                        modifier = Modifier
-                            .requiredSize(size = 24.dp)
-                            .clip(shape = CircleShape)
-                            .background(color = Color(0xffffecd8))
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .align(alignment = Alignment.TopCenter)
-                        .offset(
-                            x = 0.dp,
-                            y = 0.dp
-                        )
-                        .requiredWidth(width = 992.dp)
-                        .requiredHeight(height = 538.dp)
-                        .clip(shape = RoundedCornerShape(24.dp))
-                        .background(color = Color.White)
-                ) {
-//                    Image(
-//                        painter = painterResource(id = R.drawable.frame),
-//                        contentDescription = "Frame",
-//                        colorFilter = ColorFilter.tint(Color(0xffcbd5e1)),
-//                        modifier = Modifier
-//                            .align(alignment = Alignment.TopStart)
-//                            .offset(x = 347.dp,
-//                                y = 120.dp)
-//                            .requiredSize(size = 298.dp))
                 }
             }
-            LazyRow(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .requiredWidth(width = 992.dp)
-                    .requiredHeight(height = 243.dp)
-                    .clip(shape = RoundedCornerShape(24.dp))
-                    .background(color = Color.White)
-            ) {
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            10.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 40.dp)
-                    ) {
-                        Text(
-                            text = "Hi, Nama",
-                            style = TextStyle(
-                                fontSize = 48.sp,
-                                fontWeight = FontWeight.Bold
-                            ),
-                            modifier = Modifier
-                                .requiredWidth(width = 538.dp)
-                                .wrapContentHeight(align = Alignment.CenterVertically)
-                        )
-                    }
-                }
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            10.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .requiredWidth(width = 376.dp)
-                            .padding(
-                                horizontal = 16.dp,
-                                vertical = 24.dp
-                            )
-                    ) {
-                        Text(
-                            text = "Wednesday\n25 October 2023",
-                            color = Color(0xff334155),
-                            textAlign = TextAlign.End,
-                            style = TextStyle(
-                                fontSize = 40.sp
-                            ),
-                            modifier = Modifier
-                                .wrapContentHeight(align = Alignment.CenterVertically)
-                        )
-                    }
-                }
-            }
-            Column(
-                verticalArrangement = Arrangement.spacedBy(45.dp, Alignment.Top)
-            ) {
-                Text(
-                    text = "Menu",
-                    style = TextStyle(
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier
-                        .wrapContentHeight(align = Alignment.CenterVertically)
-                )
+
+            item {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .requiredWidth(width = 992.dp)
-                        .requiredHeight(height = 293.dp)
-                        .clip(shape = RoundedCornerShape(24.dp))
-                        .background(color = Color.White)
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .requiredWidth(width = 842.dp)
-                            .requiredHeight(height = 160.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(
-                                24.dp,
-                                Alignment.CenterVertically
-                            ),
-                            modifier = Modifier
-                                .align(alignment = Alignment.Center)
-                                .offset(
-                                    x = 116.888916015625.dp,
-                                    y = (-17).dp
-                                )
-                                .requiredWidth(width = 608.dp)
-                        ) {
-                            Text(
-                                text = "Buku Panduan",
-                                color = Color(0xffff8b13),
-                                lineHeight = 2.08.em,
-                                style = TextStyle(
-                                    fontSize = 48.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "Panduan melakukan reservasi Game Corner Lengkap",
-                                color = Color(0xffff8b13),
-                                lineHeight = 4.25.em,
-                                style = TextStyle(
-                                    fontSize = 32.sp,
-                                    fontWeight = FontWeight.Medium
-                                ),
-                                modifier = Modifier
-                                    .requiredWidth(width = 608.dp)
-                            )
-                        }
-                        Image(
-                            painter = painterResource(id = R.drawable.iconbook),
-                            contentDescription = "Vector",
-                            modifier = Modifier
-                                .requiredSize(size = 178.dp)
-                        )
-                    }
-                }
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .requiredWidth(width = 992.dp)
-                        .requiredHeight(height = 293.dp)
-                        .clip(shape = RoundedCornerShape(24.dp))
-                        .background(color = Color.White)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .requiredWidth(width = 842.dp)
-                            .requiredHeight(height = 178.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(
-                                24.dp,
-                                Alignment.CenterVertically
-                            ),
-                            modifier = Modifier
-                                .align(alignment = Alignment.Center)
-                                .offset(
-                                    x = 116.97222900390625.dp,
-                                    y = (-4.6399993896484375).dp
-                                )
-                                .requiredWidth(width = 608.dp)
-                        ) {
-                            Text(
-                                text = "Lihat Jadwal",
-                                color = Color(0xffff8b13),
-                                lineHeight = 2.08.em,
-                                style = TextStyle(
-                                    fontSize = 48.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                            Text(
-                                text = "Panduan melakukan reservasi Game Corner Lengkap",
-                                color = Color(0xffff8b13),
-                                lineHeight = 4.25.em,
-                                style = TextStyle(
-                                    fontSize = 32.sp,
-                                    fontWeight = FontWeight.Medium
-                                ),
-                                modifier = Modifier
-                                    .requiredWidth(width = 608.dp)
-                            )
-                        }
-                        Image(
-                            painter = painterResource(id = R.drawable.iconjadwal),
-                            contentDescription = "Vector",
-                            modifier = Modifier
-                                .requiredSize(size = 178.dp)
-                        )
-                    }
-                }
-            }
-        }
-        Box(
-            modifier = Modifier
-                .align(alignment = Alignment.TopStart)
-                .offset(
-                    x = 0.dp,
-                    y = 2143.dp
-                )
-                .requiredWidth(width = 1080.dp)
-                .requiredHeight(height = 257.dp)
-        ) {
-            LazyRow(
-                modifier = Modifier
-                    .align(alignment = Alignment.BottomCenter)
-                    .offset(
-                        x = 0.dp,
-                        y = 0.dp
+                    Text(
+                        text = "Menu",
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xffFF9E3A)
                     )
-                    .requiredWidth(width = 1080.dp)
-                    .requiredHeight(height = 171.dp)
-                    .background(color = Color.White)
-                    .padding(horizontal = 40.dp)
-            ) {
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            10.dp,
-                            Alignment.CenterHorizontally
+
+                    ElevatedCard(
+                        elevation = CardDefaults.elevatedCardElevation(
+                            defaultElevation = 2.dp
                         ),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(
-                                8.dp,
-                                Alignment.CenterVertically
-                            ),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .padding(bottom = 24.dp)
-                        ) {
-//                            Image(
-//                                painter = painterResource(id = R.drawable.frame),
-//                                contentDescription = "Frame",
-//                                colorFilter = ColorFilter.tint(Color(0xffff8b13)),
-//                                modifier = Modifier
-//                                    .requiredSize(size = 56.dp))
-                            Text(
-                                text = "Home",
-                                color = Color(0xffff8b13),
-                                style = MaterialTheme.typography.headlineLarge,
-                                modifier = Modifier
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
-                            )
-                        }
-                    }
-                }
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp)
-                    )
-                }
-                item {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            10.dp,
-                            Alignment.CenterHorizontally
+                        colors = CardDefaults.elevatedCardColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black
                         ),
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp)
+                        onClick = {
+                            navController.navigate("panduan_mahasiswa")
+                        }
                     ) {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(
-                                8.dp,
-                                Alignment.CenterVertically
-                            ),
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                        Row(
                             modifier = Modifier
-                                .padding(bottom = 24.dp)
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-//                            Image(
-//                                painter = painterResource(id = R.drawable.frame),
-//                                contentDescription = "Frame",
-//                                colorFilter = ColorFilter.tint(Color(0xffcbd5e1)),
-//                                modifier = Modifier
-//                                    .requiredSize(size = 56.dp))
-                            Text(
-                                text = "History",
-                                color = Color(0xffcbd5e1),
-                                style = MaterialTheme.typography.headlineLarge,
-                                modifier = Modifier
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                            AsyncImage(
+                                modifier = Modifier.size(84.dp),
+                                model = R.drawable.ic_panduan,
+                                contentDescription = ""
                             )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Column {
+                                Text(
+                                    text = "Buku Panduan",
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xffFF9E3A)
+                                )
+                                Text(
+                                    text = "Panduan melakukan reservasi game corner lengkap",
+                                    color = Color(0xffFF9E3A)
+                                )
+                            }
+                        }
+                    }
+
+                    ElevatedCard(
+                        elevation = CardDefaults.elevatedCardElevation(
+                            defaultElevation = 2.dp
+                        ),
+                        colors = CardDefaults.elevatedCardColors(
+                            containerColor = Color.White,
+                            contentColor = Color.Black
+                        ),
+                        onClick = {
+                            navController.navigate("jadwal_mahasiswa")
+                        }
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            AsyncImage(
+                                modifier = Modifier.size(84.dp),
+                                model = R.drawable.ic_jadwal,
+                                contentDescription = ""
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Column {
+                                Text(
+                                    text = "Lihat Jadwal dan Reservasi",
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xffFF9E3A)
+                                )
+                                Text(
+                                    text = "Jadwal reservasi game corner terbaru",
+                                    color = Color(0xffFF9E3A)
+                                )
+                            }
                         }
                     }
                 }
-            }
-            Box(
-                modifier = Modifier
-                    .align(alignment = Alignment.TopCenter)
-                    .offset(
-                        x = 0.dp,
-                        y = 0.dp
-                    )
-                    .requiredSize(size = 154.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .align(alignment = Alignment.Center)
-                        .offset(
-                            x = 0.dp,
-                            y = 0.dp
-                        )
-                        .requiredSize(size = 158.dp)
-                        .clip(shape = CircleShape)
-                        .background(color = Color(0xffffecd8))
-                )
-//                Image(
-//                    painter = painterResource(id = R.drawable.vector),
-//                    contentDescription = "Vector",
-//                    modifier = Modifier
-//                        .fillMaxSize())
-            }
-        }
-        Column() {
-            Box(
-                modifier = Modifier
-                    .requiredWidth(width = 1080.dp)
-                    .requiredHeight(height = 80.dp)
-                    .background(color = Color(0xff0f172a))
-            ) {
-                Text(
-                    text = "Notification",
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineLarge,
-                    modifier = Modifier
-                        .align(alignment = Alignment.Center)
-                        .offset(
-                            x = (-270.5).dp,
-                            y = (-0.5).dp
-                        )
-                        .wrapContentHeight(align = Alignment.CenterVertically)
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .requiredWidth(width = 1080.dp)
-                    .requiredHeight(height = 144.dp)
-                    .background(color = Color.White)
-            ) {
-                Text(
-                    text = "SiGACOR",
-                    color = Color.Black,
-                    textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        fontSize = 48.sp,
-                        fontWeight = FontWeight.Bold
-                    ),
-                    modifier = Modifier
-                        .align(alignment = Alignment.Center)
-                        .offset(
-                            x = 0.dp,
-                            y = 0.dp
-                        )
-                        .wrapContentHeight(align = Alignment.CenterVertically)
-                )
-//                Image(
-//                    painter = painterResource(id = R.drawable.frame),
-//                    contentDescription = "Frame",
-//                    colorFilter = ColorFilter.tint(Color.Black),
-//                    modifier = Modifier
-//                        .align(alignment = Alignment.TopStart)
-//                        .offset(x = 998.dp,
-//                            y = 47.dp)
-//                        .requiredSize(size = 49.dp))
             }
         }
     }
-}
-
-@Preview(widthDp = 1080, heightDp = 2400)
-@Composable
-private fun HalamanUtamaMahasiswaPreview() {
-    LayoutUtamaMahasiswa(Modifier)
 }

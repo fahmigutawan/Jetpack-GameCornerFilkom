@@ -8,11 +8,12 @@ import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.launch
 
 
 class HalamanJadwal : ViewModel() {
-    private val kotrolJadwal = KontrolJadwal()
     private var listHari = mutableStateListOf<Hari>()
     private var listPerangkat = mutableStateListOf<Perangkat>()
     private var listSesi = mutableStateListOf<Sesi>()
@@ -21,9 +22,9 @@ class HalamanJadwal : ViewModel() {
     private var pickedSesi = mutableStateOf<Sesi?>(null)
 
     init {
-        listHari.addAll(kotrolJadwal.getHari())
+        listHari.addAll(KontrolJadwal.getHari())
         viewModelScope.launch {
-            kotrolJadwal.getPerangkat().collect{
+            KontrolJadwal.getPerangkat().collect{
                 listPerangkat.clear()
                 listPerangkat.addAll(it)
             }
@@ -33,7 +34,7 @@ class HalamanJadwal : ViewModel() {
     fun loadSesi(){
         if(pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
-                kotrolJadwal.getSesi(
+                KontrolJadwal.getSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
@@ -44,6 +45,22 @@ class HalamanJadwal : ViewModel() {
                 }
             }
         }
+    }
+
+    fun reservasi(
+        onSuccess:() -> Unit,
+        onFailed:(String) -> Unit
+    ){
+        KontrolReservasi.buatReservasi(
+            nimPeminjam = KontrolOtentikasi.getNimMahasiswa(),
+            nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
+            idPerangkat = pickedPerangkat.value?.getIdPerangkat() ?: "...",
+            tanggal = pickedHari.value?.getTanggal() ?: 0,
+            bulan = pickedHari.value?.getBulan() ?: 0,
+            tahun = pickedHari.value?.getTahun() ?: 0,
+            onSuccess = onSuccess,
+            onFailed = onFailed
+        )
     }
 
     fun getListHari() = listHari

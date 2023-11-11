@@ -12,13 +12,23 @@ class Mahasiswa {
 
     fun getNama() = nama
 
-    fun authenticate(nim:String, password:String) = callbackFlow<Boolean> {
-        //TODO Check username and password in DB
-        awaitClose()
+    fun setNim(value:String){
+        nim = value
     }
 
-    fun saveDataMahasiswa(nim:String, password:String, name:String) = callbackFlow<Boolean> {
-        //TODO Add new mahasiswa at DB
-        awaitClose()
+    fun setPassword(value:String){
+        password = value
+    }
+
+    fun setNama(value:String){
+        nama = value
+    }
+
+    fun authenticate(password:String) = this.password == password
+
+    fun resetField(){
+        nim = ""
+        nama = ""
+        password = ""
     }
 }
