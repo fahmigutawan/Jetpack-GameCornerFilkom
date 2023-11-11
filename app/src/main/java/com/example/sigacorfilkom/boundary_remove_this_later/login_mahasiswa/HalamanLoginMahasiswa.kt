@@ -23,10 +23,14 @@ class HalamanLoginMahasiswa : ViewModel() {
         onSuccess:() -> Unit,
         onFailed:(String) -> Unit
     ){
-        KontrolOtentikasi.loginMahasiswa(
-            nim.value,
-            password.value,
-            onSuccess, onFailed
-        )
+        if(nim.value.isEmpty() || password.value.isEmpty()){
+            onFailed("Semua data harus dimasukkan")
+        }else{
+            KontrolOtentikasi.loginMahasiswa(
+                nim.value,
+                password.value,
+                onSuccess, onFailed
+            )
+        }
     }
 }

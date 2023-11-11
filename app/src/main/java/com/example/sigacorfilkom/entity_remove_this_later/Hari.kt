@@ -1,6 +1,7 @@
 package com.example.sigacorfilkom.entity_remove_this_later
 
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -8,6 +9,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import kotlin.math.tan
 
 class Hari {
     private var tanggal: Int
@@ -20,22 +22,43 @@ class Hari {
         this.tahun = tahun
         this.tanggal = tanggal
         this.bulan = bulan
+
+        val cal = Calendar.getInstance()
+        cal.set(tahun, bulan - 1, tanggal)
+        val instant = Instant.ofEpochMilli(cal.timeInMillis)
+        val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
+
+        //Sabtu minggu
+        when(localDate.dayOfWeek.value){
+            6,7 -> {
+                isDitutup = true
+                alasanDitutup = "Hari Sabtu dan Minggu Tutup"
+            }
+
+            else -> {
+                Log.e("TANGGAL", "${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}")
+
+                FirebaseFirestore
+                    .getInstance()
+                    .collection("jadwal_tutup")
+                    .document("${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}")
+                    .addSnapshotListener { value, error ->
+                        value?.let {
+                            if(it.data == null){
+                                isDitutup = false
+                            }else{
+                                isDitutup = true
+                                alasanDitutup = it["alasan"] as String
+                            }
+                        }
+                    }
+            }
+        }
     }
 
     fun getIsDitutup() = isDitutup
 
     fun getAlasanDitutup() = alasanDitutup
-
-    fun getFormattedDate():String {
-        val calendar = Calendar.getInstance()
-        calendar.set(tahun, bulan - 1, tanggal, 0,0,0)
-
-        val instant = Instant.ofEpochMilli(calendar.timeInMillis)
-        val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
-
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-        return localDate.format(formatter)
-    }
 
     fun getTanggal() = tanggal
 

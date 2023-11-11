@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -194,7 +195,7 @@ fun LayoutJadwal(navController: NavController) {
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable {
+                                    .clickable(enabled = !it.getIsDitutup()) {
                                         viewModel.setPickedHari(it)
                                     },
                                 border = if (viewModel.getPickedHari().value == it) BorderStroke(
@@ -205,14 +206,29 @@ fun LayoutJadwal(navController: NavController) {
                                     color = Color(0xFFB6B6B6)
                                 ),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = Color.White,
-                                    contentColor = Color.Black
+                                    containerColor = if (!it.getIsDitutup()) Color(0xffffffff) else Color(
+                                        0xFFDBD9D9
+                                    ),
+                                    contentColor = if (!it.getIsDitutup()) Color(0xff000000) else Color(
+                                        0xFF919090
+                                    )
                                 )
                             ) {
-                                Text(
-                                    modifier = Modifier.padding(16.dp),
-                                    text = "${it.getTanggal()} ${monthMapper[it.getBulan()] ?: "..."} ${it.getTahun()}"
-                                )
+                                Column(
+                                    modifier = Modifier.padding(16.dp)
+                                ) {
+                                    Text(
+                                        text = "${it.getTanggal()} ${monthMapper[it.getBulan()] ?: "..."} ${it.getTahun()}"
+                                    )
+
+                                    if (it.getIsDitutup()) {
+                                        Text(
+                                            text = it.getAlasanDitutup(),
+                                            color = Color.Red,
+                                            fontSize = 10.sp
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -222,6 +238,13 @@ fun LayoutJadwal(navController: NavController) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Pilih Device", color = Color(0xffFF9E3A), fontWeight = FontWeight.Bold)
+                if(viewModel.getPickedHari().value == null){
+                    Text(
+                        text = "Pilih tanggal terlebih dahulu!",
+                        color = Color.Red,
+                        fontSize = 10.sp
+                    )
+                }
             }
 
             item {
@@ -255,12 +278,17 @@ fun LayoutJadwal(navController: NavController) {
                                                     ) Color(0xffFF9E3A) else Color(0xFFB6B6B6),
                                                     shape = RoundedCornerShape(8.dp)
                                                 )
-                                                .clickable {
+                                                .clickable(
+                                                    enabled = viewModel.getPickedHari().value != null
+                                                ) {
                                                     viewModel.setPickedPerangkat(
                                                         viewModel
                                                             .getListPerangkat()[j + (i * 3)]
                                                     )
-                                                },
+                                                }.background(
+                                                    if(viewModel.getPickedHari().value != null) Color(0xffffffff) else Color(0xFFDBD9D9),
+                                                    shape = RoundedCornerShape(8.dp)
+                                                ),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
@@ -340,7 +368,9 @@ fun LayoutJadwal(navController: NavController) {
                                                         )
                                                         .background(
                                                             if (viewModel.getListSesi()[j + (i * 3)].getBooked())
-                                                                Color(0xFFD8D5D5) else Color(0xffffffff),
+                                                                Color(0xFFD8D5D5) else Color(
+                                                                0xffffffff
+                                                            ),
                                                             shape = RoundedCornerShape(8.dp)
                                                         )
                                                         .clickable(

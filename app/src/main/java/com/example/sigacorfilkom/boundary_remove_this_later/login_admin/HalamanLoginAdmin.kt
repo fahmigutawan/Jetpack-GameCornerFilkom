@@ -23,10 +23,14 @@ class HalamanLoginAdmin : ViewModel() {
         onSuccess:() -> Unit,
         onFailed:(String) -> Unit
     ){
-        KontrolOtentikasi.loginAdmin(
-            nip.value,
-            password.value,
-            onSuccess, onFailed
-        )
+        if(nip.value.isEmpty() || password.value.isEmpty()){
+            onFailed("Semua data harus dimasukkan")
+        }else{
+            KontrolOtentikasi.loginAdmin(
+                nip.value,
+                password.value,
+                onSuccess, onFailed
+            )
+        }
     }
 }
