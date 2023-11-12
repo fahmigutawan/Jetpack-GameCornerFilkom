@@ -30,7 +30,6 @@ class KontrolOtentikasi {
 
                         if (doc["nim"] as String == nim && doc["password"] as String == password) {
                             mahasiswa = Mahasiswa()
-
                             mahasiswa?.apply {
                                 setNim(doc["nim"] as String)
                                 setNama(doc["nama"] as String)
