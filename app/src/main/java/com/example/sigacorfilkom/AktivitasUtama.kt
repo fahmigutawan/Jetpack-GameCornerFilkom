@@ -25,17 +25,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
-import com.example.sigacorfilkom.boundary_remove_this_later.login.LayoutLogin
-import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
-import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
-import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.LayoutRegisterMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.LayoutTutupJadwalAdmin
-import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUtamaAdmin
-import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
