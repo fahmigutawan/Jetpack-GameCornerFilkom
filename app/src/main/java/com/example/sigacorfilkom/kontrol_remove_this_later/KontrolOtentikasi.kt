@@ -7,9 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class KontrolOtentikasi {
     companion object {
-        private var mahasiswa = Mahasiswa()
-        private var admin = Admin()
-        private var isAdmin = false
+        private var mahasiswa:Mahasiswa? = null
+        private var admin:Admin? = null
 
         fun loginMahasiswa(
             nim: String,
@@ -30,7 +29,9 @@ class KontrolOtentikasi {
                         }
 
                         if (doc["nim"] as String == nim && doc["password"] as String == password) {
-                            mahasiswa.apply {
+                            mahasiswa = Mahasiswa()
+
+                            mahasiswa?.apply {
                                 setNim(doc["nim"] as String)
                                 setNama(doc["nama"] as String)
                                 setPassword(doc["password"] as String)
@@ -71,11 +72,11 @@ class KontrolOtentikasi {
                         }
 
                         if (doc["nip"] as String == nip && doc["password"] as String == password) {
-                            admin.apply {
+                            admin = Admin()
+                            admin?.apply {
                                 setNip(doc["nip"] as String)
                                 setPassword(doc["password"] as String)
                             }
-                            isAdmin = true
                             onSuccess()
                             return@addOnSuccessListener
                         } else {
@@ -106,7 +107,7 @@ class KontrolOtentikasi {
                     return
                 }
 
-                if(nim.substring(2, 4) != "515"){
+                if(nim.substring(2, 5) != "515"){
                     onFailed("Hanya mahasiswa FILKOM yang bisa mendaftar")
                     return
                 }
@@ -130,7 +131,8 @@ class KontrolOtentikasi {
                                         "password" to password
                                     )
                                 ).addOnSuccessListener {
-                                    mahasiswa.apply {
+                                    mahasiswa = Mahasiswa()
+                                    mahasiswa?.apply {
                                         setNim(nim)
                                         setPassword(password)
                                         setNama(nama)
@@ -155,14 +157,14 @@ class KontrolOtentikasi {
         }
 
         fun logout() {
-            admin.resetField()
-            mahasiswa.resetField()
+            admin?.resetField()
+            mahasiswa?.resetField()
         }
 
-        fun getNimMahasiswa() = mahasiswa.getNim()
+        fun getNimMahasiswa() = mahasiswa?.getNim() ?: ""
 
-        fun getNamaMahasiswa() = mahasiswa.getNama()
+        fun getNamaMahasiswa() = mahasiswa?.getNama() ?: ""
 
-        fun getIsAdmin() = isAdmin
+        fun isAdmin() = admin != null
     }
 }

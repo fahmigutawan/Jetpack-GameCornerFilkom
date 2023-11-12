@@ -109,7 +109,7 @@ class AktivitasUtama : ComponentActivity() {
                 },
                 bottomBar = {
                     if (showBottomBar.value) {
-                        if (KontrolOtentikasi.getIsAdmin()) {
+                        if (KontrolOtentikasi.isAdmin()) {
                             BottomAppBar {
                                 Row(
                                     modifier = Modifier.fillMaxSize(),
