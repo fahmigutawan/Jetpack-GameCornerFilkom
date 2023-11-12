@@ -36,20 +36,17 @@ class Hari {
             }
 
             else -> {
-                Log.e("TANGGAL", "${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}")
-
                 FirebaseFirestore
                     .getInstance()
                     .collection("jadwal_tutup")
                     .document("${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}")
-                    .addSnapshotListener { value, error ->
-                        value?.let {
-                            if(it.data == null){
-                                isDitutup = false
-                            }else{
-                                isDitutup = true
-                                alasanDitutup = it["alasan"] as String
-                            }
+                    .get()
+                    .addOnSuccessListener {
+                        if(it.data == null){
+                            isDitutup = false
+                        }else{
+                            isDitutup = true
+                            alasanDitutup = it["alasan"] as String
                         }
                     }
             }
@@ -66,9 +63,34 @@ class Hari {
 
     fun getTahun() = tahun
 
-    fun getTimeInMillis(): Long {
-        val calendar = Calendar.getInstance()
-        calendar.set(tahun, bulan - 1, tanggal, 0,0,0)
-        return calendar.timeInMillis
+    fun reloadHari(){
+        val cal = Calendar.getInstance()
+        cal.set(tahun, bulan - 1, tanggal)
+        val instant = Instant.ofEpochMilli(cal.timeInMillis)
+        val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
+
+        //Sabtu minggu
+        when(localDate.dayOfWeek.value) {
+            6, 7 -> {
+                isDitutup = true
+                alasanDitutup = "Hari Sabtu dan Minggu Tutup"
+            }
+
+            else -> {
+                FirebaseFirestore
+                    .getInstance()
+                    .collection("jadwal_tutup")
+                    .document("${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}")
+                    .get()
+                    .addOnSuccessListener {
+                        if (it.data == null) {
+                            isDitutup = false
+                        } else {
+                            isDitutup = true
+                            alasanDitutup = it["alasan"] as String
+                        }
+                    }
+            }
+        }
     }
 }

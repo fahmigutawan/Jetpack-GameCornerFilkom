@@ -32,12 +32,16 @@ class HalamanRegisterMahasiswa : ViewModel() {
         onSuccess: () -> Unit,
         onFailed: (String) -> Unit
     ) {
-        KontrolOtentikasi.registerMahasiswa(
-            nim.value,
-            nama.value,
-            password.value,
-            onSuccess,
-            onFailed
-        )
+        if(nim.value.isEmpty() || nama.value.isEmpty() || password.value.isEmpty()){
+            onFailed("Semua data harus dimasukkan")
+        }else{
+            KontrolOtentikasi.registerMahasiswa(
+                nim.value,
+                nama.value,
+                password.value,
+                onSuccess,
+                onFailed
+            )
+        }
     }
 }

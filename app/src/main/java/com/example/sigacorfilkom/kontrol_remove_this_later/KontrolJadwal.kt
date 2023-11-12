@@ -13,8 +13,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -39,7 +41,6 @@ class KontrolJadwal {
                         }
 
                         jadwal.setPerangkat(res)
-
                         trySend(res)
                     }
                 }
@@ -81,13 +82,14 @@ class KontrolJadwal {
                                 resTmp.add(sesiTmp)
 
                                 if (resTmp.size == valueSesiNotNull.documents.size) {
+                                    jadwal.setSesi(resTmp.toList().sortedBy { it.getSesiNumber() })
                                     trySend(resTmp.toList().sortedBy { it.getSesiNumber() })
                                 }
                             } else {
                                 //Get status booked karena reservasi
                                 FirebaseFirestore.getInstance()
                                     .collection("reservasi")
-                                    .whereEqualTo("pickedDay", formattedPickedDate )
+                                    .whereEqualTo("pickedDay", formattedPickedDate)
                                     .whereEqualTo("idPerangkat", idPerangkat)
                                     .whereEqualTo("nomorSesi", docSesi["nomorSesi"])
                                     .addSnapshotListener { valueReservasi, errorReservasi ->
@@ -97,6 +99,9 @@ class KontrolJadwal {
                                             resTmp.add(sesiTmp)
 
                                             if (resTmp.size == valueSesiNotNull.documents.size) {
+                                                jadwal.setSesi(
+                                                    resTmp.toList().sortedBy { it.getSesiNumber() })
+
                                                 trySend(
                                                     resTmp.toList().sortedBy { it.getSesiNumber() })
                                             }
@@ -109,55 +114,40 @@ class KontrolJadwal {
             awaitClose()
         }
 
-        fun getSesiByNomorSesi(
-            nomorSesi: Int
-        ) = callbackFlow {
-            val firestore = FirebaseFirestore
-                .getInstance()
-
-            firestore
-                .collection("sesi")
-                .document(nomorSesi.toString())
-                .addSnapshotListener { value, error ->
-                    value?.let { doc ->
-                        doc.data?.let {
-                            val data = Sesi(
-                                nomorSesi = (it["nomorSesi"] as Long).toInt(),
-                                waktu = it["waktu"] as String
-                            )
-
-                            trySend(data)
-                        }
-
-                    }
-                }
-
-            awaitClose()
+        fun loadHari(){
+            jadwal.getHari().forEach {
+                it.reloadHari()
+            }
         }
 
-        fun getPerangkatById(
-            idPerangkat: String
-        ) = callbackFlow {
+        fun tutupJadwal(
+            dateMillis:Long,
+            alasan:String,
+            onSuccess:() -> Unit,
+            onFailed:(String) -> Unit
+        ){
+            val instant = Instant.ofEpochMilli(dateMillis)
+            val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
+            val pickedDay = "${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}"
+
             FirebaseFirestore
                 .getInstance()
-                .collection("perangkat")
-                .whereEqualTo("idPerangkat", idPerangkat)
-                .addSnapshotListener { value, error ->
-                    value?.let {
-                        val data = it.documents.map { doc ->
-                            Perangkat(
-                                idPerangkat = doc["idPerangkat"] as String,
-                                nama = doc["nama"] as String
-                            )
-                        }
+                .collection("jadwal_tutup")
+                .document(pickedDay)
+                .set(
+                    mapOf(
+                        "waktu" to pickedDay,
+                        "alasan" to alasan
 
-                        if (data.isNotEmpty()) {
-                            trySend(data.first())
-                        }
-                    }
+                    )
+                ).addOnSuccessListener {
+                    onSuccess()
+                    return@addOnSuccessListener
                 }
-
-            awaitClose()
+                .addOnFailureListener {
+                    onFailed(it.message.toString())
+                    return@addOnFailureListener
+                }
         }
     }
 }

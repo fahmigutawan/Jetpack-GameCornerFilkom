@@ -70,6 +70,10 @@ fun LayoutJadwal(navController: NavController) {
         mutableStateOf(false)
     }
 
+    LaunchedEffect(key1 = true){
+        viewModel.loadHari()
+    }
+
     if (showBerhasilDialog.value) {
         AlertDialog(
             onDismissRequest = { /*TODO*/ },
@@ -285,8 +289,11 @@ fun LayoutJadwal(navController: NavController) {
                                                         viewModel
                                                             .getListPerangkat()[j + (i * 3)]
                                                     )
-                                                }.background(
-                                                    if(viewModel.getPickedHari().value != null) Color(0xffffffff) else Color(0xFFDBD9D9),
+                                                }
+                                                .background(
+                                                    if (viewModel.getPickedHari().value != null) Color(
+                                                        0xffffffff
+                                                    ) else Color(0xFFDBD9D9),
                                                     shape = RoundedCornerShape(8.dp)
                                                 ),
                                             contentAlignment = Alignment.Center

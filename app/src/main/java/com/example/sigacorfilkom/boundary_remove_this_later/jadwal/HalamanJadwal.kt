@@ -63,6 +63,8 @@ class HalamanJadwal : ViewModel() {
         )
     }
 
+    fun loadHari() = KontrolJadwal.loadHari()
+
     fun getListHari() = listHari
 
     fun getListPerangkat() = listPerangkat

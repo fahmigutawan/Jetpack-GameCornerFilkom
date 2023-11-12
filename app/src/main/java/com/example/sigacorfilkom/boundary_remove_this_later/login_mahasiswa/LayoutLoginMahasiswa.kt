@@ -109,9 +109,9 @@ fun LayoutLoginMahasiswa(navController: NavController) {
                         viewModel.login(
                             onSuccess = {
                                 navController.navigate("home_mahasiswa"){
-//                                    popUpTo(navController.graph.id){
-//                                        inclusive = true
-//                                    }
+                                    popUpTo(navController.graph.id){
+                                        inclusive = true
+                                    }
                                 }
                             },
                             onFailed = {
