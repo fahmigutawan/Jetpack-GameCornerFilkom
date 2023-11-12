@@ -6,9 +6,9 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 
 class HalamanRegisterMahasiswa : ViewModel() {
-    val nim = mutableStateOf("")
-    val nama = mutableStateOf("")
-    val password = mutableStateOf("")
+    private val nim = mutableStateOf("")
+    private val nama = mutableStateOf("")
+    private val password = mutableStateOf("")
 
     fun setNim(value: String) {
         nim.value = value

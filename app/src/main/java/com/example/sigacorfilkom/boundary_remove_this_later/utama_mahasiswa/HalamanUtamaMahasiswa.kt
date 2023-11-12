@@ -16,10 +16,18 @@ class HalamanUtamaMahasiswa : ViewModel() {
 //    var reservasiAkhirIni = mutableStateOf<Reservasi?>(null)
 //    var sesiAkhirIni = mutableStateOf<Sesi?>(null)
 //    var perangkatAkhirIni = mutableStateOf<Perangkat?>(null)
-    val namaMahasiswa = mutableStateOf("")
-    val tanggal = mutableStateOf("")
-    val bulan = mutableStateOf("")
-    val tahun = mutableStateOf("")
+    private val namaMahasiswa = mutableStateOf("")
+    private val tanggal = mutableStateOf("")
+    private val bulan = mutableStateOf("")
+    private val tahun = mutableStateOf("")
+
+    fun getNamaMahasiswa() = namaMahasiswa.value
+
+    fun getTanggal() = tanggal.value
+
+    fun getBulan() = bulan.value
+
+    fun getTahun() = tahun.value
 
 //    fun initData() {
 //        viewModelScope.launch {

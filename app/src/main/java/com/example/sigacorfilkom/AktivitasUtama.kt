@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.login.LayoutLogin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
@@ -206,7 +207,7 @@ class AktivitasUtama : ComponentActivity() {
                     }
 
                     composable("history_mahasiswa") {
-                        //TODO
+                        LayoutHistoryMahasiswa(navController = navController)
                     }
 
                     composable("login_admin") {

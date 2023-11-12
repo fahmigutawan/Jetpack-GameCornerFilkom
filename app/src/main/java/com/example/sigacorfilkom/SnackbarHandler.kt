@@ -7,17 +7,5 @@ class SnackbarHandler {
         ) {
             _showSnackbar(message)
         }
-
-        fun showSnackbarWithAction(
-            message: String,
-            actionLabel:String = "Tutup",
-            action:() -> Unit
-        ){
-            _showSnackbarWithAction(
-                message,
-                actionLabel,
-                action
-            )
-        }
     }
 }

@@ -101,6 +101,16 @@ class KontrolOtentikasi {
             onFailed: (String) -> Unit
         ) {
             if (nim.matches(Regex("\\d+"))) {
+                if(nim.length != 15){
+                    onFailed("Masukkan NIM yang benar")
+                    return
+                }
+
+                if(nim.substring(2, 4) != "515"){
+                    onFailed("Hanya mahasiswa FILKOM yang bisa mendaftar")
+                    return
+                }
+
                 FirebaseFirestore.getInstance()
                     .collection("mahasiswa")
                     .document(nim)
@@ -152,8 +162,6 @@ class KontrolOtentikasi {
         fun getNimMahasiswa() = mahasiswa.getNim()
 
         fun getNamaMahasiswa() = mahasiswa.getNama()
-
-        fun getNipAdmin() = admin.getNip()
 
         fun getIsAdmin() = isAdmin
     }

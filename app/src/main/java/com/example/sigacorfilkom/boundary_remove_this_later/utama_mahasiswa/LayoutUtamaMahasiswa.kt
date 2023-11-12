@@ -92,7 +92,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = "Hi, ${viewModel.namaMahasiswa.value}",
+                        text = "Hi, ${viewModel.getNamaMahasiswa()}",
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                         fontWeight = FontWeight.Bold,
@@ -100,7 +100,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                     )
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = "${viewModel.tanggal.value} ${monthMapper[viewModel.bulan.value.toInt()] ?: viewModel.bulan.value} ${viewModel.tahun.value}",
+                        text = "${viewModel.getTanggal()} ${monthMapper[viewModel.getBulan().toInt()] ?: viewModel.getBulan()} ${viewModel.getTahun()}",
                         textAlign = TextAlign.End,
                         overflow = TextOverflow.Ellipsis
                     )

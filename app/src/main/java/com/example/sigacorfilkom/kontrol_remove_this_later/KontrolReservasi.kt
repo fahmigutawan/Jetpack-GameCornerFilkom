@@ -173,8 +173,51 @@ class KontrolReservasi {
             awaitClose()
         }
 
+        fun getReservasiTerbaruForMahasiswa() = callbackFlow {
+            val nowMillis = System.currentTimeMillis()
+            val instantNow = Instant.ofEpochMilli(nowMillis)
+            val localDateNow = instantNow.atZone(ZoneId.systemDefault()).toLocalDate()
+
+            val listDate = listOf(
+                localDateNow,
+                localDateNow.plusDays(1),
+                localDateNow.plusDays(2)
+            )
+
+            FirebaseFirestore
+                .getInstance()
+                .collection("reservasi")
+                .whereEqualTo("nimPeminjam", KontrolOtentikasi.getNimMahasiswa())
+                .whereIn("pickedDay", listDate.map {
+                    "${it.dayOfMonth}:${it.monthValue}:${it.year}"
+                })
+                .orderBy("pickedDay")
+                .get()
+                .addOnSuccessListener {
+                    trySend(
+                        it.documents.map { doc ->
+                            val format = DateTimeFormatter.ofPattern("dd:MM:yyyy")
+                            val parsedDate = LocalDate.parse(doc["pickedDay"] as String, format)
+
+                            Reservasi(
+                                reservasiId = doc["idReservasi"] as String,
+                                nimPeminjam = doc["nimPeminjam"] as String,
+                                status = doc["status"] as String,
+                                nomorSesi = (doc["nomorSesi"] as Long).toInt(),
+                                idPerangkat = doc["idPerangkat"] as String,
+                                tanggal = parsedDate.dayOfMonth,
+                                bulan = parsedDate.monthValue,
+                                tahun = parsedDate.year
+                            )
+                        }
+                    )
+                }
+
+            awaitClose()
+        }
+
         fun updateStatusReservasi(
-            idReservasi:String,
+            idReservasi: String,
             status: String,
             onSuccess: () -> Unit,
             onFailed: (String) -> Unit
@@ -183,9 +226,11 @@ class KontrolReservasi {
                 .getInstance()
                 .collection("reservasi")
                 .document(idReservasi)
-                .update(mapOf(
-                    "status" to status
-                ))
+                .update(
+                    mapOf(
+                        "status" to status
+                    )
+                )
                 .addOnSuccessListener {
                     onSuccess()
                     return@addOnSuccessListener
