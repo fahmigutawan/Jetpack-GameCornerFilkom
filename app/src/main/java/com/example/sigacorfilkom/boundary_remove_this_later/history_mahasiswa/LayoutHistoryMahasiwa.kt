@@ -53,7 +53,7 @@ fun LayoutHistoryMahasiswa(navController: NavController) {
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "Reservasi Akhir-Akhir Ini")
+                    Text(text = "Reservasi Terkini")
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {

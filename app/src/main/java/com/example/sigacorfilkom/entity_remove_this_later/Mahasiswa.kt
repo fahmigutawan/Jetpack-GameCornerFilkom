@@ -23,12 +23,4 @@ class Mahasiswa {
     fun setNama(value:String){
         nama = value
     }
-
-    fun authenticate(password:String) = this.password == password
-
-    fun resetField(){
-        nim = ""
-        nama = ""
-        password = ""
-    }
 }

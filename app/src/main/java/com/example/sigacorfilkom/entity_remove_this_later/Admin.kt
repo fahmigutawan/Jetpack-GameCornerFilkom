@@ -23,14 +23,7 @@ class Admin {
         nip = value
     }
 
-    fun setPassword(value:String){
+    fun setPassword(value:String) {
         password = value
-    }
-
-    fun authenticate(password: String):Boolean = this.password == password
-
-    fun resetField(){
-        nip = ""
-        password = ""
     }
 }

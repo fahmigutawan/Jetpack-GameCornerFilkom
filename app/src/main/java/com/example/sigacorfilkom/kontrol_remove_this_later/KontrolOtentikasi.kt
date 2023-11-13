@@ -156,8 +156,8 @@ class KontrolOtentikasi {
         }
 
         fun logout() {
-            admin?.resetField()
-            mahasiswa?.resetField()
+            admin = null
+            mahasiswa = null
         }
 
         fun getNimMahasiswa() = mahasiswa?.getNim() ?: ""
