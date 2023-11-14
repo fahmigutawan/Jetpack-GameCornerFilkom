@@ -8,19 +8,39 @@ class Mahasiswa {
     private var password:String = ""
     private var nama:String = ""
 
+    constructor(
+        nim:String,
+        password:String,
+        nama:String
+    ){
+        this.nim = nim
+        this.password = password
+        this.nama = nama
+    }
+
     fun getNim() = nim
 
     fun getNama() = nama
 
-    fun setNim(value:String){
-        nim = value
+    fun validateInputtedData(){
+        if(nim.matches(Regex("\\d+"))){
+            throw Exception("NIM Hanya boleh angka")
+        }
+
+        if(nim.length != 15){
+            throw Exception("Masukkan NIM yang benar")
+        }
+
+        if(nim.substring(2, 5) != "515"){
+            throw Exception(message = "Hanya mahasiswa FILKOM yang bisa mendaftar")
+        }
     }
 
-    fun setPassword(value:String){
-        password = value
-    }
+    fun validatePassword(password:String):Boolean{
+        if(this.password != password){
 
-    fun setNama(value:String){
-        nama = value
+        }
+
+        return true
     }
 }

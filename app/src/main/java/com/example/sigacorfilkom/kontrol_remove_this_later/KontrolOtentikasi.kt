@@ -100,59 +100,45 @@ class KontrolOtentikasi {
             onSuccess: () -> Unit,
             onFailed: (String) -> Unit
         ) {
-            if (nim.matches(Regex("\\d+"))) {
-                if(nim.length != 15){
-                    onFailed("Masukkan NIM yang benar")
-                    return
-                }
+                try {
+                    val mahasiswa = Mahasiswa(
+                        nim = nim,
+                        nama = nama,
+                        password = password
+                    )
 
-                if(nim.substring(2, 5) != "515"){
-                    onFailed("Hanya mahasiswa FILKOM yang bisa mendaftar")
-                    return
-                }
+                    mahasiswa.validateInputtedData()
 
-                FirebaseFirestore.getInstance()
-                    .collection("mahasiswa")
-                    .document(nim)
-                    .get()
-                    .addOnSuccessListener {
-                        if (it.data != null) {
-                            onFailed("Akun sudah terdaftar, pakai identitas lain")
-                            return@addOnSuccessListener
-                        } else {
-                            FirebaseFirestore.getInstance()
-                                .collection("mahasiswa")
-                                .document(nim)
-                                .set(
-                                    mapOf(
-                                        "nim" to nim,
-                                        "nama" to nama,
-                                        "password" to password
-                                    )
-                                ).addOnSuccessListener {
-                                    mahasiswa = Mahasiswa()
-                                    mahasiswa?.apply {
-                                        setNim(nim)
-                                        setPassword(password)
-                                        setNama(nama)
+                    FirebaseFirestore.getInstance()
+                        .collection("mahasiswa")
+                        .document(nim)
+                        .get()
+                        .addOnSuccessListener {
+                            if (it.data != null) {
+                                onFailed("Akun sudah terdaftar, pakai identitas lain")
+                                return@addOnSuccessListener
+                            } else {
+                                FirebaseFirestore.getInstance()
+                                    .collection("mahasiswa")
+                                    .document(nim)
+                                    .set(mahasiswa)
+                                    .addOnSuccessListener {
+                                        this.mahasiswa = mahasiswa
+                                        onSuccess()
+                                        return@addOnSuccessListener
+                                    }.addOnFailureListener {
+                                        onFailed(it.message.toString())
+                                        return@addOnFailureListener
                                     }
-
-                                    onSuccess()
-                                    return@addOnSuccessListener
-                                }.addOnFailureListener {
-                                    onFailed(it.message.toString())
-                                    return@addOnFailureListener
-                                }
+                            }
                         }
-                    }
-                    .addOnFailureListener {
-                        onFailed(it.message.toString())
-                        return@addOnFailureListener
-                    }
-            } else {
-                onFailed("NIM Hanya boleh angka")
-                return
-            }
+                        .addOnFailureListener {
+                            onFailed(it.message.toString())
+                            return@addOnFailureListener
+                        }
+                }catch (e:Exception){
+                    onFailed(e.message.toString())
+                }
         }
 
         fun logout() {
