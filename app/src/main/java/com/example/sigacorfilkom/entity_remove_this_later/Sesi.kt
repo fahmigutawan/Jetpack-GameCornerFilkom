@@ -12,6 +12,12 @@ class Sesi {
     private var waktu: String
     private var booked: Boolean = true
 
+    fun checkBookedKarenaJam(timeMillis:Long) {
+        if(LocalTime.now().isAfter(getStartTime()) && timeMillis <= System.currentTimeMillis()){
+            booked = true
+        }
+    }
+
     constructor(
         idPerangkat: String,
         nomorSesi: Int,

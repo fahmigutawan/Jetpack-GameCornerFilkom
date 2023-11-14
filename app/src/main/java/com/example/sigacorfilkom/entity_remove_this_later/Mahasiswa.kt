@@ -18,29 +18,39 @@ class Mahasiswa {
         this.nama = nama
     }
 
+    constructor(
+        nim:String,
+        password:String
+    ){
+        this.nim = nim
+        this.password = password
+    }
+
     fun getNim() = nim
 
     fun getNama() = nama
 
-    fun validateInputtedData(){
-        if(nim.matches(Regex("\\d+"))){
-            throw Exception("NIM Hanya boleh angka")
-        }
+    fun setNama(value:String){
+        this.nama = value
+    }
 
+    fun validateInputtedData(){
         if(nim.length != 15){
             throw Exception("Masukkan NIM yang benar")
         }
 
         if(nim.substring(2, 5) != "515"){
-            throw Exception(message = "Hanya mahasiswa FILKOM yang bisa mendaftar")
+            throw Exception("Hanya mahasiswa FILKOM yang bisa mendaftar")
         }
     }
 
-    fun validatePassword(password:String):Boolean{
-        if(this.password != password){
-
+    fun validateNimIsNumber(){
+        if(!nim.matches(Regex("\\d+"))){
+            throw Exception("NIM Hanya boleh angka")
         }
+    }
 
-        return true
+    fun validatePassword(correctPassword:String):Boolean{
+        return this.password == correctPassword
     }
 }

@@ -2,6 +2,7 @@ package com.example.sigacorfilkom.boundary_remove_this_later.login_admin
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.sigacorfilkom.kontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -26,7 +27,7 @@ class HalamanLoginAdmin : ViewModel() {
         if(nip.value.isEmpty() || password.value.isEmpty()){
             onFailed("Semua data harus dimasukkan")
         }else{
-            KontrolOtentikasi.loginAdmin(
+            kontrolOtentikasi.loginAdmin(
                 nip.value,
                 password.value,
                 onSuccess, onFailed

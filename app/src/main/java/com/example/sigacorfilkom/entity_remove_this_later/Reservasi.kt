@@ -45,8 +45,6 @@ class Reservasi {
 
     fun getIdPerangkat() = idPerangkat
 
-    fun getTanggal() = tanggal
-
     fun getLocalDate(): LocalDate{
         val instant = Instant.ofEpochMilli(
             tanggal.timeInMillis

@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.R
+import com.example.sigacorfilkom.kontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +67,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                 actions = {
                     IconButton(
                         onClick = {
-                            KontrolOtentikasi.logout()
+                            kontrolOtentikasi.logout()
                             navController.navigate("login") {
                                 popUpTo(navController.graph.id) { inclusive = true }
                             }

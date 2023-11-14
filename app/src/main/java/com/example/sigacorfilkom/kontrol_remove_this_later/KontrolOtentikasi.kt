@@ -6,7 +6,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 
 class KontrolOtentikasi {
-    companion object {
         private var mahasiswa:Mahasiswa? = null
         private var admin:Admin? = null
 
@@ -16,40 +15,43 @@ class KontrolOtentikasi {
             onSuccess: () -> Unit,
             onFailed: (String) -> Unit
         ) {
-            if (nim.matches(Regex("\\d+"))) {
-                FirebaseFirestore
-                    .getInstance()
-                    .collection("mahasiswa")
-                    .document(nim)
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        if (doc.data == null) {
-                            onFailed("NIM atau Password Salah atau Tidak Terdaftar")
-                            return@addOnSuccessListener
-                        }
+                try{
+                    val mahasiswa = Mahasiswa(
+                        nim,
+                        password
+                    )
 
-                        if (doc["nim"] as String == nim && doc["password"] as String == password) {
-                            mahasiswa = Mahasiswa()
-                            mahasiswa?.apply {
-                                setNim(doc["nim"] as String)
-                                setNama(doc["nama"] as String)
-                                setPassword(doc["password"] as String)
+                    mahasiswa.validateNimIsNumber()
+                    mahasiswa.validateInputtedData()
+
+                    FirebaseFirestore
+                        .getInstance()
+                        .collection("mahasiswa")
+                        .document(nim)
+                        .get()
+                        .addOnSuccessListener { doc ->
+                            if (doc.data == null) {
+                                onFailed("NIM atau Password Salah atau Tidak Terdaftar")
+                                return@addOnSuccessListener
                             }
 
-                            onSuccess()
-                            return@addOnSuccessListener
-                        } else {
-                            onFailed("NIM atau Password Salah atau Tidak Terdaftar")
-                            return@addOnSuccessListener
+                            if(mahasiswa.validatePassword(doc["password"] as String)){
+                                mahasiswa.setNama(doc["nama"] as String)
+                                this.mahasiswa = mahasiswa
+                                onSuccess()
+                                return@addOnSuccessListener
+                            }else{
+                                onFailed("NIM atau Password Salah atau Tidak Terdaftar")
+                                return@addOnSuccessListener
+                            }
+                        }.addOnFailureListener {
+                            onFailed(it.message.toString())
+                            return@addOnFailureListener
                         }
-                    }.addOnFailureListener {
-                        onFailed(it.message.toString())
-                        return@addOnFailureListener
-                    }
-            } else {
-                onFailed("NIM Hanya boleh angka")
-                return
-            }
+                }catch (e:Exception){
+                    onFailed(e.message.toString())
+                    return
+                }
         }
 
         fun loginAdmin(
@@ -58,7 +60,14 @@ class KontrolOtentikasi {
             onSuccess: () -> Unit,
             onFailed: (String) -> Unit
         ) {
-            if (nip.matches(Regex("\\d+"))) {
+            try{
+                val admin = Admin(
+                    nip,
+                    password
+                )
+
+                admin.validateNipIsNumber()
+
                 FirebaseFirestore
                     .getInstance()
                     .collection("admin")
@@ -70,15 +79,11 @@ class KontrolOtentikasi {
                             return@addOnSuccessListener
                         }
 
-                        if (doc["nip"] as String == nip && doc["password"] as String == password) {
-                            admin = Admin()
-                            admin?.apply {
-                                setNip(doc["nip"] as String)
-                                setPassword(doc["password"] as String)
-                            }
+                        if(admin.validatePassword(doc["password"] as String)){
+                            this.admin = admin
                             onSuccess()
                             return@addOnSuccessListener
-                        } else {
+                        }else{
                             onFailed("Password salah")
                             return@addOnSuccessListener
                         }
@@ -87,8 +92,8 @@ class KontrolOtentikasi {
                         onFailed(it.message.toString())
                         return@addOnFailureListener
                     }
-            } else {
-                onFailed("NIP Hanya boleh angka")
+            }catch (e:Exception){
+                onFailed(e.message.toString())
                 return
             }
         }
@@ -107,6 +112,7 @@ class KontrolOtentikasi {
                         password = password
                     )
 
+                    mahasiswa.validateNimIsNumber()
                     mahasiswa.validateInputtedData()
 
                     FirebaseFirestore.getInstance()
@@ -138,6 +144,7 @@ class KontrolOtentikasi {
                         }
                 }catch (e:Exception){
                     onFailed(e.message.toString())
+                    return
                 }
         }
 
@@ -151,5 +158,4 @@ class KontrolOtentikasi {
         fun getNamaMahasiswa() = mahasiswa?.getNama() ?: ""
 
         fun isAdmin() = admin != null
-    }
 }

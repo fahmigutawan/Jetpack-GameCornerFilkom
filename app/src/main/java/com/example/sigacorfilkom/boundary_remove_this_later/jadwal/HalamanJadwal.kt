@@ -7,6 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
+import com.example.sigacorfilkom.kontrolJadwal
+import com.example.sigacorfilkom.kontrolOtentikasi
+import com.example.sigacorfilkom.kontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
@@ -22,9 +25,9 @@ class HalamanJadwal : ViewModel() {
     private var pickedSesi = mutableStateOf<Sesi?>(null)
 
     init {
-        listHari.addAll(KontrolJadwal.getHari())
+        listHari.addAll(kontrolJadwal.getHari())
         viewModelScope.launch {
-            KontrolJadwal.getPerangkat().collect{
+            kontrolJadwal.getPerangkat().collect{
                 listPerangkat.clear()
                 listPerangkat.addAll(it)
             }
@@ -34,7 +37,7 @@ class HalamanJadwal : ViewModel() {
     fun loadSesi(){
         if(pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
-                KontrolJadwal.getSesi(
+                kontrolJadwal.getSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
@@ -51,8 +54,8 @@ class HalamanJadwal : ViewModel() {
         onSuccess:() -> Unit,
         onFailed:(String) -> Unit
     ){
-        KontrolReservasi.buatReservasi(
-            nimPeminjam = KontrolOtentikasi.getNimMahasiswa(),
+        kontrolReservasi.buatReservasi(
+            nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
             nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
             idPerangkat = pickedPerangkat.value?.getIdPerangkat() ?: "...",
             tanggal = pickedHari.value?.getTanggal() ?: 0,
@@ -63,7 +66,7 @@ class HalamanJadwal : ViewModel() {
         )
     }
 
-    fun loadHari() = KontrolJadwal.loadHari()
+    fun loadHari() = kontrolJadwal.loadHari()
 
     fun getListHari() = listHari
 

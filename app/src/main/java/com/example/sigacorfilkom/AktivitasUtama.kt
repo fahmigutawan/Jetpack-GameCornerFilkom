@@ -35,7 +35,9 @@ import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.L
 import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.LayoutTutupJadwalAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUtamaAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -45,11 +47,18 @@ lateinit var _showSnackbarWithAction: (
     actionLabel: String,
     action: () -> Unit
 ) -> Unit
+lateinit var kontrolJadwal: KontrolJadwal
+lateinit var kontrolOtentikasi: KontrolOtentikasi
+lateinit var kontrolReservasi: KontrolReservasi
 
 
 class AktivitasUtama : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        kontrolJadwal = KontrolJadwal()
+        kontrolOtentikasi = KontrolOtentikasi()
+        kontrolReservasi = KontrolReservasi()
+
         setContent {
             val navController = rememberNavController()
             val coroutineScope = rememberCoroutineScope()
@@ -109,7 +118,7 @@ class AktivitasUtama : ComponentActivity() {
                 },
                 bottomBar = {
                     if (showBottomBar.value) {
-                        if (KontrolOtentikasi.isAdmin()) {
+                        if (kontrolOtentikasi.isAdmin()) {
                             BottomAppBar {
                                 Row(
                                     modifier = Modifier.fillMaxSize(),

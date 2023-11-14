@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
+import com.example.sigacorfilkom.kontrolJadwal
+import com.example.sigacorfilkom.kontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
@@ -63,9 +65,9 @@ class HalamanUtamaMahasiswa : ViewModel() {
 //    }
 
     init {
-        namaMahasiswa.value = KontrolOtentikasi.getNamaMahasiswa()
-        tanggal.value = KontrolJadwal.getHari()[0].getTanggal().toString()
-        bulan.value = KontrolJadwal.getHari()[0].getBulan().toString()
-        tahun.value = KontrolJadwal.getHari()[0].getTahun().toString()
+        namaMahasiswa.value = kontrolOtentikasi.getNamaMahasiswa()
+        tanggal.value = kontrolJadwal.getHari()[0].getTanggal().toString()
+        bulan.value = kontrolJadwal.getHari()[0].getBulan().toString()
+        tahun.value = kontrolJadwal.getHari()[0].getTahun().toString()
     }
 }

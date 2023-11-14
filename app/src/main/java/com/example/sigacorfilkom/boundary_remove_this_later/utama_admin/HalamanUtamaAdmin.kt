@@ -6,6 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
+import com.example.sigacorfilkom.kontrolJadwal
+import com.example.sigacorfilkom.kontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.flow.collect
@@ -18,7 +20,7 @@ class HalamanUtamaAdmin: ViewModel() {
 
     fun loadReservasi(){
         viewModelScope.launch {
-            KontrolReservasi.getReservasiTerbaruForAdmin().collect{
+            kontrolReservasi.getReservasiTerbaruForAdmin().collect{
                 reservasi.clear()
                 reservasi.addAll(it)
             }
@@ -41,7 +43,7 @@ class HalamanUtamaAdmin: ViewModel() {
         onSuccess:() -> Unit,
         onFailed:(String) -> Unit
     ){
-        KontrolReservasi.updateStatusReservasi(
+        kontrolReservasi.updateStatusReservasi(
             idReservasi,
             status,
             onSuccess,
@@ -53,7 +55,7 @@ class HalamanUtamaAdmin: ViewModel() {
         loadReservasi()
 
         viewModelScope.launch {
-            KontrolJadwal.getPerangkat().collect{
+            kontrolJadwal.getPerangkat().collect{
                 perangkat.clear()
                 perangkat.putAll(it.associate {
                     it.getIdPerangkat() to it.getNama()

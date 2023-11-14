@@ -2,6 +2,7 @@ package com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.sigacorfilkom.kontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 
@@ -35,7 +36,7 @@ class HalamanRegisterMahasiswa : ViewModel() {
         if(nim.value.isEmpty() || nama.value.isEmpty() || password.value.isEmpty()){
             onFailed("Semua data harus dimasukkan")
         }else{
-            KontrolOtentikasi.registerMahasiswa(
+            kontrolOtentikasi.registerMahasiswa(
                 nim.value,
                 nama.value,
                 password.value,
