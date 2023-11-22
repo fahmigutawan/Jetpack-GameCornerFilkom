@@ -52,6 +52,7 @@ import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.Layo
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -90,6 +91,7 @@ class AktivitasUtama : ComponentActivity() {
              */
             kontrolJadwal = KontrolJadwal(navController, this)
             kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
+            val kontrolUtamaMahasiswa = KontrolUtamaMahasiswa(navController)
 
             /**
              * Create seluruh halaman
@@ -178,7 +180,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaMahasiswa(
-                            kontrolJadwal, kontrolOtentikasi
+                            kontrolJadwal, kontrolUtamaMahasiswa
                         )
                     }
                 }

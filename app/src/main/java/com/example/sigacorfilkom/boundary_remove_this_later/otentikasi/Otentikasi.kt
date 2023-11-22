@@ -10,8 +10,12 @@ class Otentikasi {
             return mahasiswa
         }
 
-        fun setMahasiswa(mahasiswa: Mahasiswa?) {
+        fun setMahasiswa(mahasiswa: Mahasiswa) {
             this.mahasiswa = mahasiswa
+        }
+
+        fun clearMahasiswa() {
+            this.mahasiswa = null
         }
     }
 }
