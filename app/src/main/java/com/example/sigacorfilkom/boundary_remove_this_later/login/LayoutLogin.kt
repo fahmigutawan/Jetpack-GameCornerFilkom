@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sigacorfilkom.R
 
@@ -49,7 +48,7 @@ fun LayoutLogin(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_mahasiswa")
+//                        navController.navigate("login_mahasiswa")
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -65,7 +64,7 @@ fun LayoutLogin(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_admin")
+//                        navController.navigate("login_admin")
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

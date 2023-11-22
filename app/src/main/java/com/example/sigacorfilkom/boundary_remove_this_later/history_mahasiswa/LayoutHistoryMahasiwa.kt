@@ -27,11 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +55,9 @@ fun LayoutHistoryMahasiswa(
                     Text(text = "Reservasi Terkini")
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = {
+//                        navController.popBackStack()
+                    }) {
                         Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "")
                     }
                 }

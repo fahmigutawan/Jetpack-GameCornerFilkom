@@ -41,12 +41,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlin.math.ceil
 
 
@@ -92,11 +87,11 @@ fun LayoutJadwal(
                         contentColor = Color.White
                     ),
                     onClick = {
-                        navController.navigate("home_mahasiswa") {
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
-                            }
-                        }
+//                        navController.navigate("home_mahasiswa") {
+//                            popUpTo(navController.graph.id) {
+//                                inclusive = true
+//                            }
+//                        }
                     }
                 ) {
                     Text(text = "OK")

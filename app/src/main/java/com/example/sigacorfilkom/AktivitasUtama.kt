@@ -1,7 +1,6 @@
 package com.example.sigacorfilkom
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -17,7 +16,6 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -55,7 +53,6 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
 
 lateinit var _showSnackbar: (message: String) -> Unit
 lateinit var _showSnackbarWithAction: (
@@ -292,15 +289,15 @@ class AktivitasUtama : ComponentActivity() {
                     startDestination = "login"
                 ) {
                     composable("login") {
-                        LayoutLogin(navController,viewModel = halamanLogin)
+                        LayoutLogin(viewModel = halamanLogin)
                     }
 
                     composable("login_mahasiswa") {
-                        LayoutLoginMahasiswa(navController, viewModel=halamanLoginMahasiswa)
+                        LayoutLoginMahasiswa( viewModel=halamanLoginMahasiswa)
                     }
 
                     composable("register_mahasiswa") {
-                        LayoutRegisterMahasiswa(navController, viewModel=halamanRegisterMahasiswa)
+                        LayoutRegisterMahasiswa( viewModel=halamanRegisterMahasiswa)
                     }
 
                     composable("home_mahasiswa") {
@@ -308,22 +305,22 @@ class AktivitasUtama : ComponentActivity() {
                     }
 
                     composable("jadwal_mahasiswa") {
-                        LayoutJadwal(navController, viewModel=halamanJadwal)
+                        LayoutJadwal( viewModel=halamanJadwal)
                     }
 
                     composable("panduan_mahasiswa") {
-                        LayoutPanduan(navController, viewModel = halamanPanduan)
+                        LayoutPanduan( viewModel = halamanPanduan)
                     }
 
                     composable("history_mahasiswa") {
                         LayoutHistoryMahasiswa(
-                            navController,
+
                             viewModel = halamanHistoryMahasiswa
                         )
                     }
 
                     composable("login_admin") {
-                        LayoutLoginAdmin(navController, viewModel= halamanLoginAdmin)
+                        LayoutLoginAdmin( viewModel= halamanLoginAdmin)
                     }
 
                     composable("home_admin") {
