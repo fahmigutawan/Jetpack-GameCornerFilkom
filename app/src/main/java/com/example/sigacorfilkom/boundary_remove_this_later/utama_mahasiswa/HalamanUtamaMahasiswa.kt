@@ -2,8 +2,10 @@ package com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import kotlinx.coroutines.launch
 
 class HalamanUtamaMahasiswa(
     kontrolJadwal: KontrolJadwal,
@@ -13,8 +15,8 @@ class HalamanUtamaMahasiswa(
     private val tanggal = mutableStateOf("")
     private val bulan = mutableStateOf("")
     private val tahun = mutableStateOf("")
-    private val kontrolJadwal:KontrolJadwal
-    private val kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolJadwal: KontrolJadwal
+    private val kontrolOtentikasi: KontrolOtentikasi
 
     init {
         this.kontrolJadwal = kontrolJadwal
@@ -22,7 +24,9 @@ class HalamanUtamaMahasiswa(
     }
 
     fun lihatJadwal() {
-        kontrolJadwal.tampilkanHalamanJadwal()
+        viewModelScope.launch {
+            kontrolJadwal.tampilkanHalamanJadwal()
+        }
     }
 
     fun getNamaMahasiswa() = namaMahasiswa.value
@@ -33,7 +37,7 @@ class HalamanUtamaMahasiswa(
 
     fun getTahun() = tahun.value
 
-    fun logout(){
+    fun logout() {
         kontrolOtentikasi.logout()
     }
 

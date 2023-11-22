@@ -1,8 +1,9 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import androidx.navigation.NavController
+import com.example.sigacorfilkom.AktivitasUtama
+import com.example.sigacorfilkom.entity_remove_this_later.DaftarPerangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Jadwal
-import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.channels.awaitClose
@@ -11,40 +12,39 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Calendar
 
-class KontrolJadwal(navigasi: NavController) {
+class KontrolJadwal(navigasi: NavController, aktivitas: AktivitasUtama) {
     private var jadwal = Jadwal()
     private val navigasi: NavController
+    private val aktivitas: AktivitasUtama
 
     init {
         this.navigasi = navigasi
+        this.aktivitas = aktivitas
     }
 
-    fun tampilkanHalamanJadwal() {
+    suspend fun tampilkanHalamanJadwal() {
+        /**
+         * CALL   <<create>>
+         * TUJUAN DaftarPerangkat
+         */
+        val daftarPerangkatEntity = DaftarPerangkat()
+        /**
+         * CALL   getDaftarPerangkat
+         * TUJUAN DaftarPerangkat
+         * TERIMA daftar perangkat
+         */
+        val daftarPerangkat = daftarPerangkatEntity.getDaftarPerangkat()
+
+        /**
+         * CALL   tampilkan
+         * TUJUAN HalamanJadwal
+         */
+        val halamanJadwal = aktivitas.getHalamanJadwal()
+        halamanJadwal.setDaftarPerangkat(daftarPerangkat)
         navigasi.navigate("jadwal_mahasiswa")
     }
 
     fun getHari() = jadwal.getHari()
-
-    fun getPerangkat() = callbackFlow {
-        FirebaseFirestore.getInstance()
-            .collection("perangkat")
-            .orderBy("nama")
-            .addSnapshotListener { value, error ->
-                value?.let {
-                    val res = it.documents.map { doc ->
-                        Perangkat(
-                            idPerangkat = doc["idPerangkat"] as String,
-                            nama = doc["nama"] as String
-                        )
-                    }
-
-                    jadwal.setPerangkat(res)
-                    trySend(res)
-                }
-            }
-
-        awaitClose()
-    }
 
     fun getSesi(
         tanggal: Int,

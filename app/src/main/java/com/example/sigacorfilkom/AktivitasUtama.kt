@@ -69,6 +69,8 @@ class AktivitasUtama : ComponentActivity() {
     private val kontrolReservasi = KontrolReservasi(kontrolOtentikasi = kontrolOtentikasi)
     private lateinit var kontrolLoginMahasiswa: KontrolLoginMahasiswa
 
+    private lateinit var halamanJadwal: HalamanJadwal
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -83,9 +85,15 @@ class AktivitasUtama : ComponentActivity() {
                 mutableStateOf("")
             }
 
-            kontrolJadwal = KontrolJadwal(navigasi = navController)
-            kontrolLoginMahasiswa = KontrolLoginMahasiswa(navigasi = navController)
+            /**
+             * Create seluruh kontrol
+             */
+            kontrolJadwal = KontrolJadwal(navController, this)
+            kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
 
+            /**
+             * Create seluruh halaman
+             */
             val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa>() {
                 viewModelFactory {
                     initializer {
@@ -95,7 +103,8 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
-            val halamanJadwal:HalamanJadwal by viewModels {
+
+            val halamanJadwal: HalamanJadwal by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanJadwal(
@@ -104,14 +113,16 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
-            val halamanLogin:HalamanLogin by viewModels {
+            this.halamanJadwal = halamanJadwal
+
+            val halamanLogin: HalamanLogin by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanLogin(kontrolLoginMahasiswa)
                     }
                 }
             }
-            val halamanLoginMahasiswa:HalamanLoginMahasiswa by viewModels {
+            val halamanLoginMahasiswa: HalamanLoginMahasiswa by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanLoginMahasiswa(
@@ -120,7 +131,7 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
-            val halamanLoginAdmin:HalamanLoginAdmin by viewModels {
+            val halamanLoginAdmin: HalamanLoginAdmin by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanLoginAdmin(
@@ -129,14 +140,14 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
-            val halamanPanduan:HalamanPanduan by viewModels {
+            val halamanPanduan: HalamanPanduan by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanPanduan()
                     }
                 }
             }
-            val halamanRegisterMahasiswa: HalamanRegisterMahasiswa  by viewModels {
+            val halamanRegisterMahasiswa: HalamanRegisterMahasiswa by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanRegisterMahasiswa(
@@ -163,7 +174,7 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
-            val halamanUtamaMahasiswa:HalamanUtamaMahasiswa by viewModels {
+            val halamanUtamaMahasiswa: HalamanUtamaMahasiswa by viewModels {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaMahasiswa(
@@ -299,23 +310,23 @@ class AktivitasUtama : ComponentActivity() {
                     }
 
                     composable("login_mahasiswa") {
-                        LayoutLoginMahasiswa( viewModel=halamanLoginMahasiswa)
+                        LayoutLoginMahasiswa(viewModel = halamanLoginMahasiswa)
                     }
 
                     composable("register_mahasiswa") {
-                        LayoutRegisterMahasiswa( viewModel=halamanRegisterMahasiswa)
+                        LayoutRegisterMahasiswa(viewModel = halamanRegisterMahasiswa)
                     }
 
                     composable("home_mahasiswa") {
-                        LayoutUtamaMahasiswa(navController, viewModel=halamanUtamaMahasiswa)
+                        LayoutUtamaMahasiswa(navController, viewModel = halamanUtamaMahasiswa)
                     }
 
                     composable("jadwal_mahasiswa") {
-                        LayoutJadwal( viewModel=halamanJadwal)
+                        LayoutJadwal(viewModel = halamanJadwal)
                     }
 
                     composable("panduan_mahasiswa") {
-                        LayoutPanduan( viewModel = halamanPanduan)
+                        LayoutPanduan(viewModel = halamanPanduan)
                     }
 
                     composable("history_mahasiswa") {
@@ -325,21 +336,25 @@ class AktivitasUtama : ComponentActivity() {
                     }
 
                     composable("login_admin") {
-                        LayoutLoginAdmin(viewModel=halamanLoginAdmin)
+                        LayoutLoginAdmin(viewModel = halamanLoginAdmin)
                     }
 
                     composable("home_admin") {
                         LayoutUtamaAdmin(
                             navController,
-                            viewModel=halamanUtamaAdmin
+                            viewModel = halamanUtamaAdmin
                         )
                     }
 
                     composable("tutup_jadwal_admin") {
-                        LayoutTutupJadwalAdmin(viewModel=halamanTutupJadwalAdmin)
+                        LayoutTutupJadwalAdmin(viewModel = halamanTutupJadwalAdmin)
                     }
                 }
             }
         }
+    }
+
+    fun getHalamanJadwal(): HalamanJadwal {
+        return halamanJadwal
     }
 }

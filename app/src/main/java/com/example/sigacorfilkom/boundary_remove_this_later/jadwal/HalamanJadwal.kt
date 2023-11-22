@@ -19,12 +19,12 @@ class HalamanJadwal(
     kontrolOtentikasi: KontrolOtentikasi
 ) : ViewModel() {
     private var listHari = mutableStateListOf<Hari>()
-    private var listPerangkat = mutableStateListOf<Perangkat>()
+    private var daftarPerangkat = mutableStateListOf<Perangkat>()
     private var listSesi = mutableStateListOf<Sesi>()
     private var pickedHari = mutableStateOf<Hari?>(null)
     private var pickedPerangkat = mutableStateOf<Perangkat?>(null)
     private var pickedSesi = mutableStateOf<Sesi?>(null)
-    private val kontrolJadwal:KontrolJadwal
+    private val kontrolJadwal: KontrolJadwal
     private val kontrolReservasi: KontrolReservasi
     private val kontrolOtentikasi: KontrolOtentikasi
 
@@ -35,24 +35,25 @@ class HalamanJadwal(
     }
 
     init {
-        listHari.addAll(kontrolJadwal.getHari())
-        viewModelScope.launch {
-            kontrolJadwal.getPerangkat().collect{
-                listPerangkat.clear()
-                listPerangkat.addAll(it)
-            }
-        }
+        listHari.addAll(
+            kontrolJadwal.getHari()
+        )
     }
 
-    fun loadSesi(){
-        if(pickedHari.value != null && pickedPerangkat.value != null) {
+    fun setDaftarPerangkat(daftarPerangkat: List<Perangkat>) {
+        this.daftarPerangkat.clear()
+        this.daftarPerangkat.addAll(daftarPerangkat)
+    }
+
+    fun loadSesi() {
+        if (pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
                 kontrolJadwal.getSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
                     idPerangkat = pickedPerangkat.value!!.getIdPerangkat()
-                ).collect{
+                ).collect {
                     listSesi.clear()
                     listSesi.addAll(it)
                 }
@@ -61,9 +62,9 @@ class HalamanJadwal(
     }
 
     fun reservasi(
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
-    ){
+        onSuccess: () -> Unit,
+        onFailed: (String) -> Unit
+    ) {
         kontrolReservasi.buatReservasi(
             nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
             nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
@@ -80,11 +81,11 @@ class HalamanJadwal(
 
     fun getListHari() = listHari
 
-    fun getListPerangkat() = listPerangkat
+    fun getListPerangkat() = daftarPerangkat
 
     fun getListSesi() = listSesi
 
-    fun setPickedHari(value:Hari?){
+    fun setPickedHari(value: Hari?) {
         pickedHari.value = value
     }
 
@@ -92,11 +93,11 @@ class HalamanJadwal(
 
     fun getPickedPerangkat() = pickedPerangkat
 
-    fun setPickedPerangkat(value:Perangkat?){
+    fun setPickedPerangkat(value: Perangkat?) {
         pickedPerangkat.value = value
     }
 
-    fun setPickedSesi(value:Sesi?){
+    fun setPickedSesi(value: Sesi?) {
         pickedSesi.value = value
     }
 
