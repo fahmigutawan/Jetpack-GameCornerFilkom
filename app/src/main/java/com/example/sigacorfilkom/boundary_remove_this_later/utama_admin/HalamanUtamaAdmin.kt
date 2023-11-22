@@ -6,26 +6,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
 import kotlinx.coroutines.launch
 
 class HalamanUtamaAdmin(
     kontrolJadwal: KontrolJadwal,
     kontrolReservasi: KontrolReservasi,
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolUtamaAdmin: KontrolUtamaAdmin
 ) : ViewModel() {
     private val reservasi = mutableStateListOf<Reservasi>()
     private val perangkat = mutableMapOf<String, String>()
     private val pickedReservasi = mutableStateOf<Reservasi?>(null)
     private val kontrolJadwal: KontrolJadwal
     private val kontrolReservasi: KontrolReservasi
-    private val kontrolOtentikasi: KontrolOtentikasi
+    private val kontrolUtamaAdmin: KontrolUtamaAdmin
 
     init {
         this.kontrolReservasi = kontrolReservasi
         this.kontrolJadwal = kontrolJadwal
-        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolUtamaAdmin = kontrolUtamaAdmin
     }
 
     fun loadReservasi() {
@@ -62,7 +62,11 @@ class HalamanUtamaAdmin(
     }
 
     fun logout() {
-        kontrolOtentikasi.logout()
+        /**
+         *  CALL   logout()
+         *  TUJUAN (C) KontrolUtamaAdmin
+         */
+        kontrolUtamaAdmin.logout()
     }
 
     init {
