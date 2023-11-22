@@ -64,7 +64,7 @@ lateinit var _showSnackbarWithAction: (
 
 
 class AktivitasUtama : ComponentActivity() {
-    private val kontrolJadwal = KontrolJadwal()
+    private lateinit var kontrolJadwal: KontrolJadwal
     private val kontrolOtentikasi = KontrolOtentikasi()
     private val kontrolReservasi = KontrolReservasi(kontrolOtentikasi = kontrolOtentikasi)
     private lateinit var kontrolLoginMahasiswa: KontrolLoginMahasiswa
@@ -83,6 +83,7 @@ class AktivitasUtama : ComponentActivity() {
                 mutableStateOf("")
             }
 
+            kontrolJadwal = KontrolJadwal(navigasi = navController)
             kontrolLoginMahasiswa = KontrolLoginMahasiswa(navigasi = navController)
 
             val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa>() {

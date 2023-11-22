@@ -1,28 +1,27 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
-import android.util.Log
-import com.example.sigacorfilkom.entity_remove_this_later.Hari
+import androidx.navigation.NavController
 import com.example.sigacorfilkom.entity_remove_this_later.Jadwal
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
-import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.type.DateTime
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Calendar
-import java.util.Date
-import java.util.UUID
 
-class KontrolJadwal {
+class KontrolJadwal(navigasi: NavController) {
     private var jadwal = Jadwal()
+    private val navigasi: NavController
+
+    init {
+        this.navigasi = navigasi
+    }
+
+    fun tampilkanHalamanJadwal() {
+        navigasi.navigate("jadwal_mahasiswa")
+    }
 
     fun getHari() = jadwal.getHari()
 

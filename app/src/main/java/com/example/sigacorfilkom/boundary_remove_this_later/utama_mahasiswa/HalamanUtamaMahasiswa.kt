@@ -1,6 +1,5 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
@@ -20,6 +19,10 @@ class HalamanUtamaMahasiswa(
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolOtentikasi = kontrolOtentikasi
+    }
+
+    fun lihatJadwal() {
+        kontrolJadwal.tampilkanHalamanJadwal()
     }
 
     fun getNamaMahasiswa() = namaMahasiswa.value
