@@ -2,7 +2,6 @@ package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import android.util.Log
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
-import com.example.sigacorfilkom.kontrolOtentikasi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firestore.v1.StructuredQuery.Order
@@ -19,7 +18,15 @@ import java.util.Date
 import java.util.UUID
 
 
-class KontrolReservasi {
+class KontrolReservasi(
+    kontrolOtentikasi: KontrolOtentikasi
+) {
+    private val kontrolOtentikasi:KontrolOtentikasi
+
+    init {
+        this.kontrolOtentikasi = kontrolOtentikasi
+    }
+
     fun buatReservasi(
         nimPeminjam: String,
         nomorSesi: Int,

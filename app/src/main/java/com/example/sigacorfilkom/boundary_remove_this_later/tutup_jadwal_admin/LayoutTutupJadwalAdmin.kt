@@ -21,14 +21,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.example.sigacorfilkom.SnackbarHandler
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutTutupJadwalAdmin(navController: NavController) {
+fun LayoutTutupJadwalAdmin(
+    viewModel: HalamanTutupJadwalAdmin
+) {
     val datePickerState = rememberDatePickerState()
-    val viewModel = viewModel<HalamanTutupJadwalAdmin>()
 
     LazyColumn(
         modifier = Modifier.padding(horizontal = 16.dp),

@@ -2,14 +2,20 @@ package com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.sigacorfilkom.kontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 
-class HalamanRegisterMahasiswa : ViewModel() {
+class HalamanRegisterMahasiswa(
+    kontrolOtentikasi: KontrolOtentikasi
+) : ViewModel() {
     private val nim = mutableStateOf("")
     private val nama = mutableStateOf("")
     private val password = mutableStateOf("")
+    private val kontrolOtentikasi:KontrolOtentikasi
+
+    init {
+        this.kontrolOtentikasi = kontrolOtentikasi
+    }
 
     fun setNim(value: String) {
         nim.value = value

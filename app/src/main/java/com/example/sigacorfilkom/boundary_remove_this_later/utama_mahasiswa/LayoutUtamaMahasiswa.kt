@@ -1,9 +1,7 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +20,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,14 +32,16 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.kontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutUtamaMahasiswa(navController: NavController) {
-    val viewModel = viewModel<HalamanUtamaMahasiswa>()
+fun LayoutUtamaMahasiswa(
+    navController: NavController,
+    viewModel: HalamanUtamaMahasiswa
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -57,7 +56,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
         11 to "November",
         12 to "Desember"
     )
-    
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -67,7 +66,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                 actions = {
                     IconButton(
                         onClick = {
-                            kontrolOtentikasi.logout()
+                            viewModel.logout()
                             navController.navigate("login") {
                                 popUpTo(navController.graph.id) { inclusive = true }
                             }
@@ -101,7 +100,9 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                     )
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = "${viewModel.getTanggal()} ${monthMapper[viewModel.getBulan().toInt()] ?: viewModel.getBulan()} ${viewModel.getTahun()}",
+                        text = "${viewModel.getTanggal()} ${
+                            monthMapper[viewModel.getBulan().toInt()] ?: viewModel.getBulan()
+                        } ${viewModel.getTahun()}",
                         textAlign = TextAlign.End,
                         overflow = TextOverflow.Ellipsis
                     )

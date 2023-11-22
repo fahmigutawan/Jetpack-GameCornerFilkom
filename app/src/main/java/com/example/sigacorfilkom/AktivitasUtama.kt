@@ -1,8 +1,10 @@
 package com.example.sigacorfilkom
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,31 +17,45 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.HalamanHistoryMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.HalamanJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
+import com.example.sigacorfilkom.boundary_remove_this_later.login.HalamanLogin
 import com.example.sigacorfilkom.boundary_remove_this_later.login.LayoutLogin
+import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.HalamanLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
+import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.HalamanLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
+import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.HalamanRegisterMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.LayoutRegisterMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.HalamanTutupJadwalAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.LayoutTutupJadwalAdmin
+import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.HalamanUtamaAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUtamaAdmin
+import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 
 lateinit var _showSnackbar: (message: String) -> Unit
 lateinit var _showSnackbarWithAction: (
@@ -47,17 +63,15 @@ lateinit var _showSnackbarWithAction: (
     actionLabel: String,
     action: () -> Unit
 ) -> Unit
-lateinit var kontrolJadwal: KontrolJadwal
-lateinit var kontrolOtentikasi: KontrolOtentikasi
-lateinit var kontrolReservasi: KontrolReservasi
 
 
 class AktivitasUtama : ComponentActivity() {
+    private val kontrolJadwal = KontrolJadwal()
+    private val kontrolOtentikasi = KontrolOtentikasi()
+    private val kontrolReservasi = KontrolReservasi(kontrolOtentikasi = kontrolOtentikasi)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        kontrolJadwal = KontrolJadwal()
-        kontrolOtentikasi = KontrolOtentikasi()
-        kontrolReservasi = KontrolReservasi()
 
         setContent {
             val navController = rememberNavController()
@@ -68,6 +82,92 @@ class AktivitasUtama : ComponentActivity() {
             }
             val currentRoute = remember {
                 mutableStateOf("")
+            }
+            val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa>() {
+                viewModelFactory {
+                    initializer {
+                        HalamanHistoryMahasiswa(
+                            kontrolJadwal, kontrolReservasi
+                        )
+                    }
+                }
+            }
+            val halamanJadwal:HalamanJadwal by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanJadwal(
+                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi
+                        )
+                    }
+                }
+            }
+            val halamanLogin:HalamanLogin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanLogin()
+                    }
+                }
+            }
+            val halamanLoginMahasiswa:HalamanLoginMahasiswa by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanLoginMahasiswa(
+                            kontrolOtentikasi
+                        )
+                    }
+                }
+            }
+            val halamanLoginAdmin:HalamanLoginAdmin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanLoginAdmin(
+                            kontrolOtentikasi
+                        )
+                    }
+                }
+            }
+            val halamanPanduan:HalamanPanduan by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanPanduan()
+                    }
+                }
+            }
+            val halamanRegisterMahasiswa: HalamanRegisterMahasiswa  by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanRegisterMahasiswa(
+                            kontrolOtentikasi
+                        )
+                    }
+                }
+            }
+            val halamanTutupJadwalAdmin: HalamanTutupJadwalAdmin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanTutupJadwalAdmin(
+                            kontrolJadwal
+                        )
+                    }
+                }
+            }
+            val halamanUtamaAdmin: HalamanUtamaAdmin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanUtamaAdmin(
+                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi
+                        )
+                    }
+                }
+            }
+            val halamanUtamaMahasiswa:HalamanUtamaMahasiswa by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanUtamaMahasiswa(
+                            kontrolJadwal, kontrolOtentikasi
+                        )
+                    }
+                }
             }
 
             navController.addOnDestinationChangedListener { _, dest, _ ->
@@ -192,43 +292,49 @@ class AktivitasUtama : ComponentActivity() {
                     startDestination = "login"
                 ) {
                     composable("login") {
-                        LayoutLogin(navController = navController)
+                        LayoutLogin(navController,viewModel = halamanLogin)
                     }
 
                     composable("login_mahasiswa") {
-                        LayoutLoginMahasiswa(navController = navController)
+                        LayoutLoginMahasiswa(navController, viewModel=halamanLoginMahasiswa)
                     }
 
                     composable("register_mahasiswa") {
-                        LayoutRegisterMahasiswa(navController = navController)
+                        LayoutRegisterMahasiswa(navController, viewModel=halamanRegisterMahasiswa)
                     }
 
                     composable("home_mahasiswa") {
-                        LayoutUtamaMahasiswa(navController = navController)
+                        LayoutUtamaMahasiswa(navController, viewModel=halamanUtamaMahasiswa)
                     }
 
                     composable("jadwal_mahasiswa") {
-                        LayoutJadwal(navController = navController)
+                        LayoutJadwal(navController, viewModel=halamanJadwal)
                     }
 
                     composable("panduan_mahasiswa") {
-                        LayoutPanduan(navController = navController)
+                        LayoutPanduan(navController, viewModel = halamanPanduan)
                     }
 
                     composable("history_mahasiswa") {
-                        LayoutHistoryMahasiswa(navController = navController)
+                        LayoutHistoryMahasiswa(
+                            navController,
+                            viewModel = halamanHistoryMahasiswa
+                        )
                     }
 
                     composable("login_admin") {
-                        LayoutLoginAdmin(navController = navController)
+                        LayoutLoginAdmin(navController, viewModel= halamanLoginAdmin)
                     }
 
                     composable("home_admin") {
-                        LayoutUtamaAdmin(navController = navController)
+                        LayoutUtamaAdmin(
+                            navController,
+                            viewModel=halamanUtamaAdmin
+                        )
                     }
 
                     composable("tutup_jadwal_admin") {
-                        LayoutTutupJadwalAdmin(navController = navController)
+                        LayoutTutupJadwalAdmin(viewModel=halamanTutupJadwalAdmin)
                     }
                 }
             }

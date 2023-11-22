@@ -7,22 +7,32 @@ import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
-import com.example.sigacorfilkom.kontrolJadwal
-import com.example.sigacorfilkom.kontrolOtentikasi
-import com.example.sigacorfilkom.kontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.launch
 
 
-class HalamanJadwal : ViewModel() {
+class HalamanJadwal(
+    kontrolJadwal: KontrolJadwal,
+    kontrolReservasi: KontrolReservasi,
+    kontrolOtentikasi: KontrolOtentikasi
+) : ViewModel() {
     private var listHari = mutableStateListOf<Hari>()
     private var listPerangkat = mutableStateListOf<Perangkat>()
     private var listSesi = mutableStateListOf<Sesi>()
     private var pickedHari = mutableStateOf<Hari?>(null)
     private var pickedPerangkat = mutableStateOf<Perangkat?>(null)
     private var pickedSesi = mutableStateOf<Sesi?>(null)
+    private val kontrolJadwal:KontrolJadwal
+    private val kontrolReservasi: KontrolReservasi
+    private val kontrolOtentikasi: KontrolOtentikasi
+
+    init {
+        this.kontrolJadwal = kontrolJadwal
+        this.kontrolReservasi = kontrolReservasi
+        this.kontrolOtentikasi = kontrolOtentikasi
+    }
 
     init {
         listHari.addAll(kontrolJadwal.getHari())

@@ -1,6 +1,5 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.utama_admin
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,14 +36,17 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.R
 import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.kontrolOtentikasi
+import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.HalamanTutupJadwalAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutUtamaAdmin(navController: NavController) {
-    val viewModel = viewModel<HalamanUtamaAdmin>()
+fun LayoutUtamaAdmin(
+    navController: NavController,
+    viewModel: HalamanUtamaAdmin
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -150,7 +151,7 @@ fun LayoutUtamaAdmin(navController: NavController) {
                 actions = {
                     IconButton(
                         onClick = {
-                            kontrolOtentikasi.logout()
+                            viewModel.logout()
                             navController.navigate("login") {
                                 popUpTo(navController.graph.id) { inclusive = true }
                             }

@@ -29,11 +29,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutHistoryMahasiswa(navController: NavController) {
-    val viewModel = viewModel<HalamanHistoryMahasiswa>()
+fun LayoutHistoryMahasiswa(
+    viewModel: HalamanHistoryMahasiswa
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -74,7 +78,7 @@ fun LayoutHistoryMahasiswa(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            items(viewModel.getReservasiBelumLewat()){item ->
+            items(viewModel.getReservasiBelumLewat()) { item ->
                 ElevatedCard(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.elevatedCardElevation(

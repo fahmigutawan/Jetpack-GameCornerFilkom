@@ -6,21 +6,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
-import com.example.sigacorfilkom.kontrolJadwal
-import com.example.sigacorfilkom.kontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HalamanUtamaAdmin: ViewModel() {
+class HalamanUtamaAdmin(
+    kontrolJadwal: KontrolJadwal,
+    kontrolReservasi: KontrolReservasi,
+    kontrolOtentikasi: KontrolOtentikasi
+) : ViewModel() {
     private val reservasi = mutableStateListOf<Reservasi>()
     private val perangkat = mutableMapOf<String, String>()
     private val pickedReservasi = mutableStateOf<Reservasi?>(null)
+    private val kontrolJadwal: KontrolJadwal
+    private val kontrolReservasi: KontrolReservasi
+    private val kontrolOtentikasi: KontrolOtentikasi
 
-    fun loadReservasi(){
+    init {
+        this.kontrolReservasi = kontrolReservasi
+        this.kontrolJadwal = kontrolJadwal
+        this.kontrolOtentikasi = kontrolOtentikasi
+    }
+
+    fun loadReservasi() {
         viewModelScope.launch {
-            kontrolReservasi.getReservasiTerbaruForAdmin().collect{
+            kontrolReservasi.getReservasiTerbaruForAdmin().collect {
                 reservasi.clear()
                 reservasi.addAll(it)
             }
@@ -33,16 +45,16 @@ class HalamanUtamaAdmin: ViewModel() {
 
     fun getPickedReservasi() = pickedReservasi.value
 
-    fun setPickedReservasi(value:Reservasi?){
+    fun setPickedReservasi(value: Reservasi?) {
         pickedReservasi.value = value
     }
 
     fun ubahStatusReservasi(
-        idReservasi:String,
-        status:String,
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
-    ){
+        idReservasi: String,
+        status: String,
+        onSuccess: () -> Unit,
+        onFailed: (String) -> Unit
+    ) {
         kontrolReservasi.updateStatusReservasi(
             idReservasi,
             status,
@@ -51,11 +63,15 @@ class HalamanUtamaAdmin: ViewModel() {
         )
     }
 
+    fun logout() {
+        kontrolOtentikasi.logout()
+    }
+
     init {
         loadReservasi()
 
         viewModelScope.launch {
-            kontrolJadwal.getPerangkat().collect{
+            kontrolJadwal.getPerangkat().collect {
                 perangkat.clear()
                 perangkat.putAll(it.associate {
                     it.getIdPerangkat() to it.getNama()

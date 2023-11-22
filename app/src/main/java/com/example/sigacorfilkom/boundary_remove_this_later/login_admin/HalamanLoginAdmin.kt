@@ -2,14 +2,20 @@ package com.example.sigacorfilkom.boundary_remove_this_later.login_admin
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.sigacorfilkom.kontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
-class HalamanLoginAdmin : ViewModel() {
+class HalamanLoginAdmin(
+    kontrolOtentikasi: KontrolOtentikasi
+) : ViewModel() {
     private var nip = mutableStateOf("")
     private var password = mutableStateOf("")
+    private var kontrolOtentikasi:KontrolOtentikasi
+
+    init{
+        this.kontrolOtentikasi = kontrolOtentikasi
+    }
 
     fun getNip() = nip
     fun getPassword() = password
