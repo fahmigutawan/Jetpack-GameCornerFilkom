@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.sigacorfilkom.R
@@ -26,8 +25,6 @@ import com.example.sigacorfilkom.R
 fun LayoutLogin(
     viewModel: HalamanLogin
 ) {
-    val scrWidth = LocalConfiguration.current
-
     Scaffold(
         containerColor = Color.White
     ) {
@@ -48,7 +45,7 @@ fun LayoutLogin(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-//                        navController.navigate("login_mahasiswa")
+                        viewModel.loginMahasiswa()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

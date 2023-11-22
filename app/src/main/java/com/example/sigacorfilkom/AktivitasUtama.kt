@@ -37,6 +37,7 @@ import com.example.sigacorfilkom.boundary_remove_this_later.login.LayoutLogin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.HalamanLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.HalamanLoginMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.KontrolLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
@@ -66,6 +67,7 @@ class AktivitasUtama : ComponentActivity() {
     private val kontrolJadwal = KontrolJadwal()
     private val kontrolOtentikasi = KontrolOtentikasi()
     private val kontrolReservasi = KontrolReservasi(kontrolOtentikasi = kontrolOtentikasi)
+    private lateinit var kontrolLoginMahasiswa: KontrolLoginMahasiswa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +82,9 @@ class AktivitasUtama : ComponentActivity() {
             val currentRoute = remember {
                 mutableStateOf("")
             }
+
+            kontrolLoginMahasiswa = KontrolLoginMahasiswa(navigasi = navController)
+
             val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa>() {
                 viewModelFactory {
                     initializer {
@@ -101,7 +106,7 @@ class AktivitasUtama : ComponentActivity() {
             val halamanLogin:HalamanLogin by viewModels {
                 viewModelFactory {
                     initializer {
-                        HalamanLogin()
+                        HalamanLogin(kontrolLoginMahasiswa)
                     }
                 }
             }
