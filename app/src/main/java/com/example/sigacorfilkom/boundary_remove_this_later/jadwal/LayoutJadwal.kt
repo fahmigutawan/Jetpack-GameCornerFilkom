@@ -69,10 +69,6 @@ fun LayoutJadwal(
         mutableStateOf(false)
     }
 
-    LaunchedEffect(key1 = true) {
-        viewModel.loadHari()
-    }
-
     if (showBerhasilDialog.value) {
         AlertDialog(
             onDismissRequest = { /*TODO*/ },

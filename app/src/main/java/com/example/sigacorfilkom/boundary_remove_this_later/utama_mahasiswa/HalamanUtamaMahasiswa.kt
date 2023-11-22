@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class HalamanUtamaMahasiswa(
     kontrolJadwal: KontrolJadwal,
@@ -43,8 +44,10 @@ class HalamanUtamaMahasiswa(
 
     init {
         namaMahasiswa.value = kontrolOtentikasi.getNamaMahasiswa()
-        tanggal.value = kontrolJadwal.getHari()[0].getTanggal().toString()
-        bulan.value = kontrolJadwal.getHari()[0].getBulan().toString()
-        tahun.value = kontrolJadwal.getHari()[0].getTahun().toString()
+
+        val now = LocalDate.now()
+        tanggal.value = now.dayOfMonth.toString()
+        bulan.value = now.month.value.toString()
+        tahun.value = now.year.toString()
     }
 }

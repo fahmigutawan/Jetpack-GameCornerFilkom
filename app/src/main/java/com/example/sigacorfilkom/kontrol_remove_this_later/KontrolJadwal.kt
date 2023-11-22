@@ -25,13 +25,25 @@ class KontrolJadwal(navigasi: NavController, aktivitas: AktivitasUtama) {
     suspend fun tampilkanHalamanJadwal() {
         /**
          * CALL   <<create>>
+         * TUJUAN Jadwal
+         */
+        val jadwal = Jadwal()
+        /**
+         * CALL   getDaftarHari
+         * TUJUAN Jadwal
+         * RETURN daftar hari
+         */
+        val daftarHari = jadwal.getDaftarHari()
+
+        /**
+         * CALL   <<create>>
          * TUJUAN DaftarPerangkat
          */
         val daftarPerangkatEntity = DaftarPerangkat()
         /**
          * CALL   getDaftarPerangkat
          * TUJUAN DaftarPerangkat
-         * TERIMA daftar perangkat
+         * RETURN daftar perangkat
          */
         val daftarPerangkat = daftarPerangkatEntity.getDaftarPerangkat()
 
@@ -40,11 +52,10 @@ class KontrolJadwal(navigasi: NavController, aktivitas: AktivitasUtama) {
          * TUJUAN HalamanJadwal
          */
         val halamanJadwal = aktivitas.getHalamanJadwal()
+        halamanJadwal.setDaftarHari(daftarHari)
         halamanJadwal.setDaftarPerangkat(daftarPerangkat)
         navigasi.navigate("jadwal_mahasiswa")
     }
-
-    fun getHari() = jadwal.getHari()
 
     fun getSesi(
         tanggal: Int,
@@ -98,11 +109,11 @@ class KontrolJadwal(navigasi: NavController, aktivitas: AktivitasUtama) {
         awaitClose()
     }
 
-    fun loadHari() {
-        jadwal.getHari().forEach {
-            it.reloadHari()
-        }
-    }
+//    fun loadHari() {
+//        jadwal.getDaftarHari().forEach {
+//            it.reloadHari()
+//        }
+//    }
 
     fun tutupJadwal(
         dateMillis: Long,

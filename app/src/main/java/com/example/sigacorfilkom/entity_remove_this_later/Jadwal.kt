@@ -1,33 +1,63 @@
 package com.example.sigacorfilkom.entity_remove_this_later
 
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CompletableDeferred
 import java.time.LocalDate
 
 class Jadwal {
-    private var hari: List<Hari>
     private var perangkat: List<Perangkat> = listOf()
     private var sesi: List<Sesi> = listOf()
 
-    constructor() {
-        hari = listOf(
-            Hari(
-                tanggal = LocalDate.now().dayOfMonth,
-                bulan = LocalDate.now().month.value,
-                tahun = LocalDate.now().year
-            ),
-            Hari(
-                tanggal = LocalDate.now().plusDays(1).dayOfMonth,
-                bulan = LocalDate.now().plusDays(1).month.value,
-                tahun = LocalDate.now().plusDays(1).year
-            ),
-            Hari(
-                tanggal = LocalDate.now().plusDays(2).dayOfMonth,
-                bulan = LocalDate.now().plusDays(2).month.value,
-                tahun = LocalDate.now().plusDays(2).year
-            ),
-        )
-    }
+    suspend fun getDaftarHari(): List<Hari> {
+        val daftarHari: MutableList<Hari> = mutableListOf()
 
-    fun getHari() = hari
+        for (i in 0..2) {
+            var isDitutup = false
+            var alasanDitutup = ""
+
+            val localDate = LocalDate.now().plusDays(i.toLong())
+
+            when (localDate.dayOfWeek.value) {
+                6, 7 -> {
+                    isDitutup = true
+                    alasanDitutup = "Hari Sabtu dan Minggu Tutup"
+                }
+
+                else -> {
+                    val waiter = CompletableDeferred<Unit>()
+                    FirebaseFirestore
+                        .getInstance()
+                        .collection("jadwal_tutup")
+                        .document("${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}")
+                        .get()
+                        .addOnSuccessListener {
+                            if (it.data == null) {
+                                isDitutup = false
+                            } else {
+                                isDitutup = true
+                                alasanDitutup = it["alasan"] as String
+                            }
+                            waiter.complete(Unit)
+                        }
+                        .addOnFailureListener {
+                            waiter.complete(Unit)
+                        }
+                    waiter.await()
+                }
+            }
+
+            val hari = Hari(
+                tanggal = localDate.dayOfMonth,
+                bulan = localDate.month.value,
+                tahun = localDate.year,
+                isDitutup = isDitutup,
+                alasanDitutup = alasanDitutup
+            )
+            daftarHari.add(hari)
+        }
+
+        return daftarHari
+    }
 
     fun getPerangkat() = perangkat
 

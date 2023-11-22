@@ -18,7 +18,7 @@ class HalamanJadwal(
     kontrolReservasi: KontrolReservasi,
     kontrolOtentikasi: KontrolOtentikasi
 ) : ViewModel() {
-    private var listHari = mutableStateListOf<Hari>()
+    private var daftarHari = mutableStateListOf<Hari>()
     private var daftarPerangkat = mutableStateListOf<Perangkat>()
     private var listSesi = mutableStateListOf<Sesi>()
     private var pickedHari = mutableStateOf<Hari?>(null)
@@ -34,10 +34,9 @@ class HalamanJadwal(
         this.kontrolOtentikasi = kontrolOtentikasi
     }
 
-    init {
-        listHari.addAll(
-            kontrolJadwal.getHari()
-        )
+    fun setDaftarHari(daftarHari: List<Hari>) {
+        this.daftarHari.clear()
+        this.daftarHari.addAll(daftarHari)
     }
 
     fun setDaftarPerangkat(daftarPerangkat: List<Perangkat>) {
@@ -77,9 +76,7 @@ class HalamanJadwal(
         )
     }
 
-    fun loadHari() = kontrolJadwal.loadHari()
-
-    fun getListHari() = listHari
+    fun getListHari() = daftarHari
 
     fun getListPerangkat() = daftarPerangkat
 
