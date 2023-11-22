@@ -2,18 +2,18 @@ package com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 
 
 class HalamanLoginMahasiswa(
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolLoginMahasiswa: KontrolLoginMahasiswa
 ) : ViewModel() {
     private var nim = mutableStateOf("")
     private var password = mutableStateOf("")
-    private var kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolLoginMahasiswa: KontrolLoginMahasiswa
 
     init{
-        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolLoginMahasiswa = kontrolLoginMahasiswa
     }
 
     fun getNim() = nim
@@ -25,16 +25,15 @@ class HalamanLoginMahasiswa(
         password.value = value
     }
     fun login(
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
+        onFailed: (String) -> Unit
     ){
         if(nim.value.isEmpty() || password.value.isEmpty()){
             onFailed("Semua data harus dimasukkan")
         }else{
-            kontrolOtentikasi.loginMahasiswa(
+            kontrolLoginMahasiswa.loginMahasiswa(
                 nim.value,
                 password.value,
-                onSuccess, onFailed
+                onFailed
             )
         }
     }

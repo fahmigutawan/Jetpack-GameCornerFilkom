@@ -37,7 +37,7 @@ import com.example.sigacorfilkom.boundary_remove_this_later.login.LayoutLogin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.HalamanLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.HalamanLoginMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.KontrolLoginMahasiswa
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
@@ -114,7 +114,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginMahasiswa(
-                            kontrolOtentikasi
+                            kontrolLoginMahasiswa
                         )
                     }
                 }
@@ -319,13 +319,12 @@ class AktivitasUtama : ComponentActivity() {
 
                     composable("history_mahasiswa") {
                         LayoutHistoryMahasiswa(
-
                             viewModel = halamanHistoryMahasiswa
                         )
                     }
 
                     composable("login_admin") {
-                        LayoutLoginAdmin( viewModel= halamanLoginAdmin)
+                        LayoutLoginAdmin(viewModel=halamanLoginAdmin)
                     }
 
                     composable("home_admin") {
