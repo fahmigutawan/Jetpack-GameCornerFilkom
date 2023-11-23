@@ -44,7 +44,6 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LayoutUtamaAdmin(
-    navController: NavController,
     viewModel: HalamanUtamaAdmin
 ) {
     val monthMapper = mapOf(

@@ -292,49 +292,51 @@ class AktivitasUtama : ComponentActivity() {
                     startDestination = "login"
                 ) {
                     composable("login") {
-                        LayoutLogin(navController,viewModel = halamanLogin)
+                        LayoutLogin(viewModel = halamanLogin)
                     }
 
                     composable("login_mahasiswa") {
-                        LayoutLoginMahasiswa(navController, viewModel=halamanLoginMahasiswa)
+                        LayoutLoginMahasiswa(viewModel=halamanLoginMahasiswa)
                     }
 
                     composable("register_mahasiswa") {
-                        LayoutRegisterMahasiswa(navController, viewModel=halamanRegisterMahasiswa)
+                        LayoutRegisterMahasiswa(viewModel=halamanRegisterMahasiswa)
                     }
 
                     composable("home_mahasiswa") {
-                        LayoutUtamaMahasiswa(navController, viewModel=halamanUtamaMahasiswa)
+                        LayoutUtamaMahasiswa(viewModel=halamanUtamaMahasiswa)
                     }
 
                     composable("jadwal_mahasiswa") {
-                        LayoutJadwal(navController, viewModel=halamanJadwal)
+                        LayoutJadwal(viewModel=halamanJadwal)
                     }
 
                     composable("panduan_mahasiswa") {
-                        LayoutPanduan(navController, viewModel = halamanPanduan)
+                        LayoutPanduan(viewModel = halamanPanduan)
                     }
 
                     composable("history_mahasiswa") {
                         LayoutHistoryMahasiswa(
-                            navController,
                             viewModel = halamanHistoryMahasiswa
                         )
                     }
 
                     composable("login_admin") {
-                        LayoutLoginAdmin(navController, viewModel= halamanLoginAdmin)
+                        LayoutLoginAdmin(
+                            viewModel= halamanLoginAdmin
+                        )
                     }
 
                     composable("home_admin") {
                         LayoutUtamaAdmin(
-                            navController,
                             viewModel=halamanUtamaAdmin
                         )
                     }
 
                     composable("tutup_jadwal_admin") {
-                        LayoutTutupJadwalAdmin(viewModel=halamanTutupJadwalAdmin)
+                        LayoutTutupJadwalAdmin(
+                            viewModel=halamanTutupJadwalAdmin
+                        )
                     }
                 }
             }

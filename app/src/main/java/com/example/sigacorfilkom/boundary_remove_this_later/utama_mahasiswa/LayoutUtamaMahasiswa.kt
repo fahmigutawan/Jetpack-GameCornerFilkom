@@ -39,7 +39,6 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LayoutUtamaMahasiswa(
-    navController: NavController,
     viewModel: HalamanUtamaMahasiswa
 ) {
     val monthMapper = mapOf(
