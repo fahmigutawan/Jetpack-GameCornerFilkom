@@ -71,18 +71,9 @@ fun LayoutLoginAdmin(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        viewModel.login(
-                            onSuccess = {
-//                                navController.navigate("home_admin") {
-//                                    popUpTo(navController.graph.id) {
-//                                        inclusive = true
-//                                    }
-//                                }
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
-                            }
-                        )
+                        viewModel.login {
+                            SnackbarHandler.showSnackbar(it)
+                        }
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

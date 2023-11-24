@@ -1,8 +1,5 @@
 package com.example.sigacorfilkom.entity_remove_this_later
 
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
-
 class Admin {
     private var nip:String = ""
     private var password:String = ""
@@ -15,8 +12,6 @@ class Admin {
         this.password = password
     }
 
-    constructor()
-
     fun getNip() = nip
 
     fun setNip(value:String){
@@ -25,12 +20,6 @@ class Admin {
 
     fun setPassword(value:String) {
         password = value
-    }
-
-    fun validateNipIsNumber(){
-        if(!nip.matches(Regex("\\d+"))){
-            throw Exception("NIP Hanya boleh angka")
-        }
     }
 
     fun validatePassword(correctPassword:String):Boolean = this.password == correctPassword

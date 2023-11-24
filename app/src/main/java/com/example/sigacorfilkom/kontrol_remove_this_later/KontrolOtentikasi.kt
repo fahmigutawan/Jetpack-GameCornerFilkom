@@ -9,49 +9,7 @@ class KontrolOtentikasi {
     private var mahasiswa: Mahasiswa? = null
     private var admin: Admin? = null
 
-    fun loginAdmin(
-        nip: String,
-        password: String,
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
-    ) {
-        try {
-            val admin = Admin(
-                nip,
-                password
-            )
 
-            admin.validateNipIsNumber()
-
-            FirebaseFirestore
-                .getInstance()
-                .collection("admin")
-                .document(nip)
-                .get()
-                .addOnSuccessListener { doc ->
-                    if (doc.data == null) {
-                        onFailed("NIP tidak terdaftar sebagai admin")
-                        return@addOnSuccessListener
-                    }
-
-                    if (admin.validatePassword(doc["password"] as String)) {
-                        this.admin = admin
-                        onSuccess()
-                        return@addOnSuccessListener
-                    } else {
-                        onFailed("Password salah")
-                        return@addOnSuccessListener
-                    }
-                }
-                .addOnFailureListener {
-                    onFailed(it.message.toString())
-                    return@addOnFailureListener
-                }
-        } catch (e: Exception) {
-            onFailed(e.message.toString())
-            return
-        }
-    }
 
     fun registerMahasiswa(
         nim: String,
@@ -104,22 +62,6 @@ class KontrolOtentikasi {
         }
     }
 
-    fun logout() {
-        admin = null
-        mahasiswa = null
-    }
-
-    fun getNimMahasiswa() = mahasiswa?.getNim() ?: ""
-
-    fun getNamaMahasiswa() = mahasiswa?.getNama() ?: ""
-
     fun isAdmin() = admin != null
 
-    fun tampilkanHalamanLoginMahasiswa() {
-
-    }
-
-    fun tampilkanHalamanLoginAdmin() {
-
-    }
 }

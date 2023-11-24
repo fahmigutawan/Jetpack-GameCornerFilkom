@@ -61,7 +61,7 @@ fun LayoutLogin(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-//                        navController.navigate("login_admin")
+                        viewModel.loginAdmin()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

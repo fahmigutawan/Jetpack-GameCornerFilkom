@@ -51,6 +51,7 @@ import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUt
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
@@ -93,9 +94,11 @@ class AktivitasUtama : ComponentActivity() {
              */
             kontrolJadwal = KontrolJadwal(navController, this)
             kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
+            val kontrolLoginAdmin = KontrolLoginAdmin(navController)
             val kontrolUtamaMahasiswa = KontrolUtamaMahasiswa(navController)
             val kontrolUtamaAdmin = KontrolUtamaAdmin(navController)
-            val kontrolReservasi = KontrolReservasi(navController, kontrolOtentikasi = kontrolOtentikasi, this)
+            val kontrolReservasi =
+                KontrolReservasi(navController, kontrolOtentikasi = kontrolOtentikasi, this)
 
             /**
              * Create seluruh halaman
@@ -125,7 +128,7 @@ class AktivitasUtama : ComponentActivity() {
             val halamanLogin: HalamanLogin by viewModels {
                 viewModelFactory {
                     initializer {
-                        HalamanLogin(kontrolLoginMahasiswa)
+                        HalamanLogin(kontrolLoginMahasiswa, kontrolLoginAdmin)
                     }
                 }
             }
@@ -142,7 +145,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginAdmin(
-                            kontrolOtentikasi
+                            kontrolLoginAdmin
                         )
                     }
                 }
