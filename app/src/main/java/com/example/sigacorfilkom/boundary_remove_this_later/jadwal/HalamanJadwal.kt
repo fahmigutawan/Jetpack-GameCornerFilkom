@@ -81,7 +81,6 @@ class HalamanJadwal(
                  *  RETURN boolean
                  */
                 val hasilSimpan = kontrolReservasi.buatReservasi(
-                    nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
                     nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
                     idPerangkat = pickedPerangkat.value?.getIdPerangkat() ?: "...",
                     tanggal = pickedHari.value?.getTanggal() ?: 0,

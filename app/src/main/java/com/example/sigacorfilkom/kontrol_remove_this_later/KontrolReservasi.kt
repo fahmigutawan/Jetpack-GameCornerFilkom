@@ -1,5 +1,6 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
+import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import com.example.sigacorfilkom.entity_remove_this_later.BukuReservasi
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,13 +23,14 @@ class KontrolReservasi(
     }
 
     suspend fun buatReservasi(
-        nimPeminjam: String,
         nomorSesi: Int,
         idPerangkat: String,
         tanggal: Int,
         bulan: Int,
         tahun: Int
     ): Boolean {
+        val nimPeminjam = Otentikasi.getMahasiswa()!!.getNim()
+
         /**
          *  CALL   <<create>>
          *  TUJUAN BukuReservasi
