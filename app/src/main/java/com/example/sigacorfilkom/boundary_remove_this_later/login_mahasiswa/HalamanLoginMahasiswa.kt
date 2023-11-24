@@ -2,7 +2,9 @@ package com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
+import kotlinx.coroutines.launch
 
 
 class HalamanLoginMahasiswa(
@@ -12,7 +14,7 @@ class HalamanLoginMahasiswa(
     private var password = mutableStateOf("")
     private val kontrolLoginMahasiswa: KontrolLoginMahasiswa
 
-    init{
+    init {
         this.kontrolLoginMahasiswa = kontrolLoginMahasiswa
     }
 
@@ -21,20 +23,27 @@ class HalamanLoginMahasiswa(
     fun setNim(value: String) {
         nim.value = value
     }
+
     fun setPassword(value: String) {
         password.value = value
     }
+
     fun login(
         onFailed: (String) -> Unit
-    ){
-        if(nim.value.isEmpty() || password.value.isEmpty()){
+    ) {
+        if (nim.value.isEmpty() || password.value.isEmpty()) {
+            /**
+             *  CALL tampilkan pesan error
+             */
             onFailed("Semua data harus dimasukkan")
-        }else{
-            kontrolLoginMahasiswa.loginMahasiswa(
-                nim.value,
-                password.value,
-                onFailed
-            )
+        } else {
+            viewModelScope.launch {
+                kontrolLoginMahasiswa.login(
+                    nim.value,
+                    password.value,
+                    onFailed
+                )
+            }
         }
     }
 }
