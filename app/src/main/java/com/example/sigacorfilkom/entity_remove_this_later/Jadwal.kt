@@ -3,6 +3,7 @@ package com.example.sigacorfilkom.entity_remove_this_later
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CompletableDeferred
 import java.time.LocalDate
+import java.util.Calendar
 
 class Jadwal {
     private var perangkat: List<Perangkat> = listOf()
@@ -57,6 +58,72 @@ class Jadwal {
         }
 
         return daftarHari
+    }
+
+    suspend fun getDaftarSesi(
+        tanggal: Int,
+        bulan: Int,
+        tahun: Int,
+        idPerangkat: String
+    ): List<Sesi> {
+        val calendar = Calendar.getInstance()
+        calendar.set(tahun, bulan - 1, tanggal)
+        val timeMillis = calendar.timeInMillis
+        val formattedPickedDate = "${tanggal}:${bulan}:${tahun}"
+
+        val daftarSesi = ArrayList<Sesi>()
+
+        // get daftar sesi dari database
+        val waiterGetDaftarSesi = CompletableDeferred<Unit>()
+        FirebaseFirestore.getInstance()
+            .collection("sesi")
+            .get()
+            .addOnSuccessListener { valueSesi ->
+                valueSesi?.let { valueSesiNotNull ->
+                    valueSesiNotNull.documents.forEach { docSesi ->
+                        val sesi = Sesi(
+                            idPerangkat = idPerangkat,
+                            nomorSesi = (docSesi["nomorSesi"] as Long).toInt(),
+                            waktu = docSesi["waktu"] as String
+                        )
+
+                        //Get status booked karena jam
+                        sesi.checkBookedKarenaJam(timeMillis)
+
+                        daftarSesi.add(sesi)
+                    }
+                }
+                waiterGetDaftarSesi.complete(Unit)
+            }
+            .addOnFailureListener { e ->
+                waiterGetDaftarSesi.completeExceptionally(e)
+            }
+        waiterGetDaftarSesi.await()
+
+        //Get status booked karena reservasi
+        for (sesi in daftarSesi) {
+            val waiterGetReservasi = CompletableDeferred<Unit>()
+
+            FirebaseFirestore.getInstance()
+                .collection("reservasi")
+                .whereEqualTo("pickedDay", formattedPickedDate)
+                .whereEqualTo("idPerangkat", idPerangkat)
+                .whereEqualTo("nomorSesi", sesi.getSesiNumber())
+                .get()
+                .addOnSuccessListener { valueReservasi ->
+                    valueReservasi?.let { valueReservasiNotNull ->
+                        sesi.setBooked(valueReservasiNotNull.documents.isNotEmpty())
+                    }
+                    waiterGetReservasi.complete(Unit)
+                }
+                .addOnFailureListener { _ ->
+                    waiterGetReservasi.complete(Unit)
+                }
+
+            waiterGetReservasi.await()
+        }
+
+        return daftarSesi.toList().sortedBy { it.getSesiNumber() }
     }
 
     fun getPerangkat() = perangkat

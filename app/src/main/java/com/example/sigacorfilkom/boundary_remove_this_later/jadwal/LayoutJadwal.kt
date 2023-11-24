@@ -31,7 +31,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import com.example.sigacorfilkom.SnackbarHandler
 import kotlin.math.ceil
 
 
@@ -65,11 +63,8 @@ fun LayoutJadwal(
         12 to "Desember"
     )
     val width = LocalConfiguration.current.screenWidthDp - 32
-    val showBerhasilDialog = remember {
-        mutableStateOf(false)
-    }
 
-    if (showBerhasilDialog.value) {
+    if (viewModel.getShowReservasiBerhasilDialog().value) {
         AlertDialog(
             onDismissRequest = { /*TODO*/ },
             confirmButton = {
@@ -83,11 +78,7 @@ fun LayoutJadwal(
                         contentColor = Color.White
                     ),
                     onClick = {
-//                        navController.navigate("home_mahasiswa") {
-//                            popUpTo(navController.graph.id) {
-//                                inclusive = true
-//                            }
-//                        }
+                        viewModel.setShowReservasiBerhasilDialog(false)
                     }
                 ) {
                     Text(text = "OK")
@@ -117,7 +108,7 @@ fun LayoutJadwal(
     LaunchedEffect(key1 = viewModel.getPickedPerangkat().value) {
         viewModel.getPickedPerangkat().value?.let {
             viewModel.setPickedSesi(null)
-            viewModel.loadSesi()
+            viewModel.submitHariDanPerangkat()
         }
     }
 
@@ -136,14 +127,7 @@ fun LayoutJadwal(
                         .fillMaxWidth()
                         .padding(16.dp),
                     onClick = {
-                        viewModel.reservasi(
-                            onSuccess = {
-                                showBerhasilDialog.value = true
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
-                            }
-                        )
+                        viewModel.reservasi()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

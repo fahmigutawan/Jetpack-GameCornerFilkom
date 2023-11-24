@@ -1,9 +1,11 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.jadwal
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sigacorfilkom.SnackbarHandler
 import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
@@ -11,6 +13,7 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 class HalamanJadwal(
@@ -20,13 +23,14 @@ class HalamanJadwal(
 ) : ViewModel() {
     private var daftarHari = mutableStateListOf<Hari>()
     private var daftarPerangkat = mutableStateListOf<Perangkat>()
-    private var listSesi = mutableStateListOf<Sesi>()
+    private var daftarSesi = mutableStateListOf<Sesi>()
     private var pickedHari = mutableStateOf<Hari?>(null)
     private var pickedPerangkat = mutableStateOf<Perangkat?>(null)
     private var pickedSesi = mutableStateOf<Sesi?>(null)
     private val kontrolJadwal: KontrolJadwal
     private val kontrolReservasi: KontrolReservasi
     private val kontrolOtentikasi: KontrolOtentikasi
+    private val showReservasiBerhasilDialog = mutableStateOf(false)
 
     init {
         this.kontrolJadwal = kontrolJadwal
@@ -44,43 +48,73 @@ class HalamanJadwal(
         this.daftarPerangkat.addAll(daftarPerangkat)
     }
 
-    fun loadSesi() {
+    fun getShowReservasiBerhasilDialog(): MutableState<Boolean> {
+        return showReservasiBerhasilDialog
+    }
+
+    fun setShowReservasiBerhasilDialog(show: Boolean) {
+        showReservasiBerhasilDialog.value = show
+    }
+
+    fun submitHariDanPerangkat() {
         if (pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
-                kontrolJadwal.getSesi(
+                val mDaftarSesi = kontrolJadwal.getDaftarSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
                     idPerangkat = pickedPerangkat.value!!.getIdPerangkat()
-                ).collect {
-                    listSesi.clear()
-                    listSesi.addAll(it)
-                }
+                )
+
+                daftarSesi.clear()
+                daftarSesi.addAll(mDaftarSesi)
             }
         }
     }
 
-    fun reservasi(
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
-    ) {
-        kontrolReservasi.buatReservasi(
-            nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
-            nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
-            idPerangkat = pickedPerangkat.value?.getIdPerangkat() ?: "...",
-            tanggal = pickedHari.value?.getTanggal() ?: 0,
-            bulan = pickedHari.value?.getBulan() ?: 0,
-            tahun = pickedHari.value?.getTahun() ?: 0,
-            onSuccess = onSuccess,
-            onFailed = onFailed
-        )
+    fun reservasi() {
+        viewModelScope.launch {
+            try {
+                /**
+                 *  CALL   buatReservasi(nimPeminjam, nomorSesi, idPerangkat, tanggal, bulan, tahun)
+                 *  TUJUAN (C) KontrolRESERVASI
+                 *  RETURN boolean
+                 */
+                val hasilSimpan = kontrolReservasi.buatReservasi(
+                    nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
+                    nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
+                    idPerangkat = pickedPerangkat.value?.getIdPerangkat() ?: "...",
+                    tanggal = pickedHari.value?.getTanggal() ?: 0,
+                    bulan = pickedHari.value?.getBulan() ?: 0,
+                    tahun = pickedHari.value?.getTahun() ?: 0,
+                )
+
+                if(hasilSimpan) {
+                    /**
+                     *  CALL tampilkan sukses
+                     */
+                    setShowReservasiBerhasilDialog(true)
+                } else {
+                    /**
+                     *  CALL   tampilkan error
+                     */
+                    SnackbarHandler.showSnackbar("Gagal menyimpan reservasi")
+                }
+            } catch (e: Exception) {
+                /**
+                 *  CALL   tampilkan error
+                 */
+                SnackbarHandler.showSnackbar(e.message ?: "")
+            }
+        }
+
     }
 
     fun getListHari() = daftarHari
 
     fun getListPerangkat() = daftarPerangkat
 
-    fun getListSesi() = listSesi
+    fun getListSesi() = daftarSesi
 
     fun setPickedHari(value: Hari?) {
         pickedHari.value = value
