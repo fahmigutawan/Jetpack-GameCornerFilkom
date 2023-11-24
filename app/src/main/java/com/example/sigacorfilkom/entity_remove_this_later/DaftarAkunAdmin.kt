@@ -21,6 +21,7 @@ class DaftarAkunAdmin {
             .addOnSuccessListener { doc ->
                 if (doc.data == null) {
                     hasilValidasi.complete(false)
+                    return@addOnSuccessListener
                 }
 
                 if (admin.validatePassword(doc["password"] as String)) {
