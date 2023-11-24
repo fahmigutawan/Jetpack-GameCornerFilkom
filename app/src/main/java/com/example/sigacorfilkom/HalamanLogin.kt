@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.login
+package com.example.sigacorfilkom
 
 import androidx.lifecycle.ViewModel
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginAdmin

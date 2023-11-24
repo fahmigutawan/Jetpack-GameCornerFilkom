@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa
+package com.example.sigacorfilkom
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

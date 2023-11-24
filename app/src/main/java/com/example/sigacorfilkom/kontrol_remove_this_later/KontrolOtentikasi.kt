@@ -1,15 +1,11 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
-import com.example.sigacorfilkom.entity_remove_this_later.Admin
 import com.example.sigacorfilkom.entity_remove_this_later.Mahasiswa
 import com.google.firebase.firestore.FirebaseFirestore
 
 
 class KontrolOtentikasi {
     private var mahasiswa: Mahasiswa? = null
-    private var admin: Admin? = null
-
-
 
     fun registerMahasiswa(
         nim: String,
@@ -61,7 +57,4 @@ class KontrolOtentikasi {
             return
         }
     }
-
-    fun isAdmin() = admin != null
-
 }

@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa
+package com.example.sigacorfilkom
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -22,8 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.SnackbarHandler
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
