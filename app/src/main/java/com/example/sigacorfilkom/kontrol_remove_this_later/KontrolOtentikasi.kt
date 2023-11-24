@@ -114,4 +114,12 @@ class KontrolOtentikasi {
     fun getNamaMahasiswa() = mahasiswa?.getNama() ?: ""
 
     fun isAdmin() = admin != null
+
+    fun tampilkanHalamanLoginMahasiswa() {
+
+    }
+
+    fun tampilkanHalamanLoginAdmin() {
+
+    }
 }

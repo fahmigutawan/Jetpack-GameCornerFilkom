@@ -22,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
@@ -68,10 +69,10 @@ lateinit var _showSnackbarWithAction: (
 class AktivitasUtama : ComponentActivity() {
     private lateinit var kontrolJadwal: KontrolJadwal
     private val kontrolOtentikasi = KontrolOtentikasi()
-    private val kontrolReservasi = KontrolReservasi(kontrolOtentikasi = kontrolOtentikasi)
     private lateinit var kontrolLoginMahasiswa: KontrolLoginMahasiswa
 
     private lateinit var halamanJadwal: HalamanJadwal
+    private lateinit var halamanHistoryMahasiswa: HalamanHistoryMahasiswa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,6 +95,7 @@ class AktivitasUtama : ComponentActivity() {
             kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
             val kontrolUtamaMahasiswa = KontrolUtamaMahasiswa(navController)
             val kontrolUtamaAdmin = KontrolUtamaAdmin(navController)
+            val kontrolReservasi = KontrolReservasi(navController, kontrolOtentikasi = kontrolOtentikasi, this)
 
             /**
              * Create seluruh halaman
@@ -107,6 +109,7 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
+            this.halamanHistoryMahasiswa = halamanHistoryMahasiswa
 
             val halamanJadwal: HalamanJadwal by viewModels {
                 viewModelFactory {
@@ -288,7 +291,9 @@ class AktivitasUtama : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        navController.navigate("history_mahasiswa")
+                                        lifecycleScope.launch {
+                                            kontrolReservasi.tampilkanHalamanRiwayatReservasi()
+                                        }
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_history_mhs),
@@ -360,5 +365,9 @@ class AktivitasUtama : ComponentActivity() {
 
     fun getHalamanJadwal(): HalamanJadwal {
         return halamanJadwal
+    }
+
+    fun getHalamanHistoryMahasiswa(): HalamanHistoryMahasiswa {
+        return halamanHistoryMahasiswa
     }
 }

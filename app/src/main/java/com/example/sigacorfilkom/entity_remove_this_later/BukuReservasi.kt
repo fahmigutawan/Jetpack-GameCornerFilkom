@@ -2,7 +2,10 @@ package com.example.sigacorfilkom.entity_remove_this_later
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CompletableDeferred
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 class BukuReservasi {
@@ -108,7 +111,10 @@ class BukuReservasi {
         FirebaseFirestore.getInstance()
             .collection("reservasi")
             .whereEqualTo("nimPeminjam", nimPeminjam)
-            .whereEqualTo("pickedDay", "${hariIni.dayOfMonth}:${hariIni.monthValue}:${hariIni.year}")
+            .whereEqualTo(
+                "pickedDay",
+                "${hariIni.dayOfMonth}:${hariIni.monthValue}:${hariIni.year}"
+            )
             .get()
             .addOnSuccessListener {
                 hasilJumlahReservasi.complete(it.documents.size)
@@ -118,5 +124,53 @@ class BukuReservasi {
             }
 
         return hasilJumlahReservasi.await()
+    }
+
+    suspend fun getDaftarReservasiForMahasiswa(nimPeminjam: String): List<Reservasi> {
+        val hasilDaftarReservasi = CompletableDeferred<List<Reservasi>>()
+
+        val nowMillis = System.currentTimeMillis()
+        val instantNow = Instant.ofEpochMilli(nowMillis)
+        val localDateNow = instantNow.atZone(ZoneId.systemDefault()).toLocalDate()
+
+        val listDate = listOf(
+            localDateNow,
+            localDateNow.plusDays(1),
+            localDateNow.plusDays(2)
+        )
+
+        FirebaseFirestore
+            .getInstance()
+            .collection("reservasi")
+            .whereEqualTo("nimPeminjam", nimPeminjam)
+            .whereIn("pickedDay", listDate.map {
+                "${it.dayOfMonth}:${it.monthValue}:${it.year}"
+            })
+            .orderBy("pickedDay")
+            .get()
+            .addOnSuccessListener {
+                val daftarReservasi = it.documents.map { doc ->
+                    val format = DateTimeFormatter.ofPattern("dd:MM:yyyy")
+                    val parsedDate = LocalDate.parse(doc["pickedDay"] as String, format)
+
+                    Reservasi(
+                        reservasiId = doc["idReservasi"] as String,
+                        nimPeminjam = doc["nimPeminjam"] as String,
+                        status = doc["status"] as String,
+                        nomorSesi = (doc["nomorSesi"] as Long).toInt(),
+                        idPerangkat = doc["idPerangkat"] as String,
+                        tanggal = parsedDate.dayOfMonth,
+                        bulan = parsedDate.monthValue,
+                        tahun = parsedDate.year
+                    )
+                }
+
+                hasilDaftarReservasi.complete(daftarReservasi)
+            }
+            .addOnFailureListener { e ->
+                hasilDaftarReservasi.completeExceptionally(e)
+            }
+
+        return hasilDaftarReservasi.await()
     }
 }

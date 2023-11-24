@@ -1,7 +1,10 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
+import androidx.navigation.NavController
+import com.example.sigacorfilkom.AktivitasUtama
 import com.example.sigacorfilkom.entity_remove_this_later.BukuReservasi
+import com.example.sigacorfilkom.entity_remove_this_later.DaftarPerangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -14,12 +17,18 @@ import java.time.format.DateTimeFormatter
 
 
 class KontrolReservasi(
-    kontrolOtentikasi: KontrolOtentikasi
+    navigasi: NavController,
+    kontrolOtentikasi: KontrolOtentikasi,
+    aktivitas: AktivitasUtama
 ) {
     private val kontrolOtentikasi: KontrolOtentikasi
+    private val navigasi: NavController
+    private val aktivitas: AktivitasUtama
 
     init {
         this.kontrolOtentikasi = kontrolOtentikasi
+        this.navigasi = navigasi
+        this.aktivitas = aktivitas
     }
 
     suspend fun buatReservasi(
@@ -111,49 +120,6 @@ class KontrolReservasi(
         awaitClose()
     }
 
-    fun getReservasiTerbaruForMahasiswa() = callbackFlow {
-        val nowMillis = System.currentTimeMillis()
-        val instantNow = Instant.ofEpochMilli(nowMillis)
-        val localDateNow = instantNow.atZone(ZoneId.systemDefault()).toLocalDate()
-
-        val listDate = listOf(
-            localDateNow,
-            localDateNow.plusDays(1),
-            localDateNow.plusDays(2)
-        )
-
-        FirebaseFirestore
-            .getInstance()
-            .collection("reservasi")
-            .whereEqualTo("nimPeminjam", kontrolOtentikasi.getNimMahasiswa())
-            .whereIn("pickedDay", listDate.map {
-                "${it.dayOfMonth}:${it.monthValue}:${it.year}"
-            })
-            .orderBy("pickedDay")
-            .get()
-            .addOnSuccessListener {
-                trySend(
-                    it.documents.map { doc ->
-                        val format = DateTimeFormatter.ofPattern("dd:MM:yyyy")
-                        val parsedDate = LocalDate.parse(doc["pickedDay"] as String, format)
-
-                        Reservasi(
-                            reservasiId = doc["idReservasi"] as String,
-                            nimPeminjam = doc["nimPeminjam"] as String,
-                            status = doc["status"] as String,
-                            nomorSesi = (doc["nomorSesi"] as Long).toInt(),
-                            idPerangkat = doc["idPerangkat"] as String,
-                            tanggal = parsedDate.dayOfMonth,
-                            bulan = parsedDate.monthValue,
-                            tahun = parsedDate.year
-                        )
-                    }
-                )
-            }
-
-        awaitClose()
-    }
-
     fun updateStatusReservasi(
         idReservasi: String,
         status: String,
@@ -177,5 +143,45 @@ class KontrolReservasi(
                 onFailed(it.message.toString())
                 return@addOnFailureListener
             }
+    }
+
+    suspend fun tampilkanHalamanRiwayatReservasi() {
+        val halamanHistoryMahasiswa = aktivitas.getHalamanHistoryMahasiswa()
+        val nimMahasiswa = Otentikasi.getMahasiswa()!!.getNim()
+
+        /**
+         *  CALL   <<create>>
+         *  TUJUAN (E) DaftarPerangkat
+         */
+        val daftarPerangkatEntity = DaftarPerangkat()
+
+        /**
+         *  CALL   getDaftarPerangkat()
+         *  TUJUAN (E) DaftarPerangkat
+         *  RETURN daftar perangkat
+         */
+        val daftarPerangkat = daftarPerangkatEntity.getDaftarPerangkat()
+
+
+        /**
+         *  CALL   <<create>>
+         *  Tujuan (E) BukuReservasi
+         */
+        val bukuReservasi = BukuReservasi()
+
+        /**
+         *  CALL   getDaftarReservasiForMahasiswa(nimMahasiswa)
+         *  TUJUAN (E) BukuReservasi
+         *  RETURN daftar reservasi
+         */
+        val daftarReservasi = bukuReservasi.getDaftarReservasiForMahasiswa(nimMahasiswa)
+
+        /**
+         *  CALL   tampilkan
+         *  TUJUAN HalamanHistoryMahasiswa
+         */
+        halamanHistoryMahasiswa.setDaftarNamaPerangkat(daftarPerangkat)
+        halamanHistoryMahasiswa.setDaftarReservasi(daftarReservasi)
+        navigasi.navigate("history_mahasiswa")
     }
 }
