@@ -40,6 +40,7 @@ import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLo
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.HalamanLoginMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.HalamanRegisterMahasiswa
@@ -68,7 +69,6 @@ lateinit var _showSnackbarWithAction: (
 
 
 class AktivitasUtama : ComponentActivity() {
-    private lateinit var kontrolJadwal: KontrolJadwal
     private val kontrolOtentikasi = KontrolOtentikasi()
     private lateinit var kontrolLoginMahasiswa: KontrolLoginMahasiswa
 
@@ -92,7 +92,7 @@ class AktivitasUtama : ComponentActivity() {
             /**
              * Create seluruh kontrol
              */
-            kontrolJadwal = KontrolJadwal(navController, this)
+            val kontrolJadwal = KontrolJadwal(navController, this)
             kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
             val kontrolLoginAdmin = KontrolLoginAdmin(navController)
             val kontrolUtamaMahasiswa = KontrolUtamaMahasiswa(navController)
@@ -242,7 +242,7 @@ class AktivitasUtama : ComponentActivity() {
                 },
                 bottomBar = {
                     if (showBottomBar.value) {
-                        if (kontrolOtentikasi.isAdmin()) {
+                        if (Otentikasi.getAdmin() != null) {
                             BottomAppBar {
                                 Row(
                                     modifier = Modifier.fillMaxSize(),
@@ -262,7 +262,7 @@ class AktivitasUtama : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        navController.navigate("tutup_jadwal_admin")
+                                        kontrolJadwal.tampilkanHalamanTutupJadwal()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_tutup_admin),

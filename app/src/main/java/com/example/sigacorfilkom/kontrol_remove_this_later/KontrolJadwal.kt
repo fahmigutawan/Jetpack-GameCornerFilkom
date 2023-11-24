@@ -71,6 +71,10 @@ class KontrolJadwal(navigasi: NavController, aktivitas: AktivitasUtama) {
 //        }
 //    }
 
+    fun tampilkanHalamanTutupJadwal() {
+        navigasi.navigate("tutup_jadwal_admin")
+    }
+
     fun tutupJadwal(
         dateMillis: Long,
         alasan: String,
