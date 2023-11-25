@@ -21,13 +21,17 @@ class KontrolOtentikasi(
     fun loginMahasiswa(
         nim: String,
         password: String,
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
+        onSuccess: () -> Unit
     ) {
         val mahasiswa = Mahasiswa(
             nim,
             password
         )
+
+        if(!mahasiswa.validateNimIsNumber()){
+            kontrolSnackbar.showSnackbar("NIM hanya boleh angka")
+            return
+        }
 
         FirebaseFirestore
             .getInstance()
@@ -36,7 +40,7 @@ class KontrolOtentikasi(
             .get()
             .addOnSuccessListener { doc ->
                 if (doc.data == null) {
-                    onFailed("NIM atau Password Salah atau Tidak Terdaftar")
+                    kontrolSnackbar.showSnackbar("NIM atau Password Salah atau Tidak Terdaftar")
                     return@addOnSuccessListener
                 }
 
@@ -46,12 +50,12 @@ class KontrolOtentikasi(
                     onSuccess()
                     return@addOnSuccessListener
                 } else {
-                    onFailed("NIM atau Password Salah atau Tidak Terdaftar")
+                    kontrolSnackbar.showSnackbar("NIM atau Password Salah atau Tidak Terdaftar")
                     return@addOnSuccessListener
                 }
             }
             .addOnFailureListener {
-                onFailed(it.message.toString())
+                kontrolSnackbar.showSnackbar(it.message.toString())
                 return@addOnFailureListener
             }
     }
@@ -134,7 +138,6 @@ class KontrolOtentikasi(
             .addOnSuccessListener {
                 if (it.data != null) {
                     kontrolSnackbar.showSnackbar("Akun sudah terdaftar, pakai identitas lain")
-                    return@addOnSuccessListener
                 } else {
                     FirebaseFirestore.getInstance()
                         .collection("mahasiswa")
@@ -143,7 +146,6 @@ class KontrolOtentikasi(
                         .addOnSuccessListener {
                             this.mahasiswa = mahasiswa
                             onSuccess()
-                            return@addOnSuccessListener
                         }
                         .addOnFailureListener {
                             kontrolSnackbar.showSnackbar(it.message.toString())
