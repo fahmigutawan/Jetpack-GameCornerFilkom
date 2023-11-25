@@ -25,6 +25,11 @@ class KontrolJadwal(
     kontrolSnackbar: KontrolSnackbar
 ) {
     private var jadwal = Jadwal()
+    private val kontrolSnackbar: KontrolSnackbar
+
+    init {
+        this.kontrolSnackbar = kontrolSnackbar
+    }
 
     fun getHari() = jadwal.getHari()
 
@@ -110,8 +115,6 @@ class KontrolJadwal(
     fun tutupJadwal(
         dateMillis: Long,
         alasan: String,
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
     ) {
         val instant = Instant.ofEpochMilli(dateMillis)
         val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
@@ -121,17 +124,16 @@ class KontrolJadwal(
             .getInstance()
             .collection("jadwal_tutup")
             .document(pickedDay)
-            .set(
-                mapOf(
+            .set(mapOf(
                     "waktu" to pickedDay,
                     "alasan" to alasan
-                )
-            ).addOnSuccessListener {
-                onSuccess()
+                ))
+            .addOnSuccessListener {
+                kontrolSnackbar.showSnackbar("Tanggal berhasil ditutup")
                 return@addOnSuccessListener
             }
             .addOnFailureListener {
-                onFailed(it.message.toString())
+                kontrolSnackbar.showSnackbar(it.message.toString())
                 return@addOnFailureListener
             }
     }

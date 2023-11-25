@@ -45,4 +45,5 @@ class KontrolNavigasi(
 
     fun navigasiKeJadwal() = navController.navigate("jadwal_mahasiswa")
 
+    fun navigasiKeTutupJadwal() = navController.navigate("tutup_jadwal_admin")
 }

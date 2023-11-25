@@ -4,14 +4,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolSnackbar
 import java.util.Date
 
 class HalamanTutupJadwalAdmin(
     kontrolJadwal: KontrolJadwal,
-    kontrolNavigasi: KontrolNavigasi
+    kontrolNavigasi: KontrolNavigasi,
+    kontrolSnackbar: KontrolSnackbar
 ) : ViewModel() {
     private val alasan = mutableStateOf("")
     private val kontrolJadwal:KontrolJadwal
+    private val kontrolSnackbar:KontrolSnackbar
+
+    init {
+        this.kontrolSnackbar = kontrolSnackbar
+    }
 
     init {
         this.kontrolJadwal = kontrolJadwal
@@ -21,19 +28,20 @@ class HalamanTutupJadwalAdmin(
         alasan.value = value
     }
 
+    fun validate(dateMillis: Long?) = dateMillis != null && alasan.value.isNotEmpty()
+
     fun tutupJadwal(
         dateMillis: Long?,
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
     ) {
-        if(dateMillis == null || alasan.value.isEmpty()){
-            onFailed("Semua data harus diisi")
+        if(!validate(dateMillis)){
+            kontrolSnackbar.showSnackbar("Semua data harus diisi")
         }else{
-            kontrolJadwal.tutupJadwal(
-                dateMillis,
-                alasan.value,
-                onSuccess, onFailed
-            )
+            dateMillis?.let {
+                kontrolJadwal.tutupJadwal(
+                    it,
+                    alasan.value
+                )
+            }
         }
     }
 

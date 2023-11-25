@@ -76,13 +76,7 @@ fun LayoutTutupJadwalAdmin(
                     .fillMaxWidth(),
                 onClick = {
                     viewModel.tutupJadwal(
-                        datePickerState.selectedDateMillis,
-                        onSuccess = {
-                            SnackbarHandler.showSnackbar("Tanggal berhasil ditutup")
-                        },
-                        onFailed = {
-                            SnackbarHandler.showSnackbar(it)
-                        }
+                        datePickerState.selectedDateMillis
                     )
                 },
                 shape = RoundedCornerShape(8.dp),

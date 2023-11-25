@@ -122,7 +122,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginMahasiswa(
-                            kontrolOtentikasi,kontrolNavigasi
+                            kontrolOtentikasi,kontrolNavigasi, kontrolSnackbar
                         )
                     }
                 }
@@ -147,7 +147,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanRegisterMahasiswa(
-                            kontrolOtentikasi,kontrolNavigasi
+                            kontrolOtentikasi,kontrolNavigasi, kontrolSnackbar
                         )
                     }
                 }
@@ -212,7 +212,7 @@ class AktivitasUtama : ComponentActivity() {
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
                                     IconButton(onClick = {
-                                        navController.navigate("home_admin")
+                                        kontrolNavigasi.navigasiKeHomeAdmin()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.iconhome),
@@ -224,7 +224,7 @@ class AktivitasUtama : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        navController.navigate("tutup_jadwal_admin")
+                                        kontrolNavigasi.navigasiKeTutupJadwal()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_tutup_admin),
