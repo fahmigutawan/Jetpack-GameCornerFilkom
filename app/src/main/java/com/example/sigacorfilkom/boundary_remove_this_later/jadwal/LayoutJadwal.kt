@@ -135,7 +135,7 @@ fun LayoutJadwal(
                         .fillMaxWidth()
                         .padding(16.dp),
                     onClick = {
-                        viewModel.reservasi(
+                        viewModel.buatReservasi(
                             onSuccess = {
                                 showBerhasilDialog.value = true
                             },

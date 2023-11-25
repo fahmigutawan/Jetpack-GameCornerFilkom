@@ -78,12 +78,10 @@ fun LayoutUtamaAdmin(
                                 viewModel.getPickedReservasi()?.getReservasiId() ?: "",
                                 "Gagal",
                                 onSuccess = {
-                                    SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
                                     viewModel.setPickedReservasi(null)
                                 },
                                 onFailed = {
-                                    SnackbarHandler.showSnackbar(it)
                                     viewModel.setPickedReservasi(null)
                                 }
                             )
@@ -104,12 +102,10 @@ fun LayoutUtamaAdmin(
                                 viewModel.getPickedReservasi()?.getReservasiId() ?: "",
                                 "Divalidasi",
                                 onSuccess = {
-                                    SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
                                     viewModel.setPickedReservasi(null)
                                 },
                                 onFailed = {
-                                    SnackbarHandler.showSnackbar(it)
                                     viewModel.setPickedReservasi(null)
                                 }
                             )

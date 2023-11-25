@@ -64,7 +64,7 @@ class HalamanJadwal(
         }
     }
 
-    fun reservasi(
+    fun buatReservasi(
         onSuccess:() -> Unit,
         onFailed:(String) -> Unit
     ){

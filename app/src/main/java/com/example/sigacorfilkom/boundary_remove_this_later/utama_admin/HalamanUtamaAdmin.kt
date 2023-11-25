@@ -57,7 +57,7 @@ class HalamanUtamaAdmin(
         idReservasi: String,
         status: String,
         onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
+        onFailed: () -> Unit
     ) {
         kontrolReservasi.updateStatusReservasi(
             idReservasi,

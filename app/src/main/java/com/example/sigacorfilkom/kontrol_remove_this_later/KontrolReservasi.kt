@@ -23,9 +23,11 @@ class KontrolReservasi(
     kontrolSnackbar: KontrolSnackbar
 ) {
     private val kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolSnackbar:KontrolSnackbar
 
     init {
         this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolSnackbar = kontrolSnackbar
     }
 
     fun buatReservasi(
@@ -228,7 +230,7 @@ class KontrolReservasi(
         idReservasi: String,
         status: String,
         onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
+        onFailed: () -> Unit
     ) {
         FirebaseFirestore
             .getInstance()
@@ -240,11 +242,13 @@ class KontrolReservasi(
                 )
             )
             .addOnSuccessListener {
+                kontrolSnackbar.showSnackbar("Berhasil merubah status")
                 onSuccess()
                 return@addOnSuccessListener
             }
             .addOnFailureListener {
-                onFailed(it.message.toString())
+                kontrolSnackbar.showSnackbar(it.message.toString())
+                onFailed()
                 return@addOnFailureListener
             }
     }
