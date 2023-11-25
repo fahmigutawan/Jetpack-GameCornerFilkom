@@ -145,7 +145,13 @@ class KontrolOtentikasi(
                             onSuccess()
                             return@addOnSuccessListener
                         }
+                        .addOnFailureListener {
+                            kontrolSnackbar.showSnackbar(it.message.toString())
+                        }
                 }
+            }
+            .addOnFailureListener {
+                kontrolSnackbar.showSnackbar(it.message.toString())
             }
     }
 
