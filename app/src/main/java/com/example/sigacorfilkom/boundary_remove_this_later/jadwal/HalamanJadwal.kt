@@ -10,7 +10,7 @@ import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.KontrolRegisterMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -19,7 +19,7 @@ import java.lang.Exception
 class HalamanJadwal(
     kontrolJadwal: KontrolJadwal,
     kontrolReservasi: KontrolReservasi,
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolRegisterMahasiswa: KontrolRegisterMahasiswa
 ) : ViewModel() {
     private var daftarHari = mutableStateListOf<Hari>()
     private var daftarPerangkat = mutableStateListOf<Perangkat>()
@@ -29,13 +29,13 @@ class HalamanJadwal(
     private var pickedSesi = mutableStateOf<Sesi?>(null)
     private val kontrolJadwal: KontrolJadwal
     private val kontrolReservasi: KontrolReservasi
-    private val kontrolOtentikasi: KontrolOtentikasi
+    private val kontrolRegisterMahasiswa: KontrolRegisterMahasiswa
     private val showReservasiBerhasilDialog = mutableStateOf(false)
 
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolReservasi = kontrolReservasi
-        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolRegisterMahasiswa = kontrolRegisterMahasiswa
     }
 
     fun setDaftarHari(daftarHari: List<Hari>) {
@@ -59,14 +59,13 @@ class HalamanJadwal(
     fun submitHariDanPerangkat() {
         if (pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
+                daftarSesi.clear()
                 val mDaftarSesi = kontrolJadwal.getDaftarSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
                     idPerangkat = pickedPerangkat.value!!.getIdPerangkat()
                 )
-
-                daftarSesi.clear()
                 daftarSesi.addAll(mDaftarSesi)
             }
         }

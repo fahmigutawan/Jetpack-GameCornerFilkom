@@ -49,7 +49,7 @@ fun LayoutRegisterMahasiswa(
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.getNim(),
+                    value = viewModel.getNim().value,
                     onValueChange = { viewModel.setNim(it) },
                     placeholder = {
                         Text(text = "NIM")
@@ -58,7 +58,7 @@ fun LayoutRegisterMahasiswa(
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.getNama(),
+                    value = viewModel.getNama().value,
                     onValueChange = { viewModel.setNama(it) },
                     placeholder = {
                         Text(text = "Nama")
@@ -67,7 +67,7 @@ fun LayoutRegisterMahasiswa(
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.getPassword(),
+                    value = viewModel.getPassword().value,
                     onValueChange = { viewModel.setPassword(it) },
                     placeholder = {
                         Text(text = "Password")
@@ -88,18 +88,9 @@ fun LayoutRegisterMahasiswa(
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        viewModel.register(
-                            onSuccess = {
-//                                navController.navigate("home_mahasiswa") {
-//                                    popUpTo(navController.graph.id) {
-//                                        inclusive = true
-//                                    }
-//                                }
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
-                            }
-                        )
+                        viewModel.submit {
+                            SnackbarHandler.showSnackbar(it)
+                        }
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

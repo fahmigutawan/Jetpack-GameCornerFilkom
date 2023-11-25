@@ -2,7 +2,8 @@ package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.AktivitasUtama
+import com.example.sigacorfilkom.SistemGameCorner
+import com.example.sigacorfilkom.KontrolRegisterMahasiswa
 import com.example.sigacorfilkom.entity_remove_this_later.BukuReservasi
 import com.example.sigacorfilkom.entity_remove_this_later.DaftarPerangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
@@ -18,15 +19,15 @@ import java.time.format.DateTimeFormatter
 
 class KontrolReservasi(
     navigasi: NavController,
-    kontrolOtentikasi: KontrolOtentikasi,
-    aktivitas: AktivitasUtama
+    kontrolRegisterMahasiswa: KontrolRegisterMahasiswa,
+    aktivitas: SistemGameCorner
 ) {
-    private val kontrolOtentikasi: KontrolOtentikasi
+    private val kontrolRegisterMahasiswa: KontrolRegisterMahasiswa
     private val navigasi: NavController
-    private val aktivitas: AktivitasUtama
+    private val aktivitas: SistemGameCorner
 
     init {
-        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolRegisterMahasiswa = kontrolRegisterMahasiswa
         this.navigasi = navigasi
         this.aktivitas = aktivitas
     }

@@ -1,7 +1,7 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.otentikasi
 
 import com.example.sigacorfilkom.entity_remove_this_later.Admin
-import com.example.sigacorfilkom.entity_remove_this_later.Mahasiswa
+import com.example.sigacorfilkom.Mahasiswa
 
 class Otentikasi {
     companion object {

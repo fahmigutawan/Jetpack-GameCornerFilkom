@@ -1,7 +1,7 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.AktivitasUtama
+import com.example.sigacorfilkom.SistemGameCorner
 import com.example.sigacorfilkom.entity_remove_this_later.DaftarPerangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Jadwal
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
@@ -9,10 +9,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.time.Instant
 import java.time.ZoneId
 
-class KontrolJadwal(navigasi: NavController, aktivitas: AktivitasUtama) {
+class KontrolJadwal(navigasi: NavController, aktivitas: SistemGameCorner) {
     private lateinit var jadwal: Jadwal
     private val navigasi: NavController
-    private val aktivitas: AktivitasUtama
+    private val aktivitas: SistemGameCorner
 
     init {
         this.navigasi = navigasi

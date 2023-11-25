@@ -35,9 +35,7 @@ import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.HalamanJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.HalamanLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
-import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.HalamanLoginMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
@@ -49,7 +47,6 @@ import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.Hala
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginAdmin
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa
@@ -64,10 +61,7 @@ lateinit var _showSnackbarWithAction: (
 ) -> Unit
 
 
-class AktivitasUtama : ComponentActivity() {
-    private val kontrolOtentikasi = KontrolOtentikasi()
-    private lateinit var kontrolLoginMahasiswa: KontrolLoginMahasiswa
-
+class SistemGameCorner : ComponentActivity() {
     private lateinit var halamanJadwal: HalamanJadwal
     private lateinit var halamanHistoryMahasiswa: HalamanHistoryMahasiswa
 
@@ -89,12 +83,17 @@ class AktivitasUtama : ComponentActivity() {
              * Create seluruh kontrol
              */
             val kontrolJadwal = KontrolJadwal(navController, this)
-            kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
+            val kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
             val kontrolLoginAdmin = KontrolLoginAdmin(navController)
             val kontrolUtamaMahasiswa = KontrolUtamaMahasiswa(navController)
             val kontrolUtamaAdmin = KontrolUtamaAdmin(navController)
+            val kontrolRegisterMahasiswa = KontrolRegisterMahasiswa(navController)
             val kontrolReservasi =
-                KontrolReservasi(navController, kontrolOtentikasi = kontrolOtentikasi, this)
+                KontrolReservasi(
+                    navController,
+                    kontrolRegisterMahasiswa = kontrolRegisterMahasiswa,
+                    this
+                )
 
             /**
              * Create seluruh halaman
@@ -114,7 +113,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanJadwal(
-                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi
+                            kontrolJadwal, kontrolReservasi, kontrolRegisterMahasiswa
                         )
                     }
                 }
@@ -132,7 +131,8 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginMahasiswa(
-                            kontrolLoginMahasiswa
+                            kontrolLoginMahasiswa,
+                            kontrolRegisterMahasiswa
                         )
                     }
                 }
@@ -157,7 +157,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanRegisterMahasiswa(
-                            kontrolOtentikasi
+                            kontrolRegisterMahasiswa
                         )
                     }
                 }

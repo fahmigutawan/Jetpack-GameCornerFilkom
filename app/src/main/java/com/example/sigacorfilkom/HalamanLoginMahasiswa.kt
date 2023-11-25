@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa
+package com.example.sigacorfilkom
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,14 +8,17 @@ import kotlinx.coroutines.launch
 
 
 class HalamanLoginMahasiswa(
-    kontrolLoginMahasiswa: KontrolLoginMahasiswa
+    kontrolLoginMahasiswa: KontrolLoginMahasiswa,
+    kontrolRegisterMahasiswa: KontrolRegisterMahasiswa
 ) : ViewModel() {
     private var nim = mutableStateOf("")
     private var password = mutableStateOf("")
     private val kontrolLoginMahasiswa: KontrolLoginMahasiswa
+    private val kontrolRegisterMahasiswa: KontrolRegisterMahasiswa
 
     init {
         this.kontrolLoginMahasiswa = kontrolLoginMahasiswa
+        this.kontrolRegisterMahasiswa = kontrolRegisterMahasiswa
     }
 
     fun getNim() = nim
@@ -45,5 +48,16 @@ class HalamanLoginMahasiswa(
                 )
             }
         }
+    }
+
+    /**
+     *  EVENT register
+     */
+    fun register() {
+        /**
+         *  CALL   tampilkanRegisterMahasiswa()
+         *  TUJUAN (C) KontrolRegisterMahasiswa
+         */
+        kontrolRegisterMahasiswa.tampilkanRegisterMahasiswa()
     }
 }

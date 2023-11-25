@@ -13,7 +13,7 @@
         android:theme="@style/Theme.SigacorFilkom"
         tools:targetApi="31">
         <activity
-            android:name=".AktivitasUtama"
+            android:name=".SistemGameCorner"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SigacorFilkom">
