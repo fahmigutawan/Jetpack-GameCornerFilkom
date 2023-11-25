@@ -1,22 +1,19 @@
-package com.example.sigacorfilkom.entity_remove_this_later
+package com.example.sigacorfilkom
 
+import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CompletableDeferred
 
 class DaftarPerangkat {
     suspend fun getDaftarPerangkat(): List<Perangkat> {
-        val hasilDaftarPerangkat = CompletableDeferred<List<Perangkat>>()
+        val daftarPerangkat: MutableList<Perangkat> = mutableListOf()
 
+        val callAsyncWaiter = CompletableDeferred<Unit>()
         FirebaseFirestore.getInstance()
             .collection("perangkat")
             .orderBy("nama")
             .get()
             .addOnSuccessListener{ value ->
-                /**
-                 * Buat penampung daftar perangkat
-                 */
-                val daftarPerangkat: MutableList<Perangkat> = mutableListOf()
-
                 value?.let {
                     /**
                      * LOOP Data Perangkat
@@ -30,23 +27,16 @@ class DaftarPerangkat {
                             idPerangkat = doc["idPerangkat"] as String,
                             nama = doc["nama"] as String
                         )
-
-                        /**
-                         * tambahkan perangkat ke daftar perangkat
-                         */
                         daftarPerangkat.add(perangkat)
                     }
                 }
-
-                /**
-                 * beri informasi proses asinkron get perangkat selesai
-                 */
-                hasilDaftarPerangkat.complete(daftarPerangkat)
+                callAsyncWaiter.complete(Unit)
             }
             .addOnFailureListener {e ->
-                hasilDaftarPerangkat.completeExceptionally(e)
+                callAsyncWaiter.completeExceptionally(e)
             }
+        callAsyncWaiter.await()
 
-        return hasilDaftarPerangkat.await()
+        return daftarPerangkat
     }
 }

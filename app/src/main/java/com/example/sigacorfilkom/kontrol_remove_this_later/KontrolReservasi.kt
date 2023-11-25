@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import com.example.sigacorfilkom.SistemGameCorner
 import com.example.sigacorfilkom.KontrolRegisterMahasiswa
 import com.example.sigacorfilkom.entity_remove_this_later.BukuReservasi
-import com.example.sigacorfilkom.entity_remove_this_later.DaftarPerangkat
+import com.example.sigacorfilkom.DaftarPerangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query

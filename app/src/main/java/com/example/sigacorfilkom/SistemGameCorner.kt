@@ -31,8 +31,6 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.HalamanHistoryMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.HalamanJadwal
-import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
@@ -43,7 +41,6 @@ import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.HalamanU
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUtamaAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa

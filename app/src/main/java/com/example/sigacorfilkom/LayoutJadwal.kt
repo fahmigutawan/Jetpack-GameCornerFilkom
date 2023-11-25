@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.jadwal
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

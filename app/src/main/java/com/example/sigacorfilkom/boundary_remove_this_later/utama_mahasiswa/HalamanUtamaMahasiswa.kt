@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.KontrolJadwal
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -33,8 +33,15 @@ class HalamanUtamaMahasiswa(
         tahun.value = now.year.toString()
     }
 
+    /**
+     *  EVENT lihatJadwal
+     */
     fun lihatJadwal() {
         viewModelScope.launch {
+            /**
+             *  CALL   tampilkanHalamanJadwal()
+             *  TUJUAN (C) KontrolJadwal
+             */
             kontrolJadwal.tampilkanHalamanJadwal()
         }
     }

@@ -1,5 +1,7 @@
-package com.example.sigacorfilkom.entity_remove_this_later
+package com.example.sigacorfilkom
 
+import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
+import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CompletableDeferred
 import java.time.LocalDate
@@ -25,7 +27,7 @@ class Jadwal {
                 }
 
                 else -> {
-                    val waiter = CompletableDeferred<Unit>()
+                    val callAsyncWaiter = CompletableDeferred<Unit>()
                     FirebaseFirestore
                         .getInstance()
                         .collection("jadwal_tutup")
@@ -38,15 +40,19 @@ class Jadwal {
                                 isDitutup = true
                                 alasanDitutup = it["alasan"] as String
                             }
-                            waiter.complete(Unit)
+                            callAsyncWaiter.complete(Unit)
                         }
                         .addOnFailureListener {
-                            waiter.complete(Unit)
+                            callAsyncWaiter.complete(Unit)
                         }
-                    waiter.await()
+                    callAsyncWaiter.await()
                 }
             }
 
+            /**
+             *  CALL   <<create>>
+             *  TUJUAN (E) Hari
+             */
             val hari = Hari(
                 tanggal = localDate.dayOfMonth,
                 bulan = localDate.month.value,

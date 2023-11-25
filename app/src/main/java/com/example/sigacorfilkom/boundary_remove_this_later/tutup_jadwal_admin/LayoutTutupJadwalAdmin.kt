@@ -20,9 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
