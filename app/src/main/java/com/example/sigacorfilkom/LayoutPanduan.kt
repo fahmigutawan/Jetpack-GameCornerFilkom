@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.panduan
+package com.example.sigacorfilkom
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement

@@ -5,25 +5,30 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import com.example.sigacorfilkom.KontrolJadwal
+import com.example.sigacorfilkom.KontrolPanduan
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class HalamanUtamaMahasiswa(
     kontrolJadwal: KontrolJadwal,
-    kontrolUtamaMahasiswa: KontrolUtamaMahasiswa
+    kontrolUtamaMahasiswa: KontrolUtamaMahasiswa,
+    kontrolPanduan: KontrolPanduan
 ) : ViewModel() {
 
     private val namaMahasiswa = mutableStateOf("")
     private val tanggal = mutableStateOf("")
     private val bulan = mutableStateOf("")
     private val tahun = mutableStateOf("")
+
     private val kontrolJadwal: KontrolJadwal
     private val kontrolUtamaMahasiswa: KontrolUtamaMahasiswa
+    private val kontrolPanduan: KontrolPanduan
 
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolUtamaMahasiswa = kontrolUtamaMahasiswa
+        this.kontrolPanduan = kontrolPanduan
 
         namaMahasiswa.value = Otentikasi.getMahasiswa()!!.getNama()
 
@@ -44,6 +49,13 @@ class HalamanUtamaMahasiswa(
              */
             kontrolJadwal.tampilkanHalamanJadwal()
         }
+    }
+
+    /**
+     *  EVENT lihatPanduan
+     */
+    fun lihatPanduan() {
+        kontrolPanduan.tampilkanHalamanPanduan()
     }
 
     fun getNamaMahasiswa() = namaMahasiswa.value

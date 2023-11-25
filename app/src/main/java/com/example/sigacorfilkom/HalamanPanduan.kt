@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.panduan
+package com.example.sigacorfilkom
 
 import androidx.lifecycle.ViewModel
 

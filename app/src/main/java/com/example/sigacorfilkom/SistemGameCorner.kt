@@ -33,8 +33,6 @@ import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.Ha
 import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
-import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
-import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.HalamanTutupJadwalAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.LayoutTutupJadwalAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.HalamanUtamaAdmin
@@ -88,6 +86,7 @@ class SistemGameCorner : ComponentActivity() {
                     kontrolRegisterMahasiswa = kontrolRegisterMahasiswa,
                     this
                 )
+            val kontrolPanduan = KontrolPanduan(navController)
 
             /**
              * Create seluruh halaman
@@ -178,7 +177,7 @@ class SistemGameCorner : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaMahasiswa(
-                            kontrolJadwal, kontrolUtamaMahasiswa
+                            kontrolJadwal, kontrolUtamaMahasiswa, kontrolPanduan
                         )
                     }
                 }

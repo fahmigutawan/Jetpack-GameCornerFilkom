@@ -125,7 +125,7 @@ fun LayoutUtamaMahasiswa(
                             contentColor = Color.Black
                         ),
                         onClick = {
-                            navController.navigate("panduan_mahasiswa")
+                            viewModel.lihatPanduan()
                         }
                     ) {
                         Row(
