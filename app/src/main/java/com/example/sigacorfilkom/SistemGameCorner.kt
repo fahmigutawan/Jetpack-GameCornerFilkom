@@ -33,8 +33,6 @@ import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.Ha
 import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.HalamanJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
-import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.HalamanLoginAdmin
-import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
@@ -46,7 +44,6 @@ import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUt
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa

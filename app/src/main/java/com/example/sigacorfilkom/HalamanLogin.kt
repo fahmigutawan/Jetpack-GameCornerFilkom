@@ -1,7 +1,6 @@
 package com.example.sigacorfilkom
 
 import androidx.lifecycle.ViewModel
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginAdmin
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
 
 class HalamanLogin(
