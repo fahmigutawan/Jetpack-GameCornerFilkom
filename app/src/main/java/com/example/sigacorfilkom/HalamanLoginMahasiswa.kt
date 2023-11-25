@@ -31,16 +31,26 @@ class HalamanLoginMahasiswa(
         password.value = value
     }
 
+    /**
+     *  EVENT login
+     */
     fun login(
         onFailed: (String) -> Unit
     ) {
+        /**
+         *  CALL cekStatusKosong
+         */
         if (nim.value.isEmpty() || password.value.isEmpty()) {
             /**
-             *  CALL tampilkan pesan error
+             *  CALL tampilkan pesan kosong
              */
             onFailed("Semua data harus dimasukkan")
         } else {
             viewModelScope.launch {
+                /**
+                 *  CALL   login()
+                 *  TUJUAN (C) KontrolLoginMahasiswa
+                 */
                 kontrolLoginMahasiswa.login(
                     nim.value,
                     password.value,

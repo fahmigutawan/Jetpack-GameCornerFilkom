@@ -7,7 +7,7 @@ import kotlinx.coroutines.CompletableDeferred
 
 class DaftarAkunMahasiswa {
     suspend fun validasiAkunMahasiswa(nim: String, password: String): Boolean {
-        val hasilValidasi = CompletableDeferred<Boolean>()
+        var hasilValidasi = false
 
         val mahasiswa = Mahasiswa(
             nim,
@@ -17,6 +17,7 @@ class DaftarAkunMahasiswa {
         mahasiswa.validateNimIsNumber()
         mahasiswa.validateNimFilkom()
 
+        val callAsyncWaiter = CompletableDeferred<Unit>()
         FirebaseFirestore
             .getInstance()
             .collection("mahasiswa")
@@ -24,23 +25,27 @@ class DaftarAkunMahasiswa {
             .get()
             .addOnSuccessListener { doc ->
                 if (doc.data == null) {
-                    hasilValidasi.complete(false)
-                    return@addOnSuccessListener
-                }
-
-                if (mahasiswa.validatePassword(doc["password"] as String)) {
-                    mahasiswa.setNama(doc["nama"] as String)
-                    Otentikasi.setMahasiswa(mahasiswa)
-                    hasilValidasi.complete(true)
+                    hasilValidasi = false
+                    callAsyncWaiter.complete(Unit)
                 } else {
-                    hasilValidasi.complete(false)
+                    if (mahasiswa.validatePassword(doc["password"] as String)) {
+                        mahasiswa.setNama(doc["nama"] as String)
+                        Otentikasi.setMahasiswa(mahasiswa)
+
+                        hasilValidasi = true
+                        callAsyncWaiter.complete(Unit)
+                    } else {
+                        hasilValidasi = false
+                        callAsyncWaiter.complete(Unit)
+                    }
                 }
             }
             .addOnFailureListener { e ->
-                hasilValidasi.completeExceptionally(e)
+                callAsyncWaiter.completeExceptionally(e)
             }
+        callAsyncWaiter.await()
 
-        return hasilValidasi.await()
+        return hasilValidasi
     }
 
     suspend fun buatAkunMahasiswa(mahasiswa: Mahasiswa) {

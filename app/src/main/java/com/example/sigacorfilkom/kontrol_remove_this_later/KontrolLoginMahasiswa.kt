@@ -20,16 +20,40 @@ class KontrolLoginMahasiswa(navigasi: NavController) {
         onFailed: (String) -> Unit
     ) {
         try {
+            /**
+             *  CALL   <<create>>
+             *  TUJUAN (E) DaftarAkunMahasiswa
+             */
             val daftarAkunMahasiswa = DaftarAkunMahasiswa()
+
+            /**
+             *  CALL   validasiAkunMahasiswa
+             *  TUJUAN (E) DaftarAkunMahasiswa
+             *  RETURN boolean
+             */
             val hasilValidasi =  daftarAkunMahasiswa.validasiAkunMahasiswa(nim, password)
+
+            /**
+             *  ALT true
+             */
             if(hasilValidasi) {
+                /**
+                 *  CALL   tampilkan
+                 *  TUJUAN (B) HalamanUtamaMahasiswa
+                 */
                 navigasi.navigate("home_mahasiswa")
-            } else {
+            }
+            /**
+             *  ALT false
+             */
+            else {
+                /**
+                 *  CALL tampilkanErrorTidakValid
+                 */
                 onFailed("NIM atau Password Salah atau tidak terdaftar")
             }
         } catch (e: Exception) {
             onFailed(e.message.toString())
-            return
         }
     }
 }
