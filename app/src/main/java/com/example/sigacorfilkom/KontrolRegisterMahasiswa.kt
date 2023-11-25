@@ -1,8 +1,6 @@
 package com.example.sigacorfilkom
 
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.entity_remove_this_later.DaftarAkunMahasiswa
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class KontrolRegisterMahasiswa(navigasi: NavController) {

@@ -1,7 +1,7 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.entity_remove_this_later.DaftarAkunMahasiswa
+import com.example.sigacorfilkom.DaftarAkunMahasiswa
 
 class KontrolLoginMahasiswa(navigasi: NavController) {
     private val navigasi: NavController
