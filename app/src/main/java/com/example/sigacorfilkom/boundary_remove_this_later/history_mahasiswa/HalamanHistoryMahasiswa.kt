@@ -5,23 +5,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HalamanHistoryMahasiswa(
     kontrolJadwal: KontrolJadwal,
-    kontrolReservasi: KontrolReservasi
+    kontrolReservasi: KontrolReservasi,
+    kontrolNavigasi: KontrolNavigasi
 ) :
     ViewModel() {
     private val reservasiBelumLewat = mutableStateListOf<Reservasi>()
     private val perangkat = mutableMapOf<String, String>()
     private var kontrolReservasi: KontrolReservasi
     private var kontrolJadwal: KontrolJadwal
+    private val kontrolNavigasi:KontrolNavigasi
 
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolReservasi = kontrolReservasi
+        this.kontrolNavigasi = kontrolNavigasi
     }
 
     init {
@@ -45,4 +49,6 @@ class HalamanHistoryMahasiswa(
     fun getReservasiBelumLewat() = reservasiBelumLewat
 
     fun getPerangkat() = perangkat
+
+    fun popHalaman() = kontrolNavigasi.popHalaman()
 }

@@ -51,43 +51,53 @@ import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUt
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
-lateinit var _showSnackbar: (message: String) -> Unit
-lateinit var _showSnackbarWithAction: (
-    message: String,
-    actionLabel: String,
-    action: () -> Unit
-) -> Unit
-
-
 class AktivitasUtama : ComponentActivity() {
-    private val kontrolJadwal = KontrolJadwal()
-    private val kontrolOtentikasi = KontrolOtentikasi()
-    private val kontrolReservasi = KontrolReservasi(kontrolOtentikasi = kontrolOtentikasi)
+    private lateinit var kontrolNavigasi: KontrolNavigasi
+    private lateinit var kontrolSnackbar: KontrolSnackbar
+    private lateinit var kontrolJadwal: KontrolJadwal
+    private lateinit var kontrolOtentikasi: KontrolOtentikasi
+    private lateinit var kontrolReservasi: KontrolReservasi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             val navController = rememberNavController()
-            val coroutineScope = rememberCoroutineScope()
             val snackbarHostState = SnackbarHostState()
+            val coroutineScope = rememberCoroutineScope()
+
+            //Init kontrol
+            kontrolNavigasi = KontrolNavigasi(navController)
+            kontrolSnackbar = KontrolSnackbar {
+                coroutineScope.launch(Dispatchers.IO) {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(it)
+                }
+            }
+            kontrolOtentikasi = KontrolOtentikasi(kontrolSnackbar)
+            kontrolReservasi = KontrolReservasi(kontrolOtentikasi, kontrolSnackbar)
+            kontrolJadwal = KontrolJadwal(kontrolSnackbar)
+
+            //Other attrs
             val showBottomBar = remember {
                 mutableStateOf(false)
             }
             val currentRoute = remember {
                 mutableStateOf("")
             }
-            val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa>() {
+            val halamanHistoryMahasiswa: HalamanHistoryMahasiswa by viewModels() {
                 viewModelFactory {
                     initializer {
                         HalamanHistoryMahasiswa(
-                            kontrolJadwal, kontrolReservasi
+                            kontrolJadwal, kontrolReservasi,kontrolNavigasi
                         )
                     }
                 }
@@ -96,7 +106,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanJadwal(
-                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi
+                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi,kontrolNavigasi
                         )
                     }
                 }
@@ -104,7 +114,7 @@ class AktivitasUtama : ComponentActivity() {
             val halamanLogin:HalamanLogin by viewModels {
                 viewModelFactory {
                     initializer {
-                        HalamanLogin()
+                        HalamanLogin(kontrolNavigasi)
                     }
                 }
             }
@@ -112,7 +122,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginMahasiswa(
-                            kontrolOtentikasi
+                            kontrolOtentikasi,kontrolNavigasi
                         )
                     }
                 }
@@ -121,7 +131,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginAdmin(
-                            kontrolOtentikasi
+                            kontrolOtentikasi,kontrolNavigasi
                         )
                     }
                 }
@@ -129,7 +139,7 @@ class AktivitasUtama : ComponentActivity() {
             val halamanPanduan:HalamanPanduan by viewModels {
                 viewModelFactory {
                     initializer {
-                        HalamanPanduan()
+                        HalamanPanduan(kontrolNavigasi)
                     }
                 }
             }
@@ -137,7 +147,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanRegisterMahasiswa(
-                            kontrolOtentikasi
+                            kontrolOtentikasi,kontrolNavigasi
                         )
                     }
                 }
@@ -146,7 +156,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanTutupJadwalAdmin(
-                            kontrolJadwal
+                            kontrolJadwal,kontrolNavigasi
                         )
                     }
                 }
@@ -155,7 +165,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaAdmin(
-                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi
+                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi,kontrolNavigasi
                         )
                     }
                 }
@@ -164,7 +174,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaMahasiswa(
-                            kontrolJadwal, kontrolOtentikasi
+                            kontrolJadwal, kontrolOtentikasi,kontrolNavigasi
                         )
                     }
                 }
@@ -180,30 +190,6 @@ class AktivitasUtama : ComponentActivity() {
                     else -> {
                         showBottomBar.value = false
                         currentRoute.value = ""
-                    }
-                }
-            }
-            _showSnackbar = {
-                coroutineScope.launch(Dispatchers.IO) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(it)
-                }
-            }
-            _showSnackbarWithAction = { msg, label, action ->
-                coroutineScope.launch(Dispatchers.IO) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    val snackbarData = snackbarHostState
-                        .showSnackbar(
-                            message = msg,
-                            actionLabel = label
-                        )
-
-                    if (snackbarData == SnackbarResult.ActionPerformed) {
-                        if (label == "Tutup") {
-                            snackbarHostState.currentSnackbarData?.dismiss()
-                        } else {
-                            action()
-                        }
                     }
                 }
             }

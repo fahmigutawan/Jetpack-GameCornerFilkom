@@ -19,7 +19,8 @@ import java.util.UUID
 
 
 class KontrolReservasi(
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolSnackbar: KontrolSnackbar
 ) {
     private val kontrolOtentikasi:KontrolOtentikasi
 

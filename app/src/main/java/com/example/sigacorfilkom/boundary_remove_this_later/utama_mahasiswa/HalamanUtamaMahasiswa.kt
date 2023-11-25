@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 class HalamanUtamaMahasiswa(
     kontrolJadwal: KontrolJadwal,
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi
 ) : ViewModel() {
     private val namaMahasiswa = mutableStateOf("")
     private val tanggal = mutableStateOf("")
@@ -16,10 +18,12 @@ class HalamanUtamaMahasiswa(
     private val tahun = mutableStateOf("")
     private val kontrolJadwal:KontrolJadwal
     private val kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
 
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi = kontrolNavigasi
     }
 
     fun getNamaMahasiswa() = namaMahasiswa.value
@@ -33,6 +37,12 @@ class HalamanUtamaMahasiswa(
     fun logout(){
         kontrolOtentikasi.logout()
     }
+
+    fun navigasiKeHalamanLogin() = kontrolNavigasi.navigasiKeHalamanLogin()
+
+    fun navigasiKePanduan() = kontrolNavigasi.navigasiKePanduan()
+
+    fun navigasiKeJadwal() = kontrolNavigasi.navigasiKeJadwal()
 
     init {
         namaMahasiswa.value = kontrolOtentikasi.getNamaMahasiswa()

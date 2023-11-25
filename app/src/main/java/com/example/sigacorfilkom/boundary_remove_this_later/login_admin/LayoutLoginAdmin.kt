@@ -19,12 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -76,11 +72,7 @@ fun LayoutLoginAdmin(
                     onClick = {
                         viewModel.login(
                             onSuccess = {
-                                navController.navigate("home_admin") {
-                                    popUpTo(navController.graph.id) {
-                                        inclusive = true
-                                    }
-                                }
+                                viewModel.navigasiKeHomeAdmin()
                             },
                             onFailed = {
                                 SnackbarHandler.showSnackbar(it)

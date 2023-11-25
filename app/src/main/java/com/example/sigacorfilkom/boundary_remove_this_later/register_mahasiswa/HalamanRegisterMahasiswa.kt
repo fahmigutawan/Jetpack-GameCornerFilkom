@@ -2,19 +2,23 @@ package com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 
 class HalamanRegisterMahasiswa(
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi
 ) : ViewModel() {
     private val nim = mutableStateOf("")
     private val nama = mutableStateOf("")
     private val password = mutableStateOf("")
     private val kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
 
     init {
         this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi = kontrolNavigasi
     }
 
     fun setNim(value: String) {
@@ -35,11 +39,13 @@ class HalamanRegisterMahasiswa(
 
     fun getPassword() = password.value
 
+    fun validate() = nim.value.isNotEmpty() && nama.value.isNotEmpty() && password.value.isNotEmpty()
+
     fun register(
         onSuccess: () -> Unit,
         onFailed: (String) -> Unit
     ) {
-        if(nim.value.isEmpty() || nama.value.isEmpty() || password.value.isEmpty()){
+        if(!validate()){
             onFailed("Semua data harus dimasukkan")
         }else{
             kontrolOtentikasi.registerMahasiswa(
@@ -51,4 +57,9 @@ class HalamanRegisterMahasiswa(
             )
         }
     }
+
+    fun navigasiKeLoginMahasiswa() = kontrolNavigasi.navigasiKeLoginMahasiswa()
+
+    fun navigasiKeHomeMahasiswa() = kontrolNavigasi.navigasiKeHomeMahasiswa()
+
 }

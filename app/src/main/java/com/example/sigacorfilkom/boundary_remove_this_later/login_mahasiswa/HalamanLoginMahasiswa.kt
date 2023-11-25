@@ -2,19 +2,23 @@ package com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
 class HalamanLoginMahasiswa(
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi
 ) : ViewModel() {
     private var nim = mutableStateOf("")
     private var password = mutableStateOf("")
     private var kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
 
     init{
         this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi= kontrolNavigasi
     }
 
     fun getNim() = nim
@@ -40,4 +44,8 @@ class HalamanLoginMahasiswa(
             )
         }
     }
+
+    fun navigasiKeRegister() = kontrolNavigasi.navigasiKeRegister()
+
+    fun navigasiKeHomeMahasiswa() = kontrolNavigasi.navigasiKeHomeMahasiswa()
 }

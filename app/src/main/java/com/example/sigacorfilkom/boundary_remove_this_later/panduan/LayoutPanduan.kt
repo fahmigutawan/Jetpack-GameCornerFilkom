@@ -40,7 +40,7 @@ fun LayoutPanduan(
                         .fillMaxWidth()
                         .padding(16.dp),
                     onClick = {
-                        navController.popBackStack()
+                        viewModel.popHalaman()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

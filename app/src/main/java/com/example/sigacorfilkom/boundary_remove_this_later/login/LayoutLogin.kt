@@ -49,7 +49,7 @@ fun LayoutLogin(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_mahasiswa")
+                        viewModel.navigasikeLoginMahasiswa()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -65,7 +65,7 @@ fun LayoutLogin(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_admin")
+                        viewModel.navigasiKeLoginAdmin()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

@@ -31,15 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.HalamanTutupJadwalAdmin
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -151,9 +144,7 @@ fun LayoutUtamaAdmin(
                     IconButton(
                         onClick = {
                             viewModel.logout()
-                            navController.navigate("login") {
-                                popUpTo(navController.graph.id) { inclusive = true }
-                            }
+                            viewModel.navigasiKeHalamanLogin()
                         }
                     ) {
                         Icon(

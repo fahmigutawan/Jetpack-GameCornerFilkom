@@ -34,21 +34,11 @@ class Mahasiswa {
         this.nama = value
     }
 
-    fun validateInputtedData(){
-        if(nim.length != 15){
-            throw Exception("Masukkan NIM yang benar")
-        }
+    fun validateNimIs15Digit() = nim.length == 15
 
-        if(nim.substring(2, 5) != "515"){
-            throw Exception("Hanya mahasiswa FILKOM yang bisa mendaftar")
-        }
-    }
+    fun validateNimIsFilkom() = nim.substring(2, 5) == "515"
 
-    fun validateNimIsNumber(){
-        if(!nim.matches(Regex("\\d+"))){
-            throw Exception("NIM Hanya boleh angka")
-        }
-    }
+    fun validateNimIsNumber() = nim.matches(Regex("\\d+"))
 
     fun validatePassword(correctPassword:String):Boolean{
         return this.password == correctPassword

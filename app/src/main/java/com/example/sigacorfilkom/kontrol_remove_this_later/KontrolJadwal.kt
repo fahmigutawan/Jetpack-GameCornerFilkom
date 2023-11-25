@@ -21,7 +21,9 @@ import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 
-class KontrolJadwal {
+class KontrolJadwal(
+    kontrolSnackbar: KontrolSnackbar
+) {
     private var jadwal = Jadwal()
 
     fun getHari() = jadwal.getHari()

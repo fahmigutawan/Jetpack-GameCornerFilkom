@@ -21,12 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -83,7 +79,7 @@ fun LayoutRegisterMahasiswa(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Sudah punya akun?")
                     TextButton(onClick = {
-                        navController.navigate("login_mahasiswa")
+                        viewModel.navigasiKeLoginMahasiswa()
                     }) {
                         Text(text = "Login")
                     }
@@ -95,11 +91,7 @@ fun LayoutRegisterMahasiswa(
                     onClick = {
                         viewModel.register(
                             onSuccess = {
-                                navController.navigate("home_mahasiswa") {
-                                    popUpTo(navController.graph.id) {
-                                        inclusive = true
-                                    }
-                                }
+                                viewModel.navigasiKeHomeMahasiswa()
                             },
                             onFailed = {
                                 SnackbarHandler.showSnackbar(it)

@@ -3,10 +3,12 @@ package com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import java.util.Date
 
 class HalamanTutupJadwalAdmin(
-    kontrolJadwal: KontrolJadwal
+    kontrolJadwal: KontrolJadwal,
+    kontrolNavigasi: KontrolNavigasi
 ) : ViewModel() {
     private val alasan = mutableStateOf("")
     private val kontrolJadwal:KontrolJadwal

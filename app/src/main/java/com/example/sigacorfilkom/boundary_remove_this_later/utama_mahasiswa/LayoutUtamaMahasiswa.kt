@@ -66,9 +66,7 @@ fun LayoutUtamaMahasiswa(
                     IconButton(
                         onClick = {
                             viewModel.logout()
-                            navController.navigate("login") {
-                                popUpTo(navController.graph.id) { inclusive = true }
-                            }
+                            viewModel.navigasiKeHalamanLogin()
                         }
                     ) {
                         Icon(
@@ -127,7 +125,7 @@ fun LayoutUtamaMahasiswa(
                             contentColor = Color.Black
                         ),
                         onClick = {
-                            navController.navigate("panduan_mahasiswa")
+                            viewModel.navigasiKePanduan()
                         }
                     ) {
                         Row(
@@ -167,7 +165,7 @@ fun LayoutUtamaMahasiswa(
                             contentColor = Color.Black
                         ),
                         onClick = {
-                            navController.navigate("jadwal_mahasiswa")
+                            viewModel.navigasiKeJadwal()
                         }
                     ) {
                         Row(

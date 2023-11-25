@@ -8,6 +8,7 @@ import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.launch
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 class HalamanJadwal(
     kontrolJadwal: KontrolJadwal,
     kontrolReservasi: KontrolReservasi,
-    kontrolOtentikasi: KontrolOtentikasi
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi
 ) : ViewModel() {
     private var listHari = mutableStateListOf<Hari>()
     private var listPerangkat = mutableStateListOf<Perangkat>()
@@ -27,11 +29,13 @@ class HalamanJadwal(
     private val kontrolJadwal:KontrolJadwal
     private val kontrolReservasi: KontrolReservasi
     private val kontrolOtentikasi: KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
 
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolReservasi = kontrolReservasi
         this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi = kontrolNavigasi
     }
 
     init {
@@ -101,4 +105,6 @@ class HalamanJadwal(
     }
 
     fun getPickedSesi() = pickedSesi
+
+    fun navigasiKeHomeMahasiswa() = kontrolNavigasi.navigasiKeHomeMahasiswa()
 }

@@ -60,7 +60,7 @@ fun LayoutHistoryMahasiswa(
                     Text(text = "Reservasi Terkini")
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = { viewModel.popHalaman() }) {
                         Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "")
                     }
                 }
