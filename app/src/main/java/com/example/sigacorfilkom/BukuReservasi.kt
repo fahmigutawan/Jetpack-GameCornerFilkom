@@ -127,7 +127,7 @@ class BukuReservasi {
     }
 
     suspend fun getDaftarReservasiForMahasiswa(nimPeminjam: String): List<Reservasi> {
-        val hasilDaftarReservasi = CompletableDeferred<List<Reservasi>>()
+        val daftarReservasi: MutableList<Reservasi> = mutableListOf()
 
         val nowMillis = System.currentTimeMillis()
         val instantNow = Instant.ofEpochMilli(nowMillis)
@@ -139,6 +139,7 @@ class BukuReservasi {
             localDateNow.plusDays(2)
         )
 
+        val asyncCallWaiter = CompletableDeferred<Unit>()
         FirebaseFirestore
             .getInstance()
             .collection("reservasi")
@@ -149,11 +150,18 @@ class BukuReservasi {
             .orderBy("pickedDay")
             .get()
             .addOnSuccessListener {
-                val daftarReservasi = it.documents.map { doc ->
+                /**
+                 *  LOOP data reservasi
+                 */
+                it.documents.forEach { doc ->
                     val format = DateTimeFormatter.ofPattern("dd:MM:yyyy")
                     val parsedDate = LocalDate.parse(doc["pickedDay"] as String, format)
 
-                    Reservasi(
+                    /**
+                     *  CALL   <<create>>
+                     *  TUJUAN (E) Reservasi
+                     */
+                    val reservasi = Reservasi(
                         reservasiId = doc["idReservasi"] as String,
                         nimPeminjam = doc["nimPeminjam"] as String,
                         status = doc["status"] as String,
@@ -163,14 +171,17 @@ class BukuReservasi {
                         bulan = parsedDate.monthValue,
                         tahun = parsedDate.year
                     )
+
+                    daftarReservasi.add(reservasi)
                 }
 
-                hasilDaftarReservasi.complete(daftarReservasi)
+                asyncCallWaiter.complete(Unit)
             }
-            .addOnFailureListener { e ->
-                hasilDaftarReservasi.completeExceptionally(e)
+            .addOnFailureListener {
+                asyncCallWaiter.complete(Unit)
             }
+        asyncCallWaiter.await()
 
-        return hasilDaftarReservasi.await()
+        return daftarReservasi
     }
 }

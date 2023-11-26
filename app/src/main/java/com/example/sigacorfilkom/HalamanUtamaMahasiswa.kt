@@ -9,7 +9,8 @@ import java.time.LocalDate
 class HalamanUtamaMahasiswa(
     kontrolJadwal: KontrolJadwal,
     kontrolLogout: KontrolLogout,
-    kontrolPanduan: KontrolPanduan
+    kontrolPanduan: KontrolPanduan,
+    kontrolReservasi: KontrolReservasi
 ) : ViewModel() {
 
     private val namaMahasiswa = mutableStateOf("")
@@ -20,11 +21,13 @@ class HalamanUtamaMahasiswa(
     private val kontrolJadwal: KontrolJadwal
     private val kontrolLogout: KontrolLogout
     private val kontrolPanduan: KontrolPanduan
+    private val kontrolReservasi: KontrolReservasi
 
     init {
         this.kontrolJadwal = kontrolJadwal
         this.kontrolLogout = kontrolLogout
         this.kontrolPanduan = kontrolPanduan
+        this.kontrolReservasi = kontrolReservasi
 
         namaMahasiswa.value = Otentikasi.getMahasiswa()!!.getNama()
 
@@ -56,6 +59,19 @@ class HalamanUtamaMahasiswa(
          *  TUJUAN (C) KontrolPanduan
          */
         kontrolPanduan.tampilkanHalamanPanduan()
+    }
+
+    /**
+     *  EVENT riwayatReservasi
+     */
+    fun riwayatReservasi() {
+        viewModelScope.launch {
+            /**
+             *  CALL   tampilkanHalamanRiwayatReservasiForMahasiswa()
+             *  TUJUAN (C) KontrolReservasi
+             */
+            kontrolReservasi.tampilkanHalamanRiwayatReservasiForMahasiswa()
+        }
     }
 
     fun getNamaMahasiswa() = namaMahasiswa.value

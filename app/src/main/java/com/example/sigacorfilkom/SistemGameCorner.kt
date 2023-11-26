@@ -77,7 +77,7 @@ class SistemGameCorner : ComponentActivity() {
             /**
              * Create seluruh halaman
              */
-            val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa>() {
+            val halamanHistoryMahasiswa by viewModels<HalamanHistoryMahasiswa> {
                 viewModelFactory {
                     initializer {
                         HalamanHistoryMahasiswa(
@@ -163,7 +163,7 @@ class SistemGameCorner : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaMahasiswa(
-                            kontrolJadwal, kontrolLogout, kontrolPanduan
+                            kontrolJadwal, kontrolLogout, kontrolPanduan, kontrolReservasi
                         )
                     }
                 }
@@ -269,9 +269,7 @@ class SistemGameCorner : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        lifecycleScope.launch {
-                                            kontrolReservasi.tampilkanHalamanRiwayatReservasiForMahasiswa()
-                                        }
+                                        halamanUtamaMahasiswa.riwayatReservasi()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_history_mhs),
