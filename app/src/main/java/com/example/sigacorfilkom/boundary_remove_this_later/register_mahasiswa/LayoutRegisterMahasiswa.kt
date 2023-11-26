@@ -92,9 +92,6 @@ fun LayoutRegisterMahasiswa(
                         viewModel.register(
                             onSuccess = {
                                 viewModel.navigasiKeHomeMahasiswa()
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
                             }
                         )
                     },

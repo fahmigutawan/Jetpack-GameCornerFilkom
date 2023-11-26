@@ -27,11 +27,6 @@ class Admin {
         password = value
     }
 
-    fun validateNipIsNumber(){
-        if(!nip.matches(Regex("\\d+"))){
-            throw Exception("NIP Hanya boleh angka")
-        }
-    }
-
+    fun validateNipIsNumber() = nip.matches(Regex("\\d+"))
     fun validatePassword(correctPassword:String):Boolean = this.password == correctPassword
 }

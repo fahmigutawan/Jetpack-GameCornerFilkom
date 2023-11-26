@@ -37,8 +37,7 @@ class KontrolReservasi(
         tanggal: Int,
         bulan: Int,
         tahun: Int,
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
+        onSuccess: () -> Unit
     ) {
         val firestore = FirebaseFirestore.getInstance()
         val idReservasi = UUID.randomUUID().toString()
@@ -91,7 +90,7 @@ class KontrolReservasi(
             .get()
             .addOnSuccessListener {
                 if (it.documents.size >= 4) {
-                    onFailed("Anda sudah mencapai batas maksimum peminjaman minggu ini")
+                    kontrolSnackbar.showSnackbar("Anda sudah mencapai batas maksimum peminjaman minggu ini")
                     return@addOnSuccessListener
                 } else {
                     //Kedua, cek apakah satu hari sudah ada reservasi
@@ -102,7 +101,7 @@ class KontrolReservasi(
                         .get()
                         .addOnSuccessListener {
                             if (it.documents.size >= 1) {
-                                onFailed("Anda hanya boleh melakukan reservasi 1 kali untuk satu hari, coba reservasi untuk hari lain")
+                                kontrolSnackbar.showSnackbar("Anda hanya boleh melakukan reservasi 1 kali untuk satu hari, coba reservasi untuk hari lain")
                                 return@addOnSuccessListener
                             } else {
                                 firestore
@@ -124,19 +123,19 @@ class KontrolReservasi(
                                         return@addOnSuccessListener
                                     }
                                     .addOnFailureListener {
-                                        onFailed(it.message.toString())
+                                        kontrolSnackbar.showSnackbar(it.message.toString())
                                         return@addOnFailureListener
                                     }
                             }
                         }
                         .addOnFailureListener {
-                            onFailed(it.message.toString())
+                            kontrolSnackbar.showSnackbar(it.message.toString())
                             return@addOnFailureListener
                         }
                 }
             }
             .addOnFailureListener {
-                onFailed(it.message.toString())
+                kontrolSnackbar.showSnackbar(it.message.toString())
                 return@addOnFailureListener
             }
     }

@@ -12,7 +12,7 @@ class KontrolOtentikasi(
 ) {
     private var mahasiswa: Mahasiswa? = null
     private var admin: Admin? = null
-    private val kontrolSnackbar:KontrolSnackbar
+    private val kontrolSnackbar: KontrolSnackbar
 
     init {
         this.kontrolSnackbar = kontrolSnackbar
@@ -28,7 +28,7 @@ class KontrolOtentikasi(
             password
         )
 
-        if(!mahasiswa.validateNimIsNumber()){
+        if (!mahasiswa.validateNimIsNumber()) {
             kontrolSnackbar.showSnackbar("NIM hanya boleh angka")
             return
         }
@@ -63,45 +63,40 @@ class KontrolOtentikasi(
     fun loginAdmin(
         nip: String,
         password: String,
-        onSuccess: () -> Unit,
-        onFailed: (String) -> Unit
+        onSuccess: () -> Unit
     ) {
-        try {
-            val admin = Admin(
-                nip,
-                password
-            )
+        val admin = Admin(
+            nip,
+            password
+        )
 
-            admin.validateNipIsNumber()
-
-            FirebaseFirestore
-                .getInstance()
-                .collection("admin")
-                .document(nip)
-                .get()
-                .addOnSuccessListener { doc ->
-                    if (doc.data == null) {
-                        onFailed("NIP tidak terdaftar sebagai admin")
-                        return@addOnSuccessListener
-                    }
-
-                    if (admin.validatePassword(doc["password"] as String)) {
-                        this.admin = admin
-                        onSuccess()
-                        return@addOnSuccessListener
-                    } else {
-                        onFailed("Password salah")
-                        return@addOnSuccessListener
-                    }
-                }
-                .addOnFailureListener {
-                    onFailed(it.message.toString())
-                    return@addOnFailureListener
-                }
-        } catch (e: Exception) {
-            onFailed(e.message.toString())
+        if(!admin.validateNipIsNumber()){
+            kontrolSnackbar.showSnackbar("NIP hanya boleh angka")
             return
         }
+
+        FirebaseFirestore
+            .getInstance()
+            .collection("admin")
+            .document(nip)
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.data == null) {
+                    kontrolSnackbar.showSnackbar("NIP tidak terdaftar sebagai admin")
+                    return@addOnSuccessListener
+                }
+
+                if (admin.validatePassword(doc["password"] as String)) {
+                    this.admin = admin
+                    onSuccess()
+                } else {
+                    kontrolSnackbar.showSnackbar("Password salah")
+                }
+            }
+            .addOnFailureListener {
+                kontrolSnackbar.showSnackbar(it.message.toString())
+            }
+
     }
 
     fun registerMahasiswa(
@@ -116,17 +111,17 @@ class KontrolOtentikasi(
             password = password
         )
 
-        if(!mahasiswa.validateNimIsNumber()){
+        if (!mahasiswa.validateNimIsNumber()) {
             kontrolSnackbar.showSnackbar("NIM hanya boleh angka")
             return
         }
 
-        if(!mahasiswa.validateNimIs15Digit()){
+        if (!mahasiswa.validateNimIs15Digit()) {
             kontrolSnackbar.showSnackbar("Masukka NIM yang benar")
             return
         }
 
-        if(!mahasiswa.validateNimIsFilkom()){
+        if (!mahasiswa.validateNimIsFilkom()) {
             kontrolSnackbar.showSnackbar("Hanya mahasiswa FILKOM UB yang bisa mendaftar")
             return
         }

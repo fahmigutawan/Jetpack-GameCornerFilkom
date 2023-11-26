@@ -10,7 +10,7 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HalamanHistoryMahasiswa(
+class HalamanReservasiTerkiniMahasiswa(
     kontrolJadwal: KontrolJadwal,
     kontrolReservasi: KontrolReservasi,
     kontrolNavigasi: KontrolNavigasi
@@ -30,18 +30,20 @@ class HalamanHistoryMahasiswa(
 
     init {
         viewModelScope.launch {
-            kontrolReservasi.getReservasiTerbaruForMahasiswa().collect {
-                reservasiBelumLewat.clear()
-                reservasiBelumLewat.addAll(it)
-            }
-        }
-
-        viewModelScope.launch {
             kontrolJadwal.getPerangkat().collect {
                 perangkat.clear()
                 perangkat.putAll(it.associate {
                     it.getIdPerangkat() to it.getNama()
                 })
+            }
+        }
+    }
+
+    fun getReservasiTerbaruMahasiswa() {
+        viewModelScope.launch {
+            kontrolReservasi.getReservasiTerbaruForMahasiswa().collect {
+                reservasiBelumLewat.clear()
+                reservasiBelumLewat.addAll(it)
             }
         }
     }

@@ -65,8 +65,7 @@ class HalamanJadwal(
     }
 
     fun buatReservasi(
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
+        onSuccess:() -> Unit
     ){
         kontrolReservasi.buatReservasi(
             nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
@@ -75,8 +74,7 @@ class HalamanJadwal(
             tanggal = pickedHari.value?.getTanggal() ?: 0,
             bulan = pickedHari.value?.getBulan() ?: 0,
             tahun = pickedHari.value?.getTahun() ?: 0,
-            onSuccess = onSuccess,
-            onFailed = onFailed
+            onSuccess = onSuccess
         )
     }
 

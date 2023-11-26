@@ -72,8 +72,6 @@ class HalamanUtamaAdmin(
     }
 
     init {
-        loadReservasi()
-
         viewModelScope.launch {
             kontrolJadwal.getPerangkat().collect {
                 perangkat.clear()

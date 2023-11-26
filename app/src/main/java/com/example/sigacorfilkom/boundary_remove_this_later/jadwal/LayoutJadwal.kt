@@ -138,9 +138,6 @@ fun LayoutJadwal(
                         viewModel.buatReservasi(
                             onSuccess = {
                                 showBerhasilDialog.value = true
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
                             }
                         )
                     },

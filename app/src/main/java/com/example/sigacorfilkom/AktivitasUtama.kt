@@ -1,7 +1,6 @@
 package com.example.sigacorfilkom
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -16,8 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,8 +27,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.HalamanHistoryMahasiswa
-import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.HalamanReservasiTerkiniMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutReservasiTerkiniMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.HalamanJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.login.HalamanLogin
@@ -57,7 +54,6 @@ import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
 
 class AktivitasUtama : ComponentActivity() {
     private lateinit var kontrolNavigasi: KontrolNavigasi
@@ -93,10 +89,10 @@ class AktivitasUtama : ComponentActivity() {
             val currentRoute = remember {
                 mutableStateOf("")
             }
-            val halamanHistoryMahasiswa: HalamanHistoryMahasiswa by viewModels() {
+            val halamanHistoryMahasiswa: HalamanReservasiTerkiniMahasiswa by viewModels() {
                 viewModelFactory {
                     initializer {
-                        HalamanHistoryMahasiswa(
+                        HalamanReservasiTerkiniMahasiswa(
                             kontrolJadwal, kontrolReservasi,kontrolNavigasi
                         )
                     }
@@ -131,7 +127,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanLoginAdmin(
-                            kontrolOtentikasi,kontrolNavigasi
+                            kontrolOtentikasi,kontrolNavigasi,kontrolSnackbar
                         )
                     }
                 }
@@ -156,7 +152,7 @@ class AktivitasUtama : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanTutupJadwalAdmin(
-                            kontrolJadwal,kontrolNavigasi
+                            kontrolJadwal,kontrolNavigasi,kontrolSnackbar
                         )
                     }
                 }
@@ -244,7 +240,7 @@ class AktivitasUtama : ComponentActivity() {
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
                                     IconButton(onClick = {
-                                        navController.navigate("home_mahasiswa")
+                                        kontrolNavigasi.navigasiKeHomeMahasiswa()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.iconhome),
@@ -256,7 +252,7 @@ class AktivitasUtama : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        navController.navigate("history_mahasiswa")
+                                        kontrolNavigasi.navigasiKeReservasiTerkini()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_history_mhs),
@@ -302,7 +298,7 @@ class AktivitasUtama : ComponentActivity() {
                     }
 
                     composable("history_mahasiswa") {
-                        LayoutHistoryMahasiswa(
+                        LayoutReservasiTerkiniMahasiswa(
                             viewModel = halamanHistoryMahasiswa
                         )
                     }

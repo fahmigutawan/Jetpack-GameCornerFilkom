@@ -4,21 +4,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolSnackbar
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
 class HalamanLoginAdmin(
     kontrolOtentikasi: KontrolOtentikasi,
-    kontrolNavigasi: KontrolNavigasi
+    kontrolNavigasi: KontrolNavigasi,
+    kontrolSnackbar: KontrolSnackbar
 ) : ViewModel() {
     private var nip = mutableStateOf("")
     private var password = mutableStateOf("")
     private var kontrolOtentikasi:KontrolOtentikasi
     private val kontrolNavigasi:KontrolNavigasi
+    private val kontrolSnackbar:KontrolSnackbar
 
     init{
         this.kontrolOtentikasi = kontrolOtentikasi
         this.kontrolNavigasi = kontrolNavigasi
+        this.kontrolSnackbar = kontrolSnackbar
     }
 
     fun getNip() = nip
@@ -30,17 +34,18 @@ class HalamanLoginAdmin(
         password.value = value
     }
 
+    fun validate() = nip.value.isNotEmpty() && password.value.isNotEmpty()
+
     fun login(
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
+        onSuccess:() -> Unit
     ){
-        if(nip.value.isEmpty() || password.value.isEmpty()){
-            onFailed("Semua data harus dimasukkan")
+        if(!validate()){
+            kontrolSnackbar.showSnackbar("Semua data harus dimasukkan")
         }else{
             kontrolOtentikasi.loginAdmin(
                 nip.value,
                 password.value,
-                onSuccess, onFailed
+                onSuccess
             )
         }
     }

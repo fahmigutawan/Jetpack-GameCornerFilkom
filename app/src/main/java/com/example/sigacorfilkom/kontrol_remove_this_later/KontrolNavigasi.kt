@@ -46,4 +46,6 @@ class KontrolNavigasi(
     fun navigasiKeJadwal() = navController.navigate("jadwal_mahasiswa")
 
     fun navigasiKeTutupJadwal() = navController.navigate("tutup_jadwal_admin")
+
+    fun navigasiKeReservasiTerkini()= navController.navigate("history_mahasiswa")
 }

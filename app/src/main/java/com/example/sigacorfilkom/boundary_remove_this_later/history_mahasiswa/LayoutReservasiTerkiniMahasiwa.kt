@@ -21,22 +21,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutHistoryMahasiswa(
-    viewModel: HalamanHistoryMahasiswa
+fun LayoutReservasiTerkiniMahasiswa(
+    viewModel: HalamanReservasiTerkiniMahasiswa
 ) {
     val monthMapper = mapOf(
         1 to "Januari",
@@ -52,6 +48,10 @@ fun LayoutHistoryMahasiswa(
         11 to "November",
         12 to "Desember"
     )
+
+    LaunchedEffect(key1 = true){
+        viewModel.getReservasiTerbaruMahasiswa()
+    }
 
     Scaffold(
         topBar = {

@@ -73,9 +73,6 @@ fun LayoutLoginAdmin(
                         viewModel.login(
                             onSuccess = {
                                 viewModel.navigasiKeHomeAdmin()
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
                             }
                         )
                     },
