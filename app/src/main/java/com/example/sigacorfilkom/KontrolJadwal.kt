@@ -76,32 +76,50 @@ class KontrolJadwal(navigasi: NavController, aktivitas: SistemGameCorner) {
         navigasi.navigate("tutup_jadwal_admin")
     }
 
-    fun tutupJadwal(
-        dateMillis: Long,
+    suspend fun tutupJadwal(
+        tanggal: Int,
+        bulan: Int,
+        tahun: Int,
         alasan: String,
         onSuccess: () -> Unit,
         onFailed: (String) -> Unit
     ) {
-        val instant = Instant.ofEpochMilli(dateMillis)
-        val localDate = instant.atZone(ZoneId.systemDefault()).toLocalDate()
-        val pickedDay = "${localDate.dayOfMonth}:${localDate.monthValue}:${localDate.year}"
+        /**
+         *  CALL   <<create>>
+         *  TUJUAN (E) Hari
+         */
+        val hari = Hari(tanggal, bulan, tahun, false, "")
 
-        FirebaseFirestore
-            .getInstance()
-            .collection("jadwal_tutup")
-            .document(pickedDay)
-            .set(
-                mapOf(
-                    "waktu" to pickedDay,
-                    "alasan" to alasan
-                )
-            ).addOnSuccessListener {
-                onSuccess()
-                return@addOnSuccessListener
-            }
-            .addOnFailureListener {
-                onFailed(it.message.toString())
-                return@addOnFailureListener
-            }
+        /**
+         *  CALL   <<create>>
+         *  TUJUAN (E) Jadwal
+         */
+        val jadwal = Jadwal()
+
+        /**
+         *  CALL   tutupJadwal()
+         *  TUJUAN (E) Jadwal
+         *  RETURN boolean
+         */
+        val hasil = jadwal.tutupJadwal(hari, alasan)
+
+        /**
+         *  ALT true
+         */
+        if (hasil) {
+            /**
+             *  CALL tampilkan sukses
+             */
+            onSuccess()
+        }
+        /**
+         *  ALT false
+         */
+        else {
+            /**
+             *  CALL tampilkan gagal
+             */
+            onFailed("Gagal menutup jadwal")
+        }
     }
 }

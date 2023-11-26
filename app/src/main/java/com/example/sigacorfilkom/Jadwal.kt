@@ -157,4 +157,32 @@ class Jadwal {
     fun setSesi(value: List<Sesi>) {
         sesi = value
     }
+
+    suspend fun tutupJadwal(hari: Hari, alasan: String): Boolean {
+        var hasilTutupJadwal = false
+
+        val pickedDay = "${hari.getTanggal()}:${hari.getBulan()}:${hari.getTahun()}"
+
+        val asyncCallWaiter = CompletableDeferred<Unit>()
+        FirebaseFirestore
+            .getInstance()
+            .collection("jadwal_tutup")
+            .document(pickedDay)
+            .set(
+                mapOf(
+                    "waktu" to pickedDay,
+                    "alasan" to alasan
+                )
+            ).addOnSuccessListener {
+                hasilTutupJadwal = true
+                asyncCallWaiter.complete(Unit)
+            }
+            .addOnFailureListener {
+                hasilTutupJadwal = true
+                asyncCallWaiter.complete(Unit)
+            }
+        asyncCallWaiter.await()
+
+        return hasilTutupJadwal
+    }
 }

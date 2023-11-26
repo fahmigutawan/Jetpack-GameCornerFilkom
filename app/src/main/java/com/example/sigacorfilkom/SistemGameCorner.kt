@@ -237,7 +237,7 @@ class SistemGameCorner : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        kontrolJadwal.tampilkanHalamanTutupJadwal()
+                                        halamanUtamaAdmin.tutupJadwal()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_tutup_admin),

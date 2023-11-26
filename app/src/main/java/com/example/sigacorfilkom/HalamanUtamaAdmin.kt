@@ -77,6 +77,13 @@ class HalamanUtamaAdmin(
         kontrolLogout.logoutAdmin()
     }
 
+    /**
+     *  EVENT tutupJadwal
+     */
+    fun tutupJadwal() {
+        kontrolJadwal.tampilkanHalamanTutupJadwal()
+    }
+
     init {
         loadReservasi()
 
