@@ -43,18 +43,27 @@ class HalamanUtamaAdmin(
         pickedReservasi.value = value
     }
 
-    fun ubahStatusReservasi(
-        idReservasi: String,
-        status: String,
+    /**
+     *  EVENT submitBenar | submitSalah
+     */
+    fun validasiReservasi(
+        reservasi: Reservasi,
+        isValid: Boolean,
         onSuccess: () -> Unit,
         onFailed: (String) -> Unit
     ) {
-        kontrolReservasi.updateStatusReservasi(
-            idReservasi,
-            status,
-            onSuccess,
-            onFailed
-        )
+        viewModelScope.launch {
+            /**
+             *  CALL   validasiReservasi()
+             *  TUJUAN (C) KontrolReservasi
+             */
+            kontrolReservasi.validasiReservasi(
+                reservasi,
+                isValid,
+                onSuccess,
+                onFailed
+            )
+        }
     }
 
     /**

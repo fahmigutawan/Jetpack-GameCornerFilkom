@@ -184,4 +184,35 @@ class BukuReservasi {
 
         return daftarReservasi
     }
+
+    suspend fun validasiReservasi(reservasi: Reservasi, isValid: Boolean): Boolean {
+        var hasilValidasi = false
+
+        val status = when(isValid) {
+            true -> "Divalidasi"
+            false -> "Gagal"
+        }
+
+        val asyncCallWaiter = CompletableDeferred<Unit>()
+        FirebaseFirestore
+            .getInstance()
+            .collection("reservasi")
+            .document(reservasi.getReservasiId())
+            .update(
+                mapOf(
+                    "status" to status
+                )
+            )
+            .addOnSuccessListener {
+                hasilValidasi = true
+                asyncCallWaiter.complete(Unit)
+            }
+            .addOnFailureListener {
+                hasilValidasi = false
+                asyncCallWaiter.complete(Unit)
+            }
+        asyncCallWaiter.await()
+
+        return hasilValidasi
+    }
 }

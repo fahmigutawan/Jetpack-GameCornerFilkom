@@ -75,9 +75,9 @@ fun LayoutUtamaAdmin(
                         ),
                         border = BorderStroke(3.dp, Color(0xffFF9E3A)),
                         onClick = {
-                            viewModel.ubahStatusReservasi(
-                                viewModel.getPickedReservasi()?.getReservasiId() ?: "",
-                                "Gagal",
+                            viewModel.validasiReservasi(
+                                viewModel.getPickedReservasi()!!,
+                                false,
                                 onSuccess = {
                                     SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
@@ -101,9 +101,9 @@ fun LayoutUtamaAdmin(
                             contentColor = Color.White
                         ),
                         onClick = {
-                            viewModel.ubahStatusReservasi(
-                                viewModel.getPickedReservasi()?.getReservasiId() ?: "",
-                                "Divalidasi",
+                            viewModel.validasiReservasi(
+                                viewModel.getPickedReservasi()!!,
+                                true,
                                 onSuccess = {
                                     SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()

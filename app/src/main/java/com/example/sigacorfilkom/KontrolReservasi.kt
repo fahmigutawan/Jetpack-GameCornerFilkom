@@ -20,6 +20,8 @@ class KontrolReservasi(
     private val navigasi: NavController
     private val aktivitas: SistemGameCorner
 
+    private lateinit var bukuReservasi: BukuReservasi
+
     init {
         this.kontrolRegisterMahasiswa = kontrolRegisterMahasiswa
         this.navigasi = navigasi
@@ -84,6 +86,8 @@ class KontrolReservasi(
             localDateNow.plusDays(2)
         )
 
+        bukuReservasi = BukuReservasi()
+
         FirebaseFirestore
             .getInstance()
             .collection("reservasi")
@@ -115,29 +119,35 @@ class KontrolReservasi(
         awaitClose()
     }
 
-    fun updateStatusReservasi(
-        idReservasi: String,
-        status: String,
+    suspend fun validasiReservasi(
+        reservasi: Reservasi,
+        isValid: Boolean,
         onSuccess: () -> Unit,
         onFailed: (String) -> Unit
     ) {
-        FirebaseFirestore
-            .getInstance()
-            .collection("reservasi")
-            .document(idReservasi)
-            .update(
-                mapOf(
-                    "status" to status
-                )
-            )
-            .addOnSuccessListener {
-                onSuccess()
-                return@addOnSuccessListener
-            }
-            .addOnFailureListener {
-                onFailed(it.message.toString())
-                return@addOnFailureListener
-            }
+        /**
+         *  CALL   validasiReservasi()
+         *  TUJUAN (E) BukuReservasi
+         *  RETURN boolean
+         */
+        val hasilValidasi = bukuReservasi.validasiReservasi(reservasi, isValid)
+
+        /**
+         *  ALT true
+         */
+        if (hasilValidasi) {
+            /**
+             *  CALL   tampilkan sukses
+             *  TUJUAN (B) HalamanUtamaAdmin
+             */
+            onSuccess()
+        } else {
+            /**
+             *  CALL   tampilkan error
+             *  TUJUAN (B) HalamanUtamaAdmin
+             */
+            onFailed("Gagal melakukan validasi")
+        }
     }
 
     suspend fun tampilkanHalamanRiwayatReservasiForMahasiswa() {
