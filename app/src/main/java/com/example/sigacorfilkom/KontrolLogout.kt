@@ -1,18 +1,17 @@
-package com.example.sigacorfilkom.kontrol_remove_this_later
+package com.example.sigacorfilkom
 
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.Otentikasi
 
-class KontrolUtamaMahasiswa(navigasi: NavController) {
+class KontrolLogout(navigasi: NavController) {
     private val navigasi: NavController
 
     init {
         this.navigasi = navigasi
     }
 
-    fun logout() {
+    fun logoutMahasiswa() {
         /**
-         *  CALL   clearMahasiswa
+         *  CALL   clearMahasiswa()
          *  TUJUAN (E) Otentikasi
          */
         Otentikasi.clearMahasiswa()

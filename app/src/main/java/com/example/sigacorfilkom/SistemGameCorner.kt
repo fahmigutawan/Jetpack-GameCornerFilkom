@@ -30,7 +30,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -66,7 +65,7 @@ class SistemGameCorner : ComponentActivity() {
             val kontrolJadwal = KontrolJadwal(navController, this)
             val kontrolLoginMahasiswa = KontrolLoginMahasiswa(navController)
             val kontrolLoginAdmin = KontrolLoginAdmin(navController)
-            val kontrolUtamaMahasiswa = KontrolUtamaMahasiswa(navController)
+            val kontrolLogout = KontrolLogout(navController)
             val kontrolUtamaAdmin = KontrolUtamaAdmin(navController)
             val kontrolRegisterMahasiswa = KontrolRegisterMahasiswa(navController)
             val kontrolReservasi =
@@ -166,7 +165,7 @@ class SistemGameCorner : ComponentActivity() {
                 viewModelFactory {
                     initializer {
                         HalamanUtamaMahasiswa(
-                            kontrolJadwal, kontrolUtamaMahasiswa, kontrolPanduan
+                            kontrolJadwal, kontrolLogout, kontrolPanduan
                         )
                     }
                 }

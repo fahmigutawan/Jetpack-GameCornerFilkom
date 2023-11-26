@@ -3,16 +3,12 @@ package com.example.sigacorfilkom
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sigacorfilkom.Otentikasi
-import com.example.sigacorfilkom.KontrolJadwal
-import com.example.sigacorfilkom.KontrolPanduan
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class HalamanUtamaMahasiswa(
     kontrolJadwal: KontrolJadwal,
-    kontrolUtamaMahasiswa: KontrolUtamaMahasiswa,
+    kontrolLogout: KontrolLogout,
     kontrolPanduan: KontrolPanduan
 ) : ViewModel() {
 
@@ -22,12 +18,12 @@ class HalamanUtamaMahasiswa(
     private val tahun = mutableStateOf("")
 
     private val kontrolJadwal: KontrolJadwal
-    private val kontrolUtamaMahasiswa: KontrolUtamaMahasiswa
+    private val kontrolLogout: KontrolLogout
     private val kontrolPanduan: KontrolPanduan
 
     init {
         this.kontrolJadwal = kontrolJadwal
-        this.kontrolUtamaMahasiswa = kontrolUtamaMahasiswa
+        this.kontrolLogout = kontrolLogout
         this.kontrolPanduan = kontrolPanduan
 
         namaMahasiswa.value = Otentikasi.getMahasiswa()!!.getNama()
@@ -66,7 +62,14 @@ class HalamanUtamaMahasiswa(
 
     fun getTahun() = tahun.value
 
+    /**
+     *  EVENT logout
+     */
     fun logout() {
-        kontrolUtamaMahasiswa.logout()
+        /**
+         *  CALL   logoutMahasiswa()
+         *  TUJUAN (C) KontrolLogout
+         */
+        kontrolLogout.logoutMahasiswa()
     }
 }
