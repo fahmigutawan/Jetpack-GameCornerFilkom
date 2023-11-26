@@ -51,6 +51,10 @@ class HalamanUtamaMahasiswa(
      *  EVENT lihatPanduan
      */
     fun lihatPanduan() {
+        /**
+         *  CALL   tampilkanHalamanPanduan()
+         *  TUJUAN (C) KontrolPanduan
+         */
         kontrolPanduan.tampilkanHalamanPanduan()
     }
 

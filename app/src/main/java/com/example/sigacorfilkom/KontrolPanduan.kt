@@ -10,6 +10,10 @@ class KontrolPanduan(navigasi: NavController) {
     }
 
     fun tampilkanHalamanPanduan() {
+        /**
+         *  CALL   tampilkan
+         *  TUJUAN (B) HalamanPanduan
+         */
         navigasi.navigate("panduan_mahasiswa")
     }
 }
