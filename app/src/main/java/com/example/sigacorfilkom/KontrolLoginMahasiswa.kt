@@ -10,6 +10,10 @@ class KontrolLoginMahasiswa(navigasi: NavController) {
     }
 
     fun tampilkanHalamanLoginMahasiswa() {
+        /**
+         *  CALL   tampilkan
+         *  TUJUAN (B) LoginMahasiswa
+         */
         navigasi.navigate("login_mahasiswa")
     }
 

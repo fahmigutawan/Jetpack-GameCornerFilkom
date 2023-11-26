@@ -37,25 +37,29 @@ class HalamanLoginMahasiswa(
         onFailed: (String) -> Unit
     ) {
         /**
-         *  CALL cekStatusKosong
+         *  CALL cekKosong
+         */
+        /**
+         *  OPT statusKosong = true
          */
         if (nim.value.isEmpty() || password.value.isEmpty()) {
             /**
              *  CALL tampilkan pesan kosong
              */
             onFailed("Semua data harus dimasukkan")
-        } else {
-            viewModelScope.launch {
-                /**
-                 *  CALL   login()
-                 *  TUJUAN (C) KontrolLoginMahasiswa
-                 */
-                kontrolLoginMahasiswa.login(
-                    nim.value,
-                    password.value,
-                    onFailed
-                )
-            }
+            return
+        }
+
+        viewModelScope.launch {
+            /**
+             *  CALL   login(nim, password, onFailed)
+             *  TUJUAN (C) KontrolLoginMahasiswa
+             */
+            kontrolLoginMahasiswa.login(
+                nim.value,
+                password.value,
+                onFailed
+            )
         }
     }
 
