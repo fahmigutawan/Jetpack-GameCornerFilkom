@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -19,23 +20,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.sigacorfilkom.HalamanLoginMahasiswa
+import com.example.sigacorfilkom.R
+import com.example.sigacorfilkom.SnackbarHandler
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutLoginMahasiswa(navController: NavController) {
-    val viewModel = viewModel<HalamanLoginMahasiswa>()
+fun LayoutLoginMahasiswa(
+    viewModel: HalamanLoginMahasiswa
+) {
 
     Scaffold(
         containerColor = Color.White
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp), contentAlignment = Alignment.Center
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,6 +57,8 @@ fun LayoutLoginMahasiswa(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.getNim().value,
                     onValueChange = { viewModel.setNim(it) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     placeholder = {
                         Text(text = "NIM")
                     }
@@ -60,6 +68,8 @@ fun LayoutLoginMahasiswa(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.getPassword().value,
                     onValueChange = { viewModel.setPassword(it) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     placeholder = {
                         Text(text = "Password")
                     },
@@ -69,7 +79,7 @@ fun LayoutLoginMahasiswa(navController: NavController) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Belum punya akun?")
                     TextButton(onClick = {
-                        navController.navigate("register_mahasiswa")
+                        viewModel.register()
                     }) {
                         Text(text = "Registrasi")
                     }
@@ -79,18 +89,9 @@ fun LayoutLoginMahasiswa(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        viewModel.login(
-                            onSuccess = {
-                                navController.navigate("home_mahasiswa"){
-                                    popUpTo(navController.graph.id){
-                                        inclusive = true
-                                    }
-                                }
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
-                            }
-                        )
+                        viewModel.login {
+                            SnackbarHandler.showSnackbar(it)
+                        }
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

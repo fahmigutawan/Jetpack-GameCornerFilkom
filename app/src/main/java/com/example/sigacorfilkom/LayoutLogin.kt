@@ -16,16 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutLogin(navController: NavController) {
-    val scrWidth = LocalConfiguration.current
-
+fun LayoutLogin(
+    viewModel: HalamanLogin
+) {
     Scaffold(
         containerColor = Color.White
     ) {
@@ -46,7 +44,7 @@ fun LayoutLogin(navController: NavController) {
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_mahasiswa")
+                        viewModel.loginMahasiswa()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -62,7 +60,7 @@ fun LayoutLogin(navController: NavController) {
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_admin")
+                        viewModel.loginAdmin()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

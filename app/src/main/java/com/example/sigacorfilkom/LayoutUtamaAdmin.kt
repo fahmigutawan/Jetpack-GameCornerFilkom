@@ -31,14 +31,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutUtamaAdmin(navController: NavController) {
-    val viewModel = viewModel<HalamanUtamaAdmin>()
+fun LayoutUtamaAdmin(
+    navController: NavController,
+    viewModel: HalamanUtamaAdmin
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -74,9 +75,9 @@ fun LayoutUtamaAdmin(navController: NavController) {
                         ),
                         border = BorderStroke(3.dp, Color(0xffFF9E3A)),
                         onClick = {
-                            viewModel.ubahStatusReservasi(
-                                viewModel.getPickedReservasi()?.getReservasiId() ?: "",
-                                "Gagal",
+                            viewModel.validasiReservasi(
+                                viewModel.getPickedReservasi()!!,
+                                false,
                                 onSuccess = {
                                     SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
@@ -100,9 +101,9 @@ fun LayoutUtamaAdmin(navController: NavController) {
                             contentColor = Color.White
                         ),
                         onClick = {
-                            viewModel.ubahStatusReservasi(
-                                viewModel.getPickedReservasi()?.getReservasiId() ?: "",
-                                "Divalidasi",
+                            viewModel.validasiReservasi(
+                                viewModel.getPickedReservasi()!!,
+                                true,
                                 onSuccess = {
                                     SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
@@ -143,7 +144,7 @@ fun LayoutUtamaAdmin(navController: NavController) {
                 actions = {
                     IconButton(
                         onClick = {
-                            KontrolOtentikasi.logout()
+                            viewModel.logout()
                             navController.navigate("login") {
                                 popUpTo(navController.graph.id) { inclusive = true }
                             }

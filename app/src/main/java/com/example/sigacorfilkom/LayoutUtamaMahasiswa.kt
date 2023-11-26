@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
@@ -35,8 +34,10 @@ import coil.compose.rememberAsyncImagePainter
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutUtamaMahasiswa(navController: NavController) {
-    val viewModel = viewModel<HalamanUtamaMahasiswa>()
+fun LayoutUtamaMahasiswa(
+    navController: NavController,
+    viewModel: HalamanUtamaMahasiswa
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -51,7 +52,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
         11 to "November",
         12 to "Desember"
     )
-    
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -61,7 +62,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                 actions = {
                     IconButton(
                         onClick = {
-                            KontrolOtentikasi.logout()
+                            viewModel.logout()
                             navController.navigate("login") {
                                 popUpTo(navController.graph.id) { inclusive = true }
                             }
@@ -95,7 +96,9 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                     )
                     Text(
                         modifier = Modifier.weight(1f),
-                        text = "${viewModel.getTanggal()} ${monthMapper[viewModel.getBulan().toInt()] ?: viewModel.getBulan()} ${viewModel.getTahun()}",
+                        text = "${viewModel.getTanggal()} ${
+                            monthMapper[viewModel.getBulan().toInt()] ?: viewModel.getBulan()
+                        } ${viewModel.getTahun()}",
                         textAlign = TextAlign.End,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -121,7 +124,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                             contentColor = Color.Black
                         ),
                         onClick = {
-                            navController.navigate("panduan_mahasiswa")
+                            viewModel.lihatPanduan()
                         }
                     ) {
                         Row(
@@ -161,7 +164,7 @@ fun LayoutUtamaMahasiswa(navController: NavController) {
                             contentColor = Color.Black
                         ),
                         onClick = {
-                            navController.navigate("jadwal_mahasiswa")
+                            viewModel.lihatJadwal()
                         }
                     ) {
                         Row(

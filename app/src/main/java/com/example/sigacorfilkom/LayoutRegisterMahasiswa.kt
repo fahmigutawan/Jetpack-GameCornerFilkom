@@ -21,15 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutRegisterMahasiswa(navController: NavController) {
-    val viewModel = viewModel<HalamanRegisterMahasiswa>()
-
+fun LayoutRegisterMahasiswa(
+    viewModel: HalamanRegisterMahasiswa
+) {
     Scaffold(
         containerColor = Color.White
     ) {
@@ -51,7 +49,7 @@ fun LayoutRegisterMahasiswa(navController: NavController) {
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.getNim(),
+                    value = viewModel.getNim().value,
                     onValueChange = { viewModel.setNim(it) },
                     placeholder = {
                         Text(text = "NIM")
@@ -60,7 +58,7 @@ fun LayoutRegisterMahasiswa(navController: NavController) {
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.getNama(),
+                    value = viewModel.getNama().value,
                     onValueChange = { viewModel.setNama(it) },
                     placeholder = {
                         Text(text = "Nama")
@@ -69,7 +67,7 @@ fun LayoutRegisterMahasiswa(navController: NavController) {
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.getPassword(),
+                    value = viewModel.getPassword().value,
                     onValueChange = { viewModel.setPassword(it) },
                     placeholder = {
                         Text(text = "Password")
@@ -80,7 +78,7 @@ fun LayoutRegisterMahasiswa(navController: NavController) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "Sudah punya akun?")
                     TextButton(onClick = {
-                        navController.navigate("login_mahasiswa")
+//                        navController.navigate("login_mahasiswa")
                     }) {
                         Text(text = "Login")
                     }
@@ -90,18 +88,9 @@ fun LayoutRegisterMahasiswa(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth(),
                     onClick = {
-                        viewModel.register(
-                            onSuccess = {
-                                navController.navigate("home_mahasiswa") {
-                                    popUpTo(navController.graph.id) {
-                                        inclusive = true
-                                    }
-                                }
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
-                            }
-                        )
+                        viewModel.submit {
+                            SnackbarHandler.showSnackbar(it)
+                        }
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
