@@ -23,14 +23,10 @@ class Admin {
         nip = value
     }
 
-    fun setPassword(value:String){
+    fun setPassword(value:String) {
         password = value
     }
 
-    fun authenticate(password: String):Boolean = this.password == password
-
-    fun resetField(){
-        nip = ""
-        password = ""
-    }
+    fun validateNipIsNumber() = nip.matches(Regex("\\d+"))
+    fun validatePassword(correctPassword:String):Boolean = this.password == correctPassword
 }

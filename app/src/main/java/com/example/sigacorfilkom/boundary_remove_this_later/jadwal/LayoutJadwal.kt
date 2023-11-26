@@ -41,16 +41,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.example.sigacorfilkom.SnackbarHandler
 import kotlin.math.ceil
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutJadwal(navController: NavController) {
-    val viewModel = viewModel<HalamanJadwal>()
+fun LayoutJadwal(
+    viewModel: HalamanJadwal
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -70,7 +68,7 @@ fun LayoutJadwal(navController: NavController) {
         mutableStateOf(false)
     }
 
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         viewModel.loadHari()
     }
 
@@ -88,11 +86,7 @@ fun LayoutJadwal(navController: NavController) {
                         contentColor = Color.White
                     ),
                     onClick = {
-                        navController.navigate("home_mahasiswa") {
-                            popUpTo(navController.graph.id) {
-                                inclusive = true
-                            }
-                        }
+                        viewModel.navigasiKeHomeMahasiswa()
                     }
                 ) {
                     Text(text = "OK")
@@ -141,12 +135,9 @@ fun LayoutJadwal(navController: NavController) {
                         .fillMaxWidth()
                         .padding(16.dp),
                     onClick = {
-                        viewModel.reservasi(
+                        viewModel.buatReservasi(
                             onSuccess = {
                                 showBerhasilDialog.value = true
-                            },
-                            onFailed = {
-                                SnackbarHandler.showSnackbar(it)
                             }
                         )
                     },
@@ -242,7 +233,7 @@ fun LayoutJadwal(navController: NavController) {
             item {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Pilih Device", color = Color(0xffFF9E3A), fontWeight = FontWeight.Bold)
-                if(viewModel.getPickedHari().value == null){
+                if (viewModel.getPickedHari().value == null) {
                     Text(
                         text = "Pilih tanggal terlebih dahulu!",
                         color = Color.Red,

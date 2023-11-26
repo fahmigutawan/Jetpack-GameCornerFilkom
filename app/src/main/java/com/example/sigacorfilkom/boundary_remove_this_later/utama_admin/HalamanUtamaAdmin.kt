@@ -7,18 +7,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class HalamanUtamaAdmin: ViewModel() {
+class HalamanUtamaAdmin(
+    kontrolJadwal: KontrolJadwal,
+    kontrolReservasi: KontrolReservasi,
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi
+) : ViewModel() {
     private val reservasi = mutableStateListOf<Reservasi>()
     private val perangkat = mutableMapOf<String, String>()
     private val pickedReservasi = mutableStateOf<Reservasi?>(null)
+    private val kontrolJadwal: KontrolJadwal
+    private val kontrolReservasi: KontrolReservasi
+    private val kontrolOtentikasi: KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
 
-    fun loadReservasi(){
+    init {
+        this.kontrolReservasi = kontrolReservasi
+        this.kontrolJadwal = kontrolJadwal
+        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi = kontrolNavigasi
+    }
+
+    fun loadReservasi() {
         viewModelScope.launch {
-            KontrolReservasi.getReservasiTerbaruForAdmin().collect{
+            kontrolReservasi.getReservasiTerbaruForAdmin().collect {
                 reservasi.clear()
                 reservasi.addAll(it)
             }
@@ -31,17 +49,17 @@ class HalamanUtamaAdmin: ViewModel() {
 
     fun getPickedReservasi() = pickedReservasi.value
 
-    fun setPickedReservasi(value:Reservasi?){
+    fun setPickedReservasi(value: Reservasi?) {
         pickedReservasi.value = value
     }
 
     fun ubahStatusReservasi(
-        idReservasi:String,
-        status:String,
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
-    ){
-        KontrolReservasi.updateStatusReservasi(
+        idReservasi: String,
+        status: String,
+        onSuccess: () -> Unit,
+        onFailed: () -> Unit
+    ) {
+        kontrolReservasi.updateStatusReservasi(
             idReservasi,
             status,
             onSuccess,
@@ -49,11 +67,13 @@ class HalamanUtamaAdmin: ViewModel() {
         )
     }
 
-    init {
-        loadReservasi()
+    fun logout() {
+        kontrolOtentikasi.logout()
+    }
 
+    init {
         viewModelScope.launch {
-            KontrolJadwal.getPerangkat().collect{
+            kontrolJadwal.getPerangkat().collect {
                 perangkat.clear()
                 perangkat.putAll(it.associate {
                     it.getIdPerangkat() to it.getNama()
@@ -61,4 +81,6 @@ class HalamanUtamaAdmin: ViewModel() {
             }
         }
     }
+
+    fun navigasiKeHalamanLogin() = kontrolNavigasi.navigasiKeHalamanLogin()
 }

@@ -21,19 +21,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutHistoryMahasiswa(navController: NavController) {
-    val viewModel = viewModel<HalamanHistoryMahasiswa>()
+fun LayoutReservasiTerkiniMahasiswa(
+    viewModel: HalamanReservasiTerkiniMahasiswa
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -49,14 +49,18 @@ fun LayoutHistoryMahasiswa(navController: NavController) {
         12 to "Desember"
     )
 
+    LaunchedEffect(key1 = true){
+        viewModel.getReservasiTerbaruMahasiswa()
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(text = "Reservasi Akhir-Akhir Ini")
+                    Text(text = "Reservasi Terkini")
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
+                    IconButton(onClick = { viewModel.popHalaman() }) {
                         Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "")
                     }
                 }
@@ -74,7 +78,7 @@ fun LayoutHistoryMahasiswa(navController: NavController) {
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            items(viewModel.getReservasiBelumLewat()){item ->
+            items(viewModel.getReservasiBelumLewat()) { item ->
                 ElevatedCard(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.elevatedCardElevation(

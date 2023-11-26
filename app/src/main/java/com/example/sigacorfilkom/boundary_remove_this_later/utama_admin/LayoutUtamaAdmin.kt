@@ -1,6 +1,5 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.utama_admin
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -33,18 +32,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.SnackbarHandler
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LayoutUtamaAdmin(navController: NavController) {
-    val viewModel = viewModel<HalamanUtamaAdmin>()
+fun LayoutUtamaAdmin(
+    viewModel: HalamanUtamaAdmin
+) {
     val monthMapper = mapOf(
         1 to "Januari",
         2 to "Februari",
@@ -59,6 +54,10 @@ fun LayoutUtamaAdmin(navController: NavController) {
         11 to "November",
         12 to "Desember"
     )
+
+    LaunchedEffect(key1 = true){
+        viewModel.loadReservasi()
+    }
 
     if (viewModel.getPickedReservasi() != null) {
         AlertDialog(
@@ -84,12 +83,10 @@ fun LayoutUtamaAdmin(navController: NavController) {
                                 viewModel.getPickedReservasi()?.getReservasiId() ?: "",
                                 "Gagal",
                                 onSuccess = {
-                                    SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
                                     viewModel.setPickedReservasi(null)
                                 },
                                 onFailed = {
-                                    SnackbarHandler.showSnackbar(it)
                                     viewModel.setPickedReservasi(null)
                                 }
                             )
@@ -110,12 +107,10 @@ fun LayoutUtamaAdmin(navController: NavController) {
                                 viewModel.getPickedReservasi()?.getReservasiId() ?: "",
                                 "Divalidasi",
                                 onSuccess = {
-                                    SnackbarHandler.showSnackbar("Berhasil merubah status")
                                     viewModel.loadReservasi()
                                     viewModel.setPickedReservasi(null)
                                 },
                                 onFailed = {
-                                    SnackbarHandler.showSnackbar(it)
                                     viewModel.setPickedReservasi(null)
                                 }
                             )
@@ -149,10 +144,8 @@ fun LayoutUtamaAdmin(navController: NavController) {
                 actions = {
                     IconButton(
                         onClick = {
-                            KontrolOtentikasi.logout()
-                            navController.navigate("login") {
-                                popUpTo(navController.graph.id) { inclusive = true }
-                            }
+                            viewModel.logout()
+                            viewModel.navigasiKeHalamanLogin()
                         }
                     ) {
                         Icon(

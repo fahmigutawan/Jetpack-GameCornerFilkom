@@ -3,6 +3,7 @@ package com.example.sigacorfilkom
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,51 +15,165 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutHistoryMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.HalamanReservasiTerkiniMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa.LayoutReservasiTerkiniMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.HalamanJadwal
 import com.example.sigacorfilkom.boundary_remove_this_later.jadwal.LayoutJadwal
+import com.example.sigacorfilkom.boundary_remove_this_later.login.HalamanLogin
 import com.example.sigacorfilkom.boundary_remove_this_later.login.LayoutLogin
+import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.HalamanLoginAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.login_admin.LayoutLoginAdmin
+import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.HalamanLoginMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa.LayoutLoginMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.panduan.HalamanPanduan
 import com.example.sigacorfilkom.boundary_remove_this_later.panduan.LayoutPanduan
+import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.HalamanRegisterMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.register_mahasiswa.LayoutRegisterMahasiswa
+import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.HalamanTutupJadwalAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin.LayoutTutupJadwalAdmin
+import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.HalamanUtamaAdmin
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_admin.LayoutUtamaAdmin
+import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa.LayoutUtamaMahasiswa
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolSnackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-lateinit var _showSnackbar: (message: String) -> Unit
-lateinit var _showSnackbarWithAction: (
-    message: String,
-    actionLabel: String,
-    action: () -> Unit
-) -> Unit
-
-
 class AktivitasUtama : ComponentActivity() {
+    private lateinit var kontrolNavigasi: KontrolNavigasi
+    private lateinit var kontrolSnackbar: KontrolSnackbar
+    private lateinit var kontrolJadwal: KontrolJadwal
+    private lateinit var kontrolOtentikasi: KontrolOtentikasi
+    private lateinit var kontrolReservasi: KontrolReservasi
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             val navController = rememberNavController()
-            val coroutineScope = rememberCoroutineScope()
             val snackbarHostState = SnackbarHostState()
+            val coroutineScope = rememberCoroutineScope()
+
+            //Init kontrol
+            kontrolNavigasi = KontrolNavigasi(navController)
+            kontrolSnackbar = KontrolSnackbar {
+                coroutineScope.launch(Dispatchers.IO) {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(it)
+                }
+            }
+            kontrolOtentikasi = KontrolOtentikasi(kontrolSnackbar)
+            kontrolReservasi = KontrolReservasi(kontrolOtentikasi, kontrolSnackbar)
+            kontrolJadwal = KontrolJadwal(kontrolSnackbar)
+
+            //Other attrs
             val showBottomBar = remember {
                 mutableStateOf(false)
             }
             val currentRoute = remember {
                 mutableStateOf("")
+            }
+            val halamanHistoryMahasiswa: HalamanReservasiTerkiniMahasiswa by viewModels() {
+                viewModelFactory {
+                    initializer {
+                        HalamanReservasiTerkiniMahasiswa(
+                            kontrolJadwal, kontrolReservasi,kontrolNavigasi
+                        )
+                    }
+                }
+            }
+            val halamanJadwal:HalamanJadwal by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanJadwal(
+                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi,kontrolNavigasi
+                        )
+                    }
+                }
+            }
+            val halamanLogin:HalamanLogin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanLogin(kontrolNavigasi)
+                    }
+                }
+            }
+            val halamanLoginMahasiswa:HalamanLoginMahasiswa by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanLoginMahasiswa(
+                            kontrolOtentikasi,kontrolNavigasi, kontrolSnackbar
+                        )
+                    }
+                }
+            }
+            val halamanLoginAdmin:HalamanLoginAdmin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanLoginAdmin(
+                            kontrolOtentikasi,kontrolNavigasi,kontrolSnackbar
+                        )
+                    }
+                }
+            }
+            val halamanPanduan:HalamanPanduan by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanPanduan(kontrolNavigasi)
+                    }
+                }
+            }
+            val halamanRegisterMahasiswa: HalamanRegisterMahasiswa  by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanRegisterMahasiswa(
+                            kontrolOtentikasi,kontrolNavigasi, kontrolSnackbar
+                        )
+                    }
+                }
+            }
+            val halamanTutupJadwalAdmin: HalamanTutupJadwalAdmin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanTutupJadwalAdmin(
+                            kontrolJadwal,kontrolNavigasi,kontrolSnackbar
+                        )
+                    }
+                }
+            }
+            val halamanUtamaAdmin: HalamanUtamaAdmin by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanUtamaAdmin(
+                            kontrolJadwal, kontrolReservasi, kontrolOtentikasi,kontrolNavigasi
+                        )
+                    }
+                }
+            }
+            val halamanUtamaMahasiswa:HalamanUtamaMahasiswa by viewModels {
+                viewModelFactory {
+                    initializer {
+                        HalamanUtamaMahasiswa(
+                            kontrolJadwal, kontrolOtentikasi,kontrolNavigasi
+                        )
+                    }
+                }
             }
 
             navController.addOnDestinationChangedListener { _, dest, _ ->
@@ -74,30 +189,6 @@ class AktivitasUtama : ComponentActivity() {
                     }
                 }
             }
-            _showSnackbar = {
-                coroutineScope.launch(Dispatchers.IO) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    snackbarHostState.showSnackbar(it)
-                }
-            }
-            _showSnackbarWithAction = { msg, label, action ->
-                coroutineScope.launch(Dispatchers.IO) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    val snackbarData = snackbarHostState
-                        .showSnackbar(
-                            message = msg,
-                            actionLabel = label
-                        )
-
-                    if (snackbarData == SnackbarResult.ActionPerformed) {
-                        if (label == "Tutup") {
-                            snackbarHostState.currentSnackbarData?.dismiss()
-                        } else {
-                            action()
-                        }
-                    }
-                }
-            }
 
             Scaffold(
                 snackbarHost = {
@@ -109,7 +200,7 @@ class AktivitasUtama : ComponentActivity() {
                 },
                 bottomBar = {
                     if (showBottomBar.value) {
-                        if (KontrolOtentikasi.getIsAdmin()) {
+                        if (kontrolOtentikasi.isAdmin()) {
                             BottomAppBar {
                                 Row(
                                     modifier = Modifier.fillMaxSize(),
@@ -117,7 +208,7 @@ class AktivitasUtama : ComponentActivity() {
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
                                     IconButton(onClick = {
-                                        navController.navigate("home_admin")
+                                        kontrolNavigasi.navigasiKeHomeAdmin()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.iconhome),
@@ -129,7 +220,7 @@ class AktivitasUtama : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        navController.navigate("tutup_jadwal_admin")
+                                        kontrolNavigasi.navigasiKeTutupJadwal()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_tutup_admin),
@@ -149,7 +240,7 @@ class AktivitasUtama : ComponentActivity() {
                                     horizontalArrangement = Arrangement.SpaceEvenly
                                 ) {
                                     IconButton(onClick = {
-                                        navController.navigate("home_mahasiswa")
+                                        kontrolNavigasi.navigasiKeHomeMahasiswa()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.iconhome),
@@ -161,7 +252,7 @@ class AktivitasUtama : ComponentActivity() {
                                     }
 
                                     IconButton(onClick = {
-                                        navController.navigate("history_mahasiswa")
+                                        kontrolNavigasi.navigasiKeReservasiTerkini()
                                     }) {
                                         Icon(
                                             painter = rememberAsyncImagePainter(model = R.drawable.ic_history_mhs),
@@ -183,43 +274,51 @@ class AktivitasUtama : ComponentActivity() {
                     startDestination = "login"
                 ) {
                     composable("login") {
-                        LayoutLogin(navController = navController)
+                        LayoutLogin(viewModel = halamanLogin)
                     }
 
                     composable("login_mahasiswa") {
-                        LayoutLoginMahasiswa(navController = navController)
+                        LayoutLoginMahasiswa(viewModel=halamanLoginMahasiswa)
                     }
 
                     composable("register_mahasiswa") {
-                        LayoutRegisterMahasiswa(navController = navController)
+                        LayoutRegisterMahasiswa(viewModel=halamanRegisterMahasiswa)
                     }
 
                     composable("home_mahasiswa") {
-                        LayoutUtamaMahasiswa(navController = navController)
+                        LayoutUtamaMahasiswa(viewModel=halamanUtamaMahasiswa)
                     }
 
                     composable("jadwal_mahasiswa") {
-                        LayoutJadwal(navController = navController)
+                        LayoutJadwal(viewModel=halamanJadwal)
                     }
 
                     composable("panduan_mahasiswa") {
-                        LayoutPanduan(navController = navController)
+                        LayoutPanduan(viewModel = halamanPanduan)
                     }
 
                     composable("history_mahasiswa") {
-                        LayoutHistoryMahasiswa(navController = navController)
+                        LayoutReservasiTerkiniMahasiswa(
+                            viewModel = halamanHistoryMahasiswa
+                        )
                     }
 
                     composable("login_admin") {
-                        LayoutLoginAdmin(navController = navController)
+                        LayoutLoginAdmin(
+                            viewModel= halamanLoginAdmin
+                        )
                     }
 
                     composable("home_admin") {
-                        LayoutUtamaAdmin(navController = navController)
+                        LayoutUtamaAdmin(
+                            viewModel=halamanUtamaAdmin
+                        )
                     }
 
                     composable("tutup_jadwal_admin") {
-                        LayoutTutupJadwalAdmin(navController = navController)
+                        LayoutTutupJadwalAdmin(
+                            viewModel=halamanTutupJadwalAdmin
+                        )
                     }
                 }
             }

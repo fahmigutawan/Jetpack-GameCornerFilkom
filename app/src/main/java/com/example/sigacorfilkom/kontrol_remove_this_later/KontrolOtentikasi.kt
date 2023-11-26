@@ -1,168 +1,165 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
+import android.util.Log
 import com.example.sigacorfilkom.entity_remove_this_later.Admin
 import com.example.sigacorfilkom.entity_remove_this_later.Mahasiswa
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Date
 
 
-class KontrolOtentikasi {
-    companion object {
-        private var mahasiswa = Mahasiswa()
-        private var admin = Admin()
-        private var isAdmin = false
+class KontrolOtentikasi(
+    kontrolSnackbar: KontrolSnackbar
+) {
+    private var mahasiswa: Mahasiswa? = null
+    private var admin: Admin? = null
+    private val kontrolSnackbar: KontrolSnackbar
 
-        fun loginMahasiswa(
-            nim: String,
-            password: String,
-            onSuccess: () -> Unit,
-            onFailed: (String) -> Unit
-        ) {
-            if (nim.matches(Regex("\\d+"))) {
-                FirebaseFirestore
-                    .getInstance()
-                    .collection("mahasiswa")
-                    .document(nim)
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        if (doc.data == null) {
-                            onFailed("NIM atau Password Salah atau Tidak Terdaftar")
-                            return@addOnSuccessListener
-                        }
-
-                        if (doc["nim"] as String == nim && doc["password"] as String == password) {
-                            mahasiswa.apply {
-                                setNim(doc["nim"] as String)
-                                setNama(doc["nama"] as String)
-                                setPassword(doc["password"] as String)
-                            }
-
-                            onSuccess()
-                            return@addOnSuccessListener
-                        } else {
-                            onFailed("NIM atau Password Salah atau Tidak Terdaftar")
-                            return@addOnSuccessListener
-                        }
-                    }.addOnFailureListener {
-                        onFailed(it.message.toString())
-                        return@addOnFailureListener
-                    }
-            } else {
-                onFailed("NIM Hanya boleh angka")
-                return
-            }
-        }
-
-        fun loginAdmin(
-            nip: String,
-            password: String,
-            onSuccess: () -> Unit,
-            onFailed: (String) -> Unit
-        ) {
-            if (nip.matches(Regex("\\d+"))) {
-                FirebaseFirestore
-                    .getInstance()
-                    .collection("admin")
-                    .document(nip)
-                    .get()
-                    .addOnSuccessListener { doc ->
-                        if (doc.data == null) {
-                            onFailed("NIP tidak terdaftar sebagai admin")
-                            return@addOnSuccessListener
-                        }
-
-                        if (doc["nip"] as String == nip && doc["password"] as String == password) {
-                            admin.apply {
-                                setNip(doc["nip"] as String)
-                                setPassword(doc["password"] as String)
-                            }
-                            isAdmin = true
-                            onSuccess()
-                            return@addOnSuccessListener
-                        } else {
-                            onFailed("Password salah")
-                            return@addOnSuccessListener
-                        }
-                    }
-                    .addOnFailureListener {
-                        onFailed(it.message.toString())
-                        return@addOnFailureListener
-                    }
-            } else {
-                onFailed("NIP Hanya boleh angka")
-                return
-            }
-        }
-
-        fun registerMahasiswa(
-            nim: String,
-            nama: String,
-            password: String,
-            onSuccess: () -> Unit,
-            onFailed: (String) -> Unit
-        ) {
-            if (nim.matches(Regex("\\d+"))) {
-                if(nim.length != 15){
-                    onFailed("Masukkan NIM yang benar")
-                    return
-                }
-
-                if(nim.substring(2, 4) != "515"){
-                    onFailed("Hanya mahasiswa FILKOM yang bisa mendaftar")
-                    return
-                }
-
-                FirebaseFirestore.getInstance()
-                    .collection("mahasiswa")
-                    .document(nim)
-                    .get()
-                    .addOnSuccessListener {
-                        if (it.data != null) {
-                            onFailed("Akun sudah terdaftar, pakai identitas lain")
-                            return@addOnSuccessListener
-                        } else {
-                            FirebaseFirestore.getInstance()
-                                .collection("mahasiswa")
-                                .document(nim)
-                                .set(
-                                    mapOf(
-                                        "nim" to nim,
-                                        "nama" to nama,
-                                        "password" to password
-                                    )
-                                ).addOnSuccessListener {
-                                    mahasiswa.apply {
-                                        setNim(nim)
-                                        setPassword(password)
-                                        setNama(nama)
-                                    }
-
-                                    onSuccess()
-                                    return@addOnSuccessListener
-                                }.addOnFailureListener {
-                                    onFailed(it.message.toString())
-                                    return@addOnFailureListener
-                                }
-                        }
-                    }
-                    .addOnFailureListener {
-                        onFailed(it.message.toString())
-                        return@addOnFailureListener
-                    }
-            } else {
-                onFailed("NIM Hanya boleh angka")
-                return
-            }
-        }
-
-        fun logout() {
-            admin.resetField()
-            mahasiswa.resetField()
-        }
-
-        fun getNimMahasiswa() = mahasiswa.getNim()
-
-        fun getNamaMahasiswa() = mahasiswa.getNama()
-
-        fun getIsAdmin() = isAdmin
+    init {
+        this.kontrolSnackbar = kontrolSnackbar
     }
+
+    fun loginMahasiswa(
+        nim: String,
+        password: String,
+        onSuccess: () -> Unit
+    ) {
+        val mahasiswa = Mahasiswa(
+            nim,
+            password
+        )
+
+        if (!mahasiswa.validateNimIsNumber()) {
+            kontrolSnackbar.showSnackbar("NIM hanya boleh angka")
+            return
+        }
+
+        FirebaseFirestore
+            .getInstance()
+            .collection("mahasiswa")
+            .document(nim)
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.data == null) {
+                    kontrolSnackbar.showSnackbar("NIM atau Password Salah atau Tidak Terdaftar")
+                    return@addOnSuccessListener
+                }
+
+                if (mahasiswa.validatePassword(doc["password"] as String)) {
+                    mahasiswa.setNama(doc["nama"] as String)
+                    this.mahasiswa = mahasiswa
+                    onSuccess()
+                    return@addOnSuccessListener
+                } else {
+                    kontrolSnackbar.showSnackbar("NIM atau Password Salah atau Tidak Terdaftar")
+                    return@addOnSuccessListener
+                }
+            }
+            .addOnFailureListener {
+                kontrolSnackbar.showSnackbar(it.message.toString())
+                return@addOnFailureListener
+            }
+    }
+
+    fun loginAdmin(
+        nip: String,
+        password: String,
+        onSuccess: () -> Unit
+    ) {
+        val admin = Admin(
+            nip,
+            password
+        )
+
+        if(!admin.validateNipIsNumber()){
+            kontrolSnackbar.showSnackbar("NIP hanya boleh angka")
+            return
+        }
+
+        FirebaseFirestore
+            .getInstance()
+            .collection("admin")
+            .document(nip)
+            .get()
+            .addOnSuccessListener { doc ->
+                if (doc.data == null) {
+                    kontrolSnackbar.showSnackbar("NIP tidak terdaftar sebagai admin")
+                    return@addOnSuccessListener
+                }
+
+                if (admin.validatePassword(doc["password"] as String)) {
+                    this.admin = admin
+                    onSuccess()
+                } else {
+                    kontrolSnackbar.showSnackbar("Password salah")
+                }
+            }
+            .addOnFailureListener {
+                kontrolSnackbar.showSnackbar(it.message.toString())
+            }
+
+    }
+
+    fun registerMahasiswa(
+        nim: String,
+        nama: String,
+        password: String,
+        onSuccess: () -> Unit
+    ) {
+        val mahasiswa = Mahasiswa(
+            nim = nim,
+            nama = nama,
+            password = password
+        )
+
+        if (!mahasiswa.validateNimIsNumber()) {
+            kontrolSnackbar.showSnackbar("NIM hanya boleh angka")
+            return
+        }
+
+        if (!mahasiswa.validateNimIs15Digit()) {
+            kontrolSnackbar.showSnackbar("Masukka NIM yang benar")
+            return
+        }
+
+        if (!mahasiswa.validateNimIsFilkom()) {
+            kontrolSnackbar.showSnackbar("Hanya mahasiswa FILKOM UB yang bisa mendaftar")
+            return
+        }
+
+        FirebaseFirestore.getInstance()
+            .collection("mahasiswa")
+            .document(nim)
+            .get()
+            .addOnSuccessListener {
+                if (it.data != null) {
+                    kontrolSnackbar.showSnackbar("Akun sudah terdaftar, pakai identitas lain")
+                } else {
+                    FirebaseFirestore.getInstance()
+                        .collection("mahasiswa")
+                        .document(nim)
+                        .set(mahasiswa)
+                        .addOnSuccessListener {
+                            this.mahasiswa = mahasiswa
+                            onSuccess()
+                        }
+                        .addOnFailureListener {
+                            kontrolSnackbar.showSnackbar(it.message.toString())
+                        }
+                }
+            }
+            .addOnFailureListener {
+                kontrolSnackbar.showSnackbar(it.message.toString())
+            }
+    }
+
+    fun logout() {
+        admin = null
+        mahasiswa = null
+    }
+
+    fun getNimMahasiswa() = mahasiswa?.getNim() ?: ""
+
+    fun getNamaMahasiswa() = mahasiswa?.getNama() ?: ""
+
+    fun isAdmin() = admin != null
 }

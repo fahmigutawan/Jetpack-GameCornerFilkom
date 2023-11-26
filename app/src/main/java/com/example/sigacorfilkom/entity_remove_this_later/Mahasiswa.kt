@@ -8,27 +8,39 @@ class Mahasiswa {
     private var password:String = ""
     private var nama:String = ""
 
+    constructor(
+        nim:String,
+        password:String,
+        nama:String
+    ){
+        this.nim = nim
+        this.password = password
+        this.nama = nama
+    }
+
+    constructor(
+        nim:String,
+        password:String
+    ){
+        this.nim = nim
+        this.password = password
+    }
+
     fun getNim() = nim
 
     fun getNama() = nama
 
-    fun setNim(value:String){
-        nim = value
-    }
-
-    fun setPassword(value:String){
-        password = value
-    }
-
     fun setNama(value:String){
-        nama = value
+        this.nama = value
     }
 
-    fun authenticate(password:String) = this.password == password
+    fun validateNimIs15Digit() = nim.length == 15
 
-    fun resetField(){
-        nim = ""
-        nama = ""
-        password = ""
+    fun validateNimIsFilkom() = nim.substring(2, 5) == "515"
+
+    fun validateNimIsNumber() = nim.matches(Regex("\\d+"))
+
+    fun validatePassword(correctPassword:String):Boolean{
+        return this.password == correctPassword
     }
 }

@@ -8,23 +8,40 @@ import com.example.sigacorfilkom.entity_remove_this_later.Hari
 import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
 import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
 import kotlinx.coroutines.launch
 
 
-class HalamanJadwal : ViewModel() {
+class HalamanJadwal(
+    kontrolJadwal: KontrolJadwal,
+    kontrolReservasi: KontrolReservasi,
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi
+) : ViewModel() {
     private var listHari = mutableStateListOf<Hari>()
     private var listPerangkat = mutableStateListOf<Perangkat>()
     private var listSesi = mutableStateListOf<Sesi>()
     private var pickedHari = mutableStateOf<Hari?>(null)
     private var pickedPerangkat = mutableStateOf<Perangkat?>(null)
     private var pickedSesi = mutableStateOf<Sesi?>(null)
+    private val kontrolJadwal:KontrolJadwal
+    private val kontrolReservasi: KontrolReservasi
+    private val kontrolOtentikasi: KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
 
     init {
-        listHari.addAll(KontrolJadwal.getHari())
+        this.kontrolJadwal = kontrolJadwal
+        this.kontrolReservasi = kontrolReservasi
+        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi = kontrolNavigasi
+    }
+
+    init {
+        listHari.addAll(kontrolJadwal.getHari())
         viewModelScope.launch {
-            KontrolJadwal.getPerangkat().collect{
+            kontrolJadwal.getPerangkat().collect{
                 listPerangkat.clear()
                 listPerangkat.addAll(it)
             }
@@ -34,7 +51,7 @@ class HalamanJadwal : ViewModel() {
     fun loadSesi(){
         if(pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
-                KontrolJadwal.getSesi(
+                kontrolJadwal.getSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
@@ -47,23 +64,21 @@ class HalamanJadwal : ViewModel() {
         }
     }
 
-    fun reservasi(
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
+    fun buatReservasi(
+        onSuccess:() -> Unit
     ){
-        KontrolReservasi.buatReservasi(
-            nimPeminjam = KontrolOtentikasi.getNimMahasiswa(),
+        kontrolReservasi.buatReservasi(
+            nimPeminjam = kontrolOtentikasi.getNimMahasiswa(),
             nomorSesi = pickedSesi.value?.getSesiNumber() ?: 0,
             idPerangkat = pickedPerangkat.value?.getIdPerangkat() ?: "...",
             tanggal = pickedHari.value?.getTanggal() ?: 0,
             bulan = pickedHari.value?.getBulan() ?: 0,
             tahun = pickedHari.value?.getTahun() ?: 0,
-            onSuccess = onSuccess,
-            onFailed = onFailed
+            onSuccess = onSuccess
         )
     }
 
-    fun loadHari() = KontrolJadwal.loadHari()
+    fun loadHari() = kontrolJadwal.loadHari()
 
     fun getListHari() = listHari
 
@@ -88,4 +103,6 @@ class HalamanJadwal : ViewModel() {
     }
 
     fun getPickedSesi() = pickedSesi
+
+    fun navigasiKeHomeMahasiswa() = kontrolNavigasi.navigasiKeHomeMahasiswa()
 }

@@ -1,7 +1,6 @@
 package com.example.sigacorfilkom.boundary_remove_this_later.login
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,17 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.sigacorfilkom.R
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolJadwal
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.ArrayList
-import java.util.Calendar
-import java.util.Date
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun LayoutLogin(navController: NavController) {
+fun LayoutLogin(
+    viewModel: HalamanLogin
+) {
     val scrWidth = LocalConfiguration.current
 
     Scaffold(
@@ -55,7 +49,7 @@ fun LayoutLogin(navController: NavController) {
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_mahasiswa")
+                        viewModel.navigasikeLoginMahasiswa()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -71,7 +65,7 @@ fun LayoutLogin(navController: NavController) {
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     onClick = {
-                        navController.navigate("login_admin")
+                        viewModel.navigasiKeLoginAdmin()
                     },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(

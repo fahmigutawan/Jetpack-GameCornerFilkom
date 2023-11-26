@@ -2,13 +2,28 @@ package com.example.sigacorfilkom.boundary_remove_this_later.login_mahasiswa
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolNavigasi
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolOtentikasi
+import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolSnackbar
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
-class HalamanLoginMahasiswa : ViewModel() {
+class HalamanLoginMahasiswa(
+    kontrolOtentikasi: KontrolOtentikasi,
+    kontrolNavigasi: KontrolNavigasi,
+    kontrolSnackbar: KontrolSnackbar
+) : ViewModel() {
     private var nim = mutableStateOf("")
     private var password = mutableStateOf("")
+    private var kontrolOtentikasi:KontrolOtentikasi
+    private val kontrolNavigasi:KontrolNavigasi
+    private val kontrolSnackbar: KontrolSnackbar
+
+    init{
+        this.kontrolOtentikasi = kontrolOtentikasi
+        this.kontrolNavigasi= kontrolNavigasi
+        this.kontrolSnackbar = kontrolSnackbar
+    }
 
     fun getNim() = nim
     fun getPassword() = password
@@ -19,18 +34,23 @@ class HalamanLoginMahasiswa : ViewModel() {
         password.value = value
     }
 
+    fun validate() = nim.value.isNotEmpty() && password.value.isNotEmpty()
+
     fun login(
-        onSuccess:() -> Unit,
-        onFailed:(String) -> Unit
+        onSuccess:() -> Unit
     ){
-        if(nim.value.isEmpty() || password.value.isEmpty()){
-            onFailed("Semua data harus dimasukkan")
+        if(!validate()){
+            kontrolSnackbar.showSnackbar("Semua data harus dimasukkan")
         }else{
-            KontrolOtentikasi.loginMahasiswa(
+            kontrolOtentikasi.loginMahasiswa(
                 nim.value,
                 password.value,
-                onSuccess, onFailed
+                onSuccess
             )
         }
     }
+
+    fun navigasiKeRegister() = kontrolNavigasi.navigasiKeRegister()
+
+    fun navigasiKeHomeMahasiswa() = kontrolNavigasi.navigasiKeHomeMahasiswa()
 }
