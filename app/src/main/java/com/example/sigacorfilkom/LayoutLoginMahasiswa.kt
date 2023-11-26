@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -35,9 +37,11 @@ fun LayoutLoginMahasiswa(
     Scaffold(
         containerColor = Color.White
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp), contentAlignment = Alignment.Center
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,6 +57,8 @@ fun LayoutLoginMahasiswa(
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.getNim().value,
                     onValueChange = { viewModel.setNim(it) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     placeholder = {
                         Text(text = "NIM")
                     }
@@ -62,6 +68,8 @@ fun LayoutLoginMahasiswa(
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.getPassword().value,
                     onValueChange = { viewModel.setPassword(it) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     placeholder = {
                         Text(text = "Password")
                     },
