@@ -58,6 +58,11 @@ class KontrolJadwal(navigasi: NavController, aktivitas: SistemGameCorner) {
         tahun: Int,
         idPerangkat: String
     ): List<Sesi> {
+        /**
+         *  CALL   getDaftarSesi
+         *  TUJUAN (E) Jadwal
+         *  RETURN daftar sesi
+         */
         return jadwal.getDaftarSesi(tanggal, bulan, tahun, idPerangkat)
     }
 

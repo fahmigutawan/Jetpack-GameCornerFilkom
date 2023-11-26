@@ -83,13 +83,20 @@ class Jadwal {
         val daftarSesi = ArrayList<Sesi>()
 
         // get daftar sesi dari database
-        val waiterGetDaftarSesi = CompletableDeferred<Unit>()
+        var asyncCallWaiter = CompletableDeferred<Unit>()
         FirebaseFirestore.getInstance()
             .collection("sesi")
             .get()
             .addOnSuccessListener { valueSesi ->
                 valueSesi?.let { valueSesiNotNull ->
+                    /**
+                     *  LOOP data sesi
+                     */
                     valueSesiNotNull.documents.forEach { docSesi ->
+                        /**
+                         *  CALL   <<create>>
+                         *  TUJUAN (E) Sesi
+                         */
                         val sesi = Sesi(
                             idPerangkat = idPerangkat,
                             nomorSesi = (docSesi["nomorSesi"] as Long).toInt(),
@@ -102,16 +109,16 @@ class Jadwal {
                         daftarSesi.add(sesi)
                     }
                 }
-                waiterGetDaftarSesi.complete(Unit)
+                asyncCallWaiter.complete(Unit)
             }
             .addOnFailureListener { e ->
-                waiterGetDaftarSesi.completeExceptionally(e)
+                asyncCallWaiter.completeExceptionally(e)
             }
-        waiterGetDaftarSesi.await()
+        asyncCallWaiter.await()
 
         //Get status booked karena reservasi
         for (sesi in daftarSesi) {
-            val waiterGetReservasi = CompletableDeferred<Unit>()
+            asyncCallWaiter = CompletableDeferred()
 
             FirebaseFirestore.getInstance()
                 .collection("reservasi")
@@ -123,13 +130,13 @@ class Jadwal {
                     valueReservasi?.let { valueReservasiNotNull ->
                         sesi.setBooked(valueReservasiNotNull.documents.isNotEmpty())
                     }
-                    waiterGetReservasi.complete(Unit)
+                    asyncCallWaiter.complete(Unit)
                 }
                 .addOnFailureListener { _ ->
-                    waiterGetReservasi.complete(Unit)
+                    asyncCallWaiter.complete(Unit)
                 }
 
-            waiterGetReservasi.await()
+            asyncCallWaiter.await()
         }
 
         return daftarSesi.toList().sortedBy { it.getSesiNumber() }

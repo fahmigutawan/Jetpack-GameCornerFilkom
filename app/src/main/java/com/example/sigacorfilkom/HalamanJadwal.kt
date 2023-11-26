@@ -49,21 +49,35 @@ class HalamanJadwal(
         showReservasiBerhasilDialog.value = show
     }
 
+    /**
+     *  EVENT submitHariDanPerangkat
+     */
     fun submitHariDanPerangkat() {
         if (pickedHari.value != null && pickedPerangkat.value != null) {
             viewModelScope.launch {
                 daftarSesi.clear()
+                /**
+                 *  CALL   getDaftarSesi
+                 *  TUJUAN (C) KontrolJadwal
+                 *  RETURN daftar sesi
+                 */
                 val mDaftarSesi = kontrolJadwal.getDaftarSesi(
                     tanggal = pickedHari.value!!.getTanggal(),
                     bulan = pickedHari.value!!.getBulan(),
                     tahun = pickedHari.value!!.getTahun(),
                     idPerangkat = pickedPerangkat.value!!.getIdPerangkat()
                 )
+                /**
+                 *  CALL tampilkanDaftarSesi
+                 */
                 daftarSesi.addAll(mDaftarSesi)
             }
         }
     }
 
+    /**
+     *  EVENT reservasi
+     */
     fun reservasi() {
         viewModelScope.launch {
             try {
