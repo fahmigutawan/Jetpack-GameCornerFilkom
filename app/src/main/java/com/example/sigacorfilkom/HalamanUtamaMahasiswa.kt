@@ -1,9 +1,9 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa
+package com.example.sigacorfilkom
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
+import com.example.sigacorfilkom.Otentikasi
 import com.example.sigacorfilkom.KontrolJadwal
 import com.example.sigacorfilkom.KontrolPanduan
 import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaMahasiswa

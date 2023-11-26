@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
-import com.example.sigacorfilkom.entity_remove_this_later.Sesi
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
+import com.example.sigacorfilkom.KontrolReservasi
 import kotlinx.coroutines.launch
 import java.lang.Exception
 

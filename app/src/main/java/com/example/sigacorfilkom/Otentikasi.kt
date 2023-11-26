@@ -1,7 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.otentikasi
-
-import com.example.sigacorfilkom.entity_remove_this_later.Admin
-import com.example.sigacorfilkom.Mahasiswa
+package com.example.sigacorfilkom
 
 class Otentikasi {
     companion object {
@@ -13,11 +10,11 @@ class Otentikasi {
         }
 
         fun setMahasiswa(mahasiswa: Mahasiswa) {
-            this.mahasiswa = mahasiswa
+            Companion.mahasiswa = mahasiswa
         }
 
         fun clearMahasiswa() {
-            this.mahasiswa = null
+            mahasiswa = null
         }
 
         fun getAdmin(): Admin? {
@@ -25,11 +22,11 @@ class Otentikasi {
         }
 
         fun setAdmin(admin: Admin) {
-            this.admin = admin
+            Companion.admin = admin
         }
 
         fun clearAdmin() {
-            this.admin = null
+            admin = null
         }
     }
 }

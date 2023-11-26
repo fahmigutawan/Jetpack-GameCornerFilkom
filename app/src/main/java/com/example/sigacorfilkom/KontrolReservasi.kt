@@ -1,12 +1,12 @@
-package com.example.sigacorfilkom.kontrol_remove_this_later
+package com.example.sigacorfilkom
 
-import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
+import com.example.sigacorfilkom.Otentikasi
 import androidx.navigation.NavController
 import com.example.sigacorfilkom.SistemGameCorner
 import com.example.sigacorfilkom.KontrolRegisterMahasiswa
-import com.example.sigacorfilkom.entity_remove_this_later.BukuReservasi
+import com.example.sigacorfilkom.BukuReservasi
 import com.example.sigacorfilkom.DaftarPerangkat
-import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
+import com.example.sigacorfilkom.Reservasi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
@@ -146,7 +146,7 @@ class KontrolReservasi(
             }
     }
 
-    suspend fun tampilkanHalamanRiwayatReservasi() {
+    suspend fun tampilkanHalamanRiwayatReservasiForMahasiswa() {
         val halamanHistoryMahasiswa = aktivitas.getHalamanHistoryMahasiswa()
         val nimMahasiswa = Otentikasi.getMahasiswa()!!.getNim()
 

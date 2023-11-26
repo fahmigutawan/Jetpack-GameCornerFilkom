@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.entity_remove_this_later
+package com.example.sigacorfilkom
 
 class Admin {
     private var nip:String = ""

@@ -1,12 +1,9 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa
+package com.example.sigacorfilkom
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
-import com.example.sigacorfilkom.entity_remove_this_later.Reservasi
-import com.example.sigacorfilkom.KontrolJadwal
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolReservasi
+import com.example.sigacorfilkom.KontrolReservasi
 import kotlinx.coroutines.launch
 
 class HalamanHistoryMahasiswa(

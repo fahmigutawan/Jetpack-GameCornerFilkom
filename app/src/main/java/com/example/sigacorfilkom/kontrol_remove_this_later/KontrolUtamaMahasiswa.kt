@@ -1,7 +1,7 @@
 package com.example.sigacorfilkom.kontrol_remove_this_later
 
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.boundary_remove_this_later.otentikasi.Otentikasi
+import com.example.sigacorfilkom.Otentikasi
 
 class KontrolUtamaMahasiswa(navigasi: NavController) {
     private val navigasi: NavController

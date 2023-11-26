@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.entity_remove_this_later
+package com.example.sigacorfilkom
 
 class Perangkat {
     private var idPerangkat:String

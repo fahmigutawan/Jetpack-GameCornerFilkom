@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.tutup_jadwal_admin
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.sigacorfilkom.HalamanTutupJadwalAdmin
 import com.example.sigacorfilkom.SnackbarHandler
 
 @OptIn(ExperimentalMaterial3Api::class)

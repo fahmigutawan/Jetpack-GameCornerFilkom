@@ -1,7 +1,5 @@
 package com.example.sigacorfilkom
 
-import com.example.sigacorfilkom.entity_remove_this_later.Perangkat
-import com.example.sigacorfilkom.entity_remove_this_later.Sesi
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CompletableDeferred
 import java.time.LocalDate

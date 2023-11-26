@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.utama_mahasiswa
+package com.example.sigacorfilkom
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.example.sigacorfilkom.HalamanUtamaMahasiswa
 import com.example.sigacorfilkom.R
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.example.sigacorfilkom.boundary_remove_this_later.history_mahasiswa
+package com.example.sigacorfilkom
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.sigacorfilkom.HalamanHistoryMahasiswa
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

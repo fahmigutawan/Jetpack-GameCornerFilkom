@@ -3,7 +3,7 @@ package com.example.sigacorfilkom
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolLoginMahasiswa
+import com.example.sigacorfilkom.KontrolLoginMahasiswa
 import kotlinx.coroutines.launch
 
 
