@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -50,6 +52,8 @@ fun LayoutLoginAdmin(
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.getNip().value,
                     onValueChange = { viewModel.setNip(it) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     placeholder = {
                         Text(text = "NIP")
                     }
@@ -59,6 +63,8 @@ fun LayoutLoginAdmin(
                     modifier = Modifier.fillMaxWidth(),
                     value = viewModel.getPassword().value,
                     onValueChange = { viewModel.setPassword(it) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     placeholder = {
                         Text(text = "Password")
                     },

@@ -27,19 +27,36 @@ class HalamanLoginAdmin(
         password.value = value
     }
 
+    /**
+     *  Event login
+     */
     fun login(
         onFailed: (String) -> Unit
     ) {
+        /**
+         *  CALL cekKosong
+         */
+        /**
+         *  OPT  statusKosong = true
+         */
         if (nip.value.isEmpty() || password.value.isEmpty()) {
+            /**
+             *  CALL tampilkan error kosong
+             */
             onFailed("Semua data harus dimasukkan")
-        } else {
-            viewModelScope.launch {
-                kontrolLoginAdmin.login(
-                    nip.value,
-                    password.value,
-                    onFailed
-                )
-            }
+            return
+        }
+
+        viewModelScope.launch {
+            /**
+             *  CALL   login()
+             *  TUJUAN (C) KontrolLoginAdmin
+             */
+            kontrolLoginAdmin.login(
+                nip.value,
+                password.value,
+                onFailed
+            )
         }
     }
 }

@@ -27,9 +27,24 @@ class KontrolLoginAdmin(navigasi: NavController) {
          */
         val hasilValidasi = daftarAkunAdmin.validasiAkunAdmin(nip, password)
 
+        /**
+         *  OPT true
+         */
         if(hasilValidasi) {
+            /**
+             *  CALL   tampilkan
+             *  TUJUAN (B) HalamanUtamaAdmin
+             */
             navigasi.navigate("home_admin")
-        } else {
+        }
+        /**
+         *  OPT false
+         */
+        else {
+            /**
+             *  CALL   tampilkan error tidak valid
+             *  TUJUAN (B) HalamanLoginAdmin
+             */
             onFailed("NIM atau Password Salah atau tidak terdaftar")
         }
     }
