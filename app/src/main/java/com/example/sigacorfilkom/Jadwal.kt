@@ -12,6 +12,11 @@ class Jadwal {
     suspend fun getDaftarHari(): List<Hari> {
         val daftarHari: MutableList<Hari> = mutableListOf()
 
+        /**
+         *  CALL hari = 0
+         *  LOOP hari < 3
+         *  CALL hari = hari+1
+         */
         for (i in 0..2) {
             var isDitutup = false
             var alasanDitutup = ""

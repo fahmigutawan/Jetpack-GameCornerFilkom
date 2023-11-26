@@ -18,33 +18,33 @@ class KontrolJadwal(navigasi: NavController, aktivitas: SistemGameCorner) {
     suspend fun tampilkanHalamanJadwal() {
         /**
          * CALL   <<create>>
-         * TUJUAN Jadwal
+         * TUJUAN (E) Jadwal
          */
         jadwal = Jadwal()
 
         /**
          * CALL   getDaftarHari
-         * TUJUAN Jadwal
+         * TUJUAN (E) Jadwal
          * RETURN daftar hari
          */
         val daftarHari = jadwal.getDaftarHari()
 
         /**
          * CALL   <<create>>
-         * TUJUAN DaftarPerangkat
+         * TUJUAN (E) DaftarPerangkat
          */
         val daftarPerangkatEntity = DaftarPerangkat()
 
         /**
          * CALL   getDaftarPerangkat
-         * TUJUAN DaftarPerangkat
+         * TUJUAN (E) DaftarPerangkat
          * RETURN daftar perangkat
          */
         val daftarPerangkat = daftarPerangkatEntity.getDaftarPerangkat()
 
         /**
          * CALL   tampilkan
-         * TUJUAN HalamanJadwal
+         * TUJUAN (B) HalamanJadwal
          */
         val halamanJadwal = aktivitas.getHalamanJadwal()
         halamanJadwal.setDaftarHari(daftarHari)
