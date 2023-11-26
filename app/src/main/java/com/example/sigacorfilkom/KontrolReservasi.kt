@@ -1,12 +1,6 @@
 package com.example.sigacorfilkom
 
-import com.example.sigacorfilkom.Otentikasi
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.SistemGameCorner
-import com.example.sigacorfilkom.KontrolRegisterMahasiswa
-import com.example.sigacorfilkom.BukuReservasi
-import com.example.sigacorfilkom.DaftarPerangkat
-import com.example.sigacorfilkom.Reservasi
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose

@@ -1,7 +1,6 @@
 package com.example.sigacorfilkom
 
 import androidx.navigation.NavController
-import com.example.sigacorfilkom.DaftarAkunMahasiswa
 
 class KontrolLoginMahasiswa(navigasi: NavController) {
     private val navigasi: NavController

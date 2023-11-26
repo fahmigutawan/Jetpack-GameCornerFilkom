@@ -1,7 +1,5 @@
 package com.example.sigacorfilkom
 
-import com.example.sigacorfilkom.Admin
-import com.example.sigacorfilkom.Otentikasi
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CompletableDeferred
 

@@ -2,7 +2,6 @@ package com.example.sigacorfilkom
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.sigacorfilkom.KontrolJadwal
 
 class HalamanTutupJadwalAdmin(
     kontrolJadwal: KontrolJadwal
