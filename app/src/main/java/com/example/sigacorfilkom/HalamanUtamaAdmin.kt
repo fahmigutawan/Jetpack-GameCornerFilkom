@@ -4,25 +4,24 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.sigacorfilkom.kontrol_remove_this_later.KontrolUtamaAdmin
 import kotlinx.coroutines.launch
 
 class HalamanUtamaAdmin(
     kontrolJadwal: KontrolJadwal,
     kontrolReservasi: KontrolReservasi,
-    kontrolUtamaAdmin: KontrolUtamaAdmin
+    kontrolLogout: KontrolLogout
 ) : ViewModel() {
     private val reservasi = mutableStateListOf<Reservasi>()
     private val perangkat = mutableMapOf<String, String>()
     private val pickedReservasi = mutableStateOf<Reservasi?>(null)
     private val kontrolJadwal: KontrolJadwal
     private val kontrolReservasi: KontrolReservasi
-    private val kontrolUtamaAdmin: KontrolUtamaAdmin
+    private val kontrolLogout: KontrolLogout
 
     init {
         this.kontrolReservasi = kontrolReservasi
         this.kontrolJadwal = kontrolJadwal
-        this.kontrolUtamaAdmin = kontrolUtamaAdmin
+        this.kontrolLogout = kontrolLogout
     }
 
     fun loadReservasi() {
@@ -58,12 +57,15 @@ class HalamanUtamaAdmin(
         )
     }
 
+    /**
+     *  EVENT logout
+     */
     fun logout() {
         /**
-         *  CALL   logout()
-         *  TUJUAN (C) KontrolUtamaAdmin
+         *  CALL   logoutAdmin()
+         *  TUJUAN (C) KontrolLogout
          */
-        kontrolUtamaAdmin.logout()
+        kontrolLogout.logoutAdmin()
     }
 
     init {

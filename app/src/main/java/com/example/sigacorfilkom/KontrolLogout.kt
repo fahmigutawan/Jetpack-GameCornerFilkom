@@ -22,4 +22,18 @@ class KontrolLogout(navigasi: NavController) {
          */
         navigasi.navigate("login")
     }
+
+    fun logoutAdmin() {
+        /**
+         *  CALL   clearAdmin()
+         *  TUJUAN (E) Otentikasi
+         */
+        Otentikasi.clearAdmin()
+
+        /**
+         *  CALL   tampilkan
+         *  TUJUAN (B) HalamanLogin
+         */
+        navigasi.navigate("login")
+    }
 }
