@@ -24,13 +24,25 @@ class HalamanUtamaAdmin(
         this.kontrolLogout = kontrolLogout
     }
 
-    fun loadReservasi() {
+    /**
+     *  EVENT Lihat List Reservasi
+     */
+    fun lihatListReservasi() {
         viewModelScope.launch {
-            kontrolReservasi.getReservasiTerbaruForAdmin().collect {
+           /**
+            *  CALL   tampilkanHalamanRiwayatReservasiForAdmin()
+            *  TUJUAN (C) KontrolReservasi
+            */
+            kontrolReservasi.tampilkanHalamanRiwayatReservasiForAdmin().collect {
                 reservasi.clear()
                 reservasi.addAll(it)
             }
         }
+      /**
+        *  CALL   tampilkan daftar reservasi
+        *  TUJUAN (B) HalamanUtamaAdmin
+        */
+        navigasi.navigate("halaman_utama_admin")
     }
 
     fun getReservasi() = reservasi
@@ -41,6 +53,11 @@ class HalamanUtamaAdmin(
 
     fun setPickedReservasi(value: Reservasi?) {
         pickedReservasi.value = value
+    }
+
+    fun setDaftarReservasi(daftarReservasi: List<Reservasi>) {
+        this.daftarReservasi.clear()
+        this.daftarReservasi.addAll(daftarReservasi)
     }
 
     /**
@@ -67,6 +84,17 @@ class HalamanUtamaAdmin(
     }
 
     /**
+     *  EVENT tutup jadwal
+     */
+     fun tutupJadwal() {
+        /**
+        *  CALL tampilkanHalamanTutupJadwal
+        *  TUJUAN (C) KontrolJadwal
+        */
+        kontrolJadwal.tampilkanHalamanTutupJadwal()
+     }
+
+    /**
      *  EVENT logout
      */
     fun logout() {
@@ -78,7 +106,7 @@ class HalamanUtamaAdmin(
     }
 
     init {
-        loadReservasi()
+        lihatListReservasi()
 
         viewModelScope.launch {
 //            kontrolJadwal.getDaftarPerangkat().collect {

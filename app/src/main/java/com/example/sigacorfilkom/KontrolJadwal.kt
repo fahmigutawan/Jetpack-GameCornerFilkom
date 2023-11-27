@@ -73,6 +73,10 @@ class KontrolJadwal(navigasi: NavController, aktivitas: SistemGameCorner) {
 //    }
 
     fun tampilkanHalamanTutupJadwal() {
+       /**
+        *  CALL tampilkan
+        *  TUJUAN (B) HalamanTutupJadwalAdmin
+        */
         navigasi.navigate("tutup_jadwal_admin")
     }
 

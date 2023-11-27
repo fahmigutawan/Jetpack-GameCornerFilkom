@@ -21,6 +21,10 @@ class BukuReservasi {
 
         val firestore = FirebaseFirestore.getInstance()
         val idReservasi = UUID.randomUUID().toString()
+         /**
+         *  CALL   <<create>>
+         *  TUJUAN (E) Reservasi
+         */
         val reservasi = Reservasi(
             reservasiId = idReservasi,
             nimPeminjam = nimPeminjam,
@@ -144,6 +148,64 @@ class BukuReservasi {
             .getInstance()
             .collection("reservasi")
             .whereEqualTo("nimPeminjam", nimPeminjam)
+            .whereIn("pickedDay", listDate.map {
+                "${it.dayOfMonth}:${it.monthValue}:${it.year}"
+            })
+            .orderBy("pickedDay")
+            .get()
+            .addOnSuccessListener {
+                /**
+                 *  LOOP data reservasi
+                 */
+                it.documents.forEach { doc ->
+                    val format = DateTimeFormatter.ofPattern("dd:MM:yyyy")
+                    val parsedDate = LocalDate.parse(doc["pickedDay"] as String, format)
+
+                    /**
+                     *  CALL   <<create>>
+                     *  TUJUAN (E) Reservasi
+                     */
+                    val reservasi = Reservasi(
+                        reservasiId = doc["idReservasi"] as String,
+                        nimPeminjam = doc["nimPeminjam"] as String,
+                        status = doc["status"] as String,
+                        nomorSesi = (doc["nomorSesi"] as Long).toInt(),
+                        idPerangkat = doc["idPerangkat"] as String,
+                        tanggal = parsedDate.dayOfMonth,
+                        bulan = parsedDate.monthValue,
+                        tahun = parsedDate.year
+                    )
+
+                    daftarReservasi.add(reservasi)
+                }
+
+                asyncCallWaiter.complete(Unit)
+            }
+            .addOnFailureListener {
+                asyncCallWaiter.complete(Unit)
+            }
+        asyncCallWaiter.await()
+
+        return daftarReservasi
+    }
+
+    suspend fun getDaftarReservasiForAdmin(): List<Reservasi> {
+        val daftarReservasi: MutableList<Reservasi> = mutableListOf()
+
+        val nowMillis = System.currentTimeMillis()
+        val instantNow = Instant.ofEpochMilli(nowMillis)
+        val localDateNow = instantNow.atZone(ZoneId.systemDefault()).toLocalDate()
+
+        val listDate = listOf(
+            localDateNow,
+            localDateNow.plusDays(1),
+            localDateNow.plusDays(2)
+        )
+
+        val asyncCallWaiter = CompletableDeferred<Unit>()
+        FirebaseFirestore
+            .getInstance()
+            .collection("reservasi")
             .whereIn("pickedDay", listDate.map {
                 "${it.dayOfMonth}:${it.monthValue}:${it.year}"
             })

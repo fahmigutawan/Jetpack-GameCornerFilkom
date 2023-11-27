@@ -17,7 +17,10 @@ class HalamanTutupJadwalAdmin(
         alasan.value = value
     }
 
-    fun tutupJadwal(
+   /**
+    *  EVENT submit
+    */
+    fun submit(
         dateMillis: Long?,
         onSuccess: () -> Unit,
         onFailed: (String) -> Unit

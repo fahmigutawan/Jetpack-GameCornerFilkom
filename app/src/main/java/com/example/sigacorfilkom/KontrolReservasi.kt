@@ -21,6 +21,7 @@ class KontrolReservasi(
     private val aktivitas: SistemGameCorner
 
     private lateinit var bukuReservasi: BukuReservasi
+    private lateinit var halamanUtamaAdmin: HalamanUtamaAdmin
 
     init {
         this.kontrolRegisterMahasiswa = kontrolRegisterMahasiswa
@@ -39,7 +40,7 @@ class KontrolReservasi(
 
         /**
          *  CALL   <<create>>
-         *  TUJUAN BukuReservasi
+         *  TUJUAN (E) BukuReservasi
          */
         val bukuReservasi = BukuReservasi()
 
@@ -75,48 +76,36 @@ class KontrolReservasi(
         return hasilSimpan
     }
 
-    fun getReservasiTerbaruForAdmin() = callbackFlow {
+    fun tampilkanHalamanRiwayatReservasiForAdmin() = callbackFlow {
         val nowMillis = System.currentTimeMillis()
         val instantNow = Instant.ofEpochMilli(nowMillis)
         val localDateNow = instantNow.atZone(ZoneId.systemDefault()).toLocalDate()
-
+        val daftarReservasi: MutableList<Reservasi> = mutableListOf()
         val listDate = listOf(
             localDateNow,
             localDateNow.plusDays(1),
             localDateNow.plusDays(2)
         )
-
+        
+       /**
+        *  CALL   <<create>>
+        *  TUJUAN (C) BukuReservasi
+        */
         bukuReservasi = BukuReservasi()
 
-        FirebaseFirestore
-            .getInstance()
-            .collection("reservasi")
-            .whereIn("pickedDay", listDate.map {
-                "${it.dayOfMonth}:${it.monthValue}:${it.year}"
-            })
-            .orderBy("pickedDay", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener {
-                trySend(
-                    it.documents.map { doc ->
-                        val format = DateTimeFormatter.ofPattern("dd:MM:yyyy")
-                        val parsedDate = LocalDate.parse(doc["pickedDay"] as String, format)
-
-                        Reservasi(
-                            reservasiId = doc["idReservasi"] as String,
-                            nimPeminjam = doc["nimPeminjam"] as String,
-                            status = doc["status"] as String,
-                            nomorSesi = (doc["nomorSesi"] as Long).toInt(),
-                            idPerangkat = doc["idPerangkat"] as String,
-                            tanggal = parsedDate.dayOfMonth,
-                            bulan = parsedDate.monthValue,
-                            tahun = parsedDate.year
-                        )
-                    }
-                )
-            }
+       /**
+        *  CALL   getDaftarReservasiForAdmin()
+        *  TUJUAN (C) BukuReservasi
+        */
+        daftarReservasi = bukuReservasi.getDaftarReservasiForAdmin()
 
         awaitClose()
+
+        /**
+         *  CALL   setDaftarReservasi(daftarReservasi)
+         *  TUJUAN HalamanUtamaAdmin
+         */
+        halamanUtamaAdmin.setDaftarReservasi(daftarReservasi)
     }
 
     suspend fun validasiReservasi(
